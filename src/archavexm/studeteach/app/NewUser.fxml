@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.NewUserController">
+   <children>
+      <Label alignment="CENTER" layoutX="14.0" layoutY="83.0" prefHeight="35.0" prefWidth="175.0" text="First Name:">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textFirstName" layoutX="190.0" layoutY="88.0" prefHeight="25.0" prefWidth="185.0" />
+      <Label alignment="CENTER" layoutX="14.0" layoutY="134.0" prefHeight="35.0" prefWidth="175.0" text="Last Name:">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textLastName" layoutX="190.0" layoutY="139.0" prefHeight="25.0" prefWidth="185.0" />
+      <Label alignment="CENTER" layoutX="14.0" layoutY="183.0" prefHeight="35.0" prefWidth="175.0" text="Age:">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textAge" layoutX="190.0" layoutY="188.0" prefHeight="25.0" prefWidth="185.0" />
+      <Label alignment="CENTER" layoutX="14.0" layoutY="232.0" prefHeight="35.0" prefWidth="175.0" text="School Name:">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textSchoolName" layoutX="190.0" layoutY="237.0" prefHeight="25.0" prefWidth="185.0" />
+      <Label alignment="CENTER" layoutX="14.0" layoutY="277.0" prefHeight="35.0" prefWidth="175.0" text="School Type">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="comboSchoolType" layoutX="190.0" layoutY="282.0" prefHeight="25.0" prefWidth="185.0" promptText="Is it high school?">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Primary" />
+               <String fx:value="Secondary" />
+               <String fx:value="University" />
+            </FXCollections>
+         </items>
+      </ComboBox>
+      <Label alignment="CENTER" layoutX="14.0" layoutY="325.0" prefHeight="35.0" prefWidth="175.0" text="Prefered Name:">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textPreferedName" layoutX="190.0" layoutY="330.0" prefHeight="25.0" prefWidth="185.0" />
+      <Button layoutX="192.0" layoutY="393.0" mnemonicParsing="false" onAction="#processNewPerson" prefHeight="84.0" prefWidth="185.0" text="Create" />
+   </children>
+</AnchorPane>
