@@ -5,10 +5,20 @@ import archavexm.studeteach.core.student.School;
 import archavexm.studeteach.core.student.SchoolType;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.teacher.Teacher;
+import archavexm.studeteach.core.util.Deserializer;
+import archavexm.studeteach.core.util.Serializer;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import javax.xml.bind.JAXBException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class NewUserController {
     @FXML
@@ -26,7 +36,8 @@ public class NewUserController {
 
     private String personText;
 
-    private Person person;
+    private Student student;
+    private Teacher teacher;
 
     public void setPersonText(String text){
         personText = text;
@@ -117,21 +128,62 @@ public class NewUserController {
 
         preferedName = textPreferedName.getText();
 
-        if (personText == "Student"){
-            Student student = Student.getStudent(firstName, lastName);
-            student.setAge(age);
-            student.setPreferedName(preferedName);
+        try {
+            if (personText == "Student"){
+                student = Student.getStudent();
+                student.setFirstName(firstName);
+                student.setLastName(lastName);
+                student.setAge(age);
+                student.setPreferedName(preferedName);
+                student.setSchoolName(schoolName);
+                student.setSchoolType(schoolType);
+            }
+            else if (personText == "Teacher"){
 
-            School school = School.getInstance(schoolName, schoolType);
-            student.setSchool(school);
-
-            person = student;
+            }
         }
-        else {
-            person = new Teacher();
+        catch (Exception ex){
+            ex.printStackTrace();
         }
 
-        System.out.println(person.toString());
+        String filePath = null;
+
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save .studeteach file");
+
+            FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Studeteach files", "*.studeteach");
+            fileChooser.getExtensionFilters().add(extensionFilter);
+
+            Stage currentStage = (Stage)textFirstName.getScene().getWindow();
+            File file = fileChooser.showSaveDialog(currentStage);
+
+            filePath = file.getAbsolutePath();
+        }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+
+
+        try {
+            if (personText == "Student"){
+                Serializer.serializeStudent(filePath, student);
+            }
+            else {
+                Serializer.serializeTeacher(filePath, teacher);
+            }
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        try {
+            Student s = Deserializer.deserializeStudent(filePath);
+            System.out.println(s.getFullName() + " " + s.getAge());
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
 
     }
 }
