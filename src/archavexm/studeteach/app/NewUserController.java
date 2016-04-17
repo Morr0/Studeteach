@@ -1,14 +1,19 @@
 package archavexm.studeteach.app;
 
+import archavexm.studeteach.app.student.StudentController;
 import archavexm.studeteach.core.Person;
 import archavexm.studeteach.core.student.School;
 import archavexm.studeteach.core.student.SchoolType;
 import archavexm.studeteach.core.student.Student;
+import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.teacher.Teacher;
 import archavexm.studeteach.core.util.Deserializer;
 import archavexm.studeteach.core.util.Serializer;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -19,6 +24,7 @@ import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashSet;
 
 public class NewUserController {
     @FXML
@@ -35,6 +41,7 @@ public class NewUserController {
     private TextField textPreferedName;
 
     private String personText;
+    private String filePath;
 
     private Student student;
     private Teacher teacher;
@@ -146,8 +153,6 @@ public class NewUserController {
             ex.printStackTrace();
         }
 
-        String filePath = null;
-
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save .studeteach file");
@@ -164,7 +169,6 @@ public class NewUserController {
             System.out.println(ex.getMessage());
         }
 
-
         try {
             if (personText == "Student"){
                 Serializer.serializeStudent(filePath, student);
@@ -178,45 +182,34 @@ public class NewUserController {
         }
 
         try {
-            Student s = Deserializer.deserializeStudent(filePath);
-            System.out.println(s.getFullName() + " " + s.getAge());
+            toProfile();
         }
         catch (Exception ex){
             ex.printStackTrace();
         }
 
     }
+
+    private void toProfile() throws Exception{
+        FXMLLoader loader = new FXMLLoader();
+        Parent root = null;
+
+        if (personText == "Student"){
+            root = loader.load(getClass().getResource("student/Student.fxml").openStream());
+        }
+        else {
+
+        }
+
+        StudentController sc = loader.getController();
+        sc.setFilePath(filePath);
+        sc.initStudent();
+
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
+
+        Stage current = (Stage)textFirstName.getScene().getWindow();
+        current.close();
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

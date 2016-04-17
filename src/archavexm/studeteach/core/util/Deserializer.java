@@ -1,12 +1,13 @@
 package archavexm.studeteach.core.util;
 
 import archavexm.studeteach.core.student.Student;
+import archavexm.studeteach.core.teacher.Teacher;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.FileInputStream;
 
-public final class Deserializer {
+public class Deserializer {
     public static Student deserializeStudent(String filePath) throws Exception{
         JAXBContext jc = JAXBContext.newInstance(Student.class);
         Unmarshaller unmarshaller = jc.createUnmarshaller();
@@ -16,7 +17,7 @@ public final class Deserializer {
         return output;
     }
 
-    public static void deserializeTeacher(String filePath){
-
+    public static Teacher deserializeTeacher(String filePath){
+        return new Teacher();
     }
 }

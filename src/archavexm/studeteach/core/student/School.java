@@ -1,5 +1,6 @@
 package archavexm.studeteach.core.student;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -19,7 +20,7 @@ public class School {
         return instance;
     }
 
-    @XmlElement(name = "name")
+    @XmlAttribute(name = "name")
     public String getSchoolName(){
         return instance.name;
     }
@@ -28,7 +29,7 @@ public class School {
         instance.name = name;
     }
 
-    @XmlElement(name = "type")
+    @XmlAttribute(name = "type")
     public String getSchoolType(){
         String output = null;
 

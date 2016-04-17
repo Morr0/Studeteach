@@ -127,11 +127,6 @@ public class Student implements Person {
         school.setSchoolType(schoolType);
     }
 
-    @Override
-    public String toString(){
-        return "First Name: " + firstName + " - " + "Last Name: " + lastName + " - Age: " + (Integer.toString(age)) + " - " + "School Name: " + (school.getSchoolName());
-    }
-
 }
 
 
