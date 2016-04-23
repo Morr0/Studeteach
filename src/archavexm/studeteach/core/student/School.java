@@ -1,6 +1,5 @@
 package archavexm.studeteach.core.student;
 
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -20,7 +19,7 @@ public class School {
         return instance;
     }
 
-    @XmlAttribute(name = "name")
+    @XmlElement(name = "name")
     public String getSchoolName(){
         return instance.name;
     }
@@ -29,24 +28,25 @@ public class School {
         instance.name = name;
     }
 
-    @XmlAttribute(name = "type")
+    @XmlElement(name = "type")
     public String getSchoolType(){
         String output = null;
 
-        switch (instance.schoolType){
-            case PRIMARY:
-                output = "Primary";
-            case SECONDARY:
-                output = "Secondary";
-            case UNIVERSITY:
-                output = "University";
+        if (schoolType == SchoolType.PRIMARY){
+            output = "Primary";
+        }
+        else if(schoolType == SchoolType.SECONDARY) {
+            output = "Secondary";
+        }
+        else {
+            output = "University";
         }
 
         return output;
     }
 
     public void setSchoolType(SchoolType schoolType){
-        instance.schoolType = schoolType;
+        this.schoolType = schoolType;
     }
 
 }

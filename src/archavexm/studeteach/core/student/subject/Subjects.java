@@ -1,19 +1,14 @@
 package archavexm.studeteach.core.student.subject;
 
 public enum Subjects {
-    ENGLISH,
-    FRENCH,
-    ARABIC,
-    ASSYRIAN,
-    GERMAN,
+    LANGUAGE,
     GEOGRAPHY,
     HISTORY,
     COMMERCE,
     ART,
-    MATHS,
+    MATHEMATICS,
     MUSIC,
     SCIENCE,
     SPORT,
-    POETRY,
     COMPUTING
 }

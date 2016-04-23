@@ -1,15 +1,13 @@
 package archavexm.studeteach.core.student;
 
 import archavexm.studeteach.core.Person;
+import archavexm.studeteach.core.student.task.Task;
 import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.student.timetable.Timetable;
 
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -26,6 +24,8 @@ public class Student implements Person {
     private School school = School.getInstance(null, null);
     private int schoolYear;
     private HashSet<Day> schoolDays = new HashSet<>(7);
+
+    private LinkedList<Task> tasks;
 
     private Timetable timetable;
 
@@ -68,16 +68,8 @@ public class Student implements Person {
     }
 
     @XmlElement(name = "school_days")
-    public String[] getSchoolDays(){
-        ArrayList<String> array = new ArrayList<>(7);
-
-        for (Day day: schoolDays){
-            array.add(day.toString());
-        }
-
-        String[] output = new String[7];
-        output = array.toArray(output);
-        return output;
+    public HashSet<Day> getSchoolDays(){
+        return schoolDays;
     }
 
     @XmlElement
@@ -90,6 +82,10 @@ public class Student implements Person {
         return age;
     }
 
+    @XmlElement(name = "tasks")
+    public LinkedList<Task> getTasks(){
+        return tasks;
+    }
 
     public void setFirstName(String name){
         firstName = name;
@@ -125,6 +121,19 @@ public class Student implements Person {
 
     public void setSchoolType(SchoolType schoolType){
         school.setSchoolType(schoolType);
+    }
+
+    public void setTasks(LinkedList<Task> tasks){
+        this.tasks = tasks;
+    }
+
+    public boolean doesHaveThisDay(Day day){
+        for (Day d: getSchoolDays()){
+            if (d == day){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

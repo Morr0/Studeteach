@@ -15,6 +15,7 @@ public final class Serializer {
 
         FileOutputStream fos = new FileOutputStream(filePath);
         marshaller.marshal(student, fos);
+        fos.close();
     }
 
     public static void serializeTeacher(final String filePath, Teacher teacher){

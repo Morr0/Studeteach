@@ -1,6 +1,7 @@
 package archavexm.studeteach.app;
 
 import archavexm.studeteach.core.Studeteach;
+import archavexm.studeteach.core.util.Utilities;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

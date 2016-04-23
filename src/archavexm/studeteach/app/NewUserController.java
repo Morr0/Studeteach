@@ -1,13 +1,9 @@
 package archavexm.studeteach.app;
 
 import archavexm.studeteach.app.student.StudentController;
-import archavexm.studeteach.core.Person;
-import archavexm.studeteach.core.student.School;
 import archavexm.studeteach.core.student.SchoolType;
 import archavexm.studeteach.core.student.Student;
-import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.teacher.Teacher;
-import archavexm.studeteach.core.util.Deserializer;
 import archavexm.studeteach.core.util.Serializer;
 
 import javafx.fxml.FXML;
@@ -20,11 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import javax.xml.bind.JAXBException;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.HashSet;
 
 public class NewUserController {
     @FXML

@@ -14,6 +14,8 @@ public class Deserializer {
 
         FileInputStream fis = new FileInputStream(filePath);
         Student output = (Student)unmarshaller.unmarshal(fis);
+        fis.close();
+
         return output;
     }
 

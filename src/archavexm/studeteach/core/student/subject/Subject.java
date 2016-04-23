@@ -10,4 +10,8 @@ public class Subject {
     public Subjects getSubject(){
         return subject;
     }
+
+    public String getSubjectInString(){
+        return (subject.toString()).toLowerCase();
+    }
 }
