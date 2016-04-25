@@ -1,43 +1,39 @@
 package archavexm.studeteach.core.student.timetable;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedList;
 
+@XmlRootElement(name = "timetable")
 public class Timetable {
-    private HashMap<Day, Period> dayPeriods;
-    private HashMap<Day, Integer> numberOfPeriodsDay;
+    private HashMap<Day, LinkedList<Period>> dayPeriods = new HashMap<>();
 
-    private static Timetable instance = new Timetable();
+    private boolean isEmpty = dayPeriods.isEmpty() ? true : false;
+
+    private static Timetable timetable = new Timetable();
 
     private Timetable(){}
 
-    public static Timetable getTimetable(HashSet<Day> days){
-        for (Day day: days){
-            instance.dayPeriods.put(day, null);
-            instance.numberOfPeriodsDay.put(day, null);
-        }
-
-        return instance;
+    public static Timetable getTimetable(){
+        return timetable;
     }
 
-    public HashMap<Day, Period> getDayPeriods(){
+    @XmlElement(name = "days_with_periods")
+    public HashMap<Day, LinkedList<Period>> getDayPeriods(){
         return dayPeriods;
     }
 
-    public void setNumberOfDayPeriods(Day day, int num){
-        numberOfPeriodsDay.put(day, num);
+    public void setDayPeriods(HashMap<Day, LinkedList<Period>> dayPeriods){
+        this.dayPeriods = dayPeriods;
     }
 
-    public void changePeriodOnNumber(Day day, int number, Period newPeriod){
-        for (Period period: dayPeriods.values()){
-            if (period.getPeriodNumber() == number){
-                period = newPeriod;
-            }
-        }
+    public boolean isTimetableEmpty(){
+        return isEmpty;
     }
 
-    public void deletePeriod(Day day, Period period){
-        dayPeriods.remove(day, period);
+    public void setEmpty(boolean bool){
+        isEmpty = bool;
     }
 
 }
