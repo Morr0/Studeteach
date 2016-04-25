@@ -10,5 +10,6 @@ public enum Subjects {
     MUSIC,
     SCIENCE,
     SPORT,
-    COMPUTING
+    COMPUTING,
+    OTHER
 }

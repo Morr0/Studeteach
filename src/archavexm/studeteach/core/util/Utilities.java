@@ -1,5 +1,6 @@
 package archavexm.studeteach.core.util;
 
+import archavexm.studeteach.core.student.subject.Subjects;
 import archavexm.studeteach.core.student.timetable.Day;
 import com.sun.istack.internal.NotNull;
 
@@ -90,6 +91,36 @@ public final class Utilities {
         String capital = (input.trim()).substring(0, 1).toUpperCase();
         String output = capital + (input.trim()).substring(1);
         return output;
+    }
+
+    @NotNull
+    public static Subjects toSubjectsFromString(String input){
+        String i = input.toLowerCase();
+
+        switch (i){
+            case "language":
+                return Subjects.LANGUAGE;
+            case "geography":
+                return Subjects.GEOGRAPHY;
+            case "history":
+                return Subjects.HISTORY;
+            case "science":
+                return Subjects.SCIENCE;
+            case "music":
+                return Subjects.MUSIC;
+            case "art":
+                return Subjects.ART;
+            case "commerce":
+                return Subjects.COMMERCE;
+            case "computing":
+                return Subjects.COMPUTING;
+            case "sport":
+                return Subjects.SPORT;
+            case "mathematics":
+                return Subjects.MATHEMATICS;
+            default:
+                return Subjects.OTHER;
+        }
     }
 
 }

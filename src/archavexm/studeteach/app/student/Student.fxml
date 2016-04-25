@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -47,5 +48,6 @@
       <Button layoutX="410.0" layoutY="27.0" mnemonicParsing="false" onAction="#showProfileEditor" prefHeight="25.0" prefWidth="82.0" text="Edit Profile" />
       <Button layoutX="492.0" layoutY="27.0" mnemonicParsing="false" onAction="#toTaskManager" prefHeight="25.0" prefWidth="96.0" text="Task Manager" />
       <Button layoutX="588.0" layoutY="27.0" mnemonicParsing="false" text="TODO" />
+      <TableView fx:id="tableTimetable" layoutY="52.0" prefHeight="432.0" prefWidth="640.0" />
    </children>
 </AnchorPane>

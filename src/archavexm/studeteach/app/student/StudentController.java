@@ -2,16 +2,20 @@ package archavexm.studeteach.app.student;
 
 import archavexm.studeteach.app.student.window.ProfileEditorController;
 import archavexm.studeteach.app.student.window.TaskManagerController;
+import archavexm.studeteach.app.student.window.TimetableEditorController;
 import archavexm.studeteach.core.Studeteach;
 import archavexm.studeteach.core.student.Student;
+import archavexm.studeteach.core.student.timetable.Timetable;
 import archavexm.studeteach.core.util.Deserializer;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -27,8 +31,11 @@ public class StudentController{
     private Label labelYear;
     @FXML
     private Label labelNumberOfTasks;
+    @FXML
+    private TableView tableTimetable;
 
     private Student student;
+    private Timetable timetable;
     private String preferedName;
 
     private String filePath;
@@ -43,10 +50,44 @@ public class StudentController{
     public void initStudent(){
         try {
             student = Deserializer.deserializeStudent(filePath);
+            timetable = student.getTimetable();
             setPreferedName();
             labelName.setText(preferedName);
             labelAge.setText(Integer.toString(student.getAge()));
             labelYear.setText(Integer.toString(student.getSchoolYear()));
+            if (timetable.isTimetableEmpty()){
+                VBox verticalBox = new VBox();
+                verticalBox.setAlignment(Pos.CENTER);
+
+                Button newTimetable = new Button("Create");
+                newTimetable.setPrefWidth(60);
+                newTimetable.setPrefHeight(40);
+                newTimetable.setFont(new Font("Arial", 12));
+                newTimetable.setOnAction(event -> {
+                    if (student.getSchoolDays().size() == 0){
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setContentText("You did not specify the school days in your profile, you have to specify the days then come back here.");
+                        alert.showAndWait();
+
+                        return;
+                    }
+
+                    try {
+                        toTimetableEditor();
+                    }
+                    catch (IOException ex){
+                        ex.printStackTrace();
+                    }
+
+                });
+
+                verticalBox.getChildren().add(new Label("You Did not set your timetable before. If you want to set you can press the button below."));
+                verticalBox.getChildren().add(newTimetable);
+                tableTimetable.setPlaceholder(verticalBox);
+            }
+            else
+                updateTimetable();
+
             updateNumberOfTasks();
         }
         catch (Exception ex){
@@ -104,6 +145,7 @@ public class StudentController{
             setPreferedName();
             setTitle();
             updateNumberOfTasks();
+            updateTimetable();
         }
         catch (Exception ex){
             ex.printStackTrace();
@@ -137,6 +179,24 @@ public class StudentController{
         }
 
         labelNumberOfTasks.setText(num);
+    }
+
+    private void updateTimetable(){
+
+    }
+
+    private void toTimetableEditor() throws IOException{
+        FXMLLoader loader = new FXMLLoader();
+        Parent timetableEditor = loader.load(getClass().getResource("window/TimetableEditor.fxml").openStream());
+
+        TimetableEditorController timetableEditorController = loader.getController();
+        timetableEditorController.setFilePath(filePath);
+        timetableEditorController.init();
+
+        Stage stage = new Stage();
+        stage.setTitle(preferedName + " - " + "Timetable Editor" + " - " + Studeteach.APP_NAME);
+        stage.setScene(new Scene(timetableEditor));
+        stage.showAndWait();
     }
 }
 

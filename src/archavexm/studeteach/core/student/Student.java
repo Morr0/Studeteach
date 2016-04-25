@@ -27,7 +27,7 @@ public class Student implements Person {
 
     private LinkedList<Task> tasks;
 
-    private Timetable timetable;
+    private Timetable timetable = Timetable.getTimetable();
 
     private Student(){}
 
@@ -87,6 +87,11 @@ public class Student implements Person {
         return tasks;
     }
 
+    @XmlElement
+    public Timetable getTimetable(){
+        return timetable;
+    }
+
     public void setFirstName(String name){
         firstName = name;
     }
@@ -134,6 +139,10 @@ public class Student implements Person {
             }
         }
         return false;
+    }
+
+    public void setTimetable(Timetable timetable){
+        this.timetable = timetable;
     }
 
 }

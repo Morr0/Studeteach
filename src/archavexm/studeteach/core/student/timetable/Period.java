@@ -2,23 +2,36 @@ package archavexm.studeteach.core.student.timetable;
 
 import archavexm.studeteach.core.student.subject.Subject;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "period")
 public class Period {
     private Subject subject;
-    private int periodNumber;
+    private int number;
 
-    public Period(Subject subject, int periodNumber){
+    public Period(){}
+
+    public Period(Subject subject){
         this.subject = subject;
-        this.periodNumber = periodNumber;
     }
 
-    public int getPeriodNumber(){
-        return periodNumber;
+    public Period(Subject subject, int number){
+        this.subject = subject;
+        this.number = number;
     }
 
-    public void setPeriodNumber(int num){
-        periodNumber = num;
+    @XmlAttribute(name = "number")
+    public int getNumber() {
+        return number;
     }
 
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    @XmlElement
     public Subject getSubject(){
         return subject;
     }
