@@ -60,45 +60,46 @@ public class ToMainMenuController {
             ex.printStackTrace();
         }
 
-        try {
-            if (person == "Student"){
-                if (content.contains("student")){
-                    makeWindow(filePath);
-                }
-                else if (content.contains("Teacher")){
-                    person = "Teacher";
-                    return;
-                }
+        if (person == "Student"){
+            if (content.contains("student")){
+                makeWindow(filePath);
             }
-            else {
-                if (content.contains("teacher")){
-                    makeWindow(filePath);
-                }
-                else if (content.contains("Student")) {
-                    person = "Student";
-                    return;
-                }
+            else if (content.contains("Teacher")){
+                person = "Teacher";
+                return;
             }
         }
-        catch (Exception ex){
-            ex.printStackTrace();
+        else {
+            if (content.contains("Teacher")){
+                makeWindow(filePath);
+            }
+            else if (content.contains("Student")) {
+                person = "Student";
+                return;
+            }
         }
+
     }
 
-    private void makeWindow(String filePath) throws IOException{
-        FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(getClass().getResource("student/Student.fxml").openStream());
+    private void makeWindow(String filePath){
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            Parent root = loader.load(getClass().getResource("student/Student.fxml").openStream());
 
-        StudentController sc = loader.getController();
-        sc.setFilePath(filePath);
-        sc.initStudent();
+            StudentController sc = loader.getController();
+            sc.setFilePath(filePath);
+            sc.initStudent();
 
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.show();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
 
-        Stage currentStage = (Stage)labelTitle.getScene().getWindow();
-        currentStage.close();
+            Stage currentStage = (Stage)labelTitle.getScene().getWindow();
+            currentStage.close();
+        }
+        catch (IOException ex){
+            ex.printStackTrace();
+        }
     }
 
 }

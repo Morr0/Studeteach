@@ -5,20 +5,31 @@ import archavexm.studeteach.app.student.window.TaskManagerController;
 import archavexm.studeteach.app.student.window.TimetableEditorController;
 import archavexm.studeteach.core.Studeteach;
 import archavexm.studeteach.core.student.Student;
+import archavexm.studeteach.core.student.timetable.Day;
+import archavexm.studeteach.core.student.timetable.Period;
 import archavexm.studeteach.core.student.timetable.Timetable;
 import archavexm.studeteach.core.util.Deserializer;
 
+import archavexm.studeteach.core.util.Serializer;
+import archavexm.studeteach.core.util.Utilities;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 public class StudentController{
     @FXML
@@ -31,8 +42,22 @@ public class StudentController{
     private Label labelYear;
     @FXML
     private Label labelNumberOfTasks;
+
+    // Periods on days lists
     @FXML
-    private TableView tableTimetable;
+    private ListView<String> listMonday;
+    @FXML
+    private ListView<String> listTuesday;
+    @FXML
+    private ListView<String> listWednesday;
+    @FXML
+    private ListView<String> listThursday;
+    @FXML
+    private ListView<String> listFriday;
+    @FXML
+    private ListView<String> listSaturday;
+    @FXML
+    private ListView<String> listSunday;
 
     private Student student;
     private Timetable timetable;
@@ -50,47 +75,13 @@ public class StudentController{
     public void initStudent(){
         try {
             student = Deserializer.deserializeStudent(filePath);
-            timetable = student.getTimetable();
-            setPreferedName();
-            labelName.setText(preferedName);
-            labelAge.setText(Integer.toString(student.getAge()));
-            labelYear.setText(Integer.toString(student.getSchoolYear()));
-            if (timetable.isTimetableEmpty()){
-                VBox verticalBox = new VBox();
-                verticalBox.setAlignment(Pos.CENTER);
 
-                Button newTimetable = new Button("Create");
-                newTimetable.setPrefWidth(60);
-                newTimetable.setPrefHeight(40);
-                newTimetable.setFont(new Font("Arial", 12));
-                newTimetable.setOnAction(event -> {
-                    if (student.getSchoolDays().size() == 0){
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setContentText("You did not specify the school days in your profile, you have to specify the days then come back here.");
-                        alert.showAndWait();
+            if (student.getTimetables().isEmpty()){
+                timetable = new Timetable();
+            } else {
 
-                        return;
-                    }
-
-                    try {
-                        toTimetableEditor();
-                    }
-                    catch (IOException ex){
-                        ex.printStackTrace();
-                    }
-
-                });
-
-                verticalBox.getChildren().add(new Label("You Did not set your timetable before. If you want to set you can press the button below."));
-                verticalBox.getChildren().add(newTimetable);
-                tableTimetable.setPlaceholder(verticalBox);
             }
-            else
-                updateTimetable();
-
-            updateNumberOfTasks();
-        }
-        catch (Exception ex){
+        } catch (Exception ex){
             ex.printStackTrace();
         }
     }
@@ -111,8 +102,7 @@ public class StudentController{
             stage.showAndWait();
 
             refresh();
-        }
-        catch (IOException ex){
+        } catch (IOException ex){
             ex.printStackTrace();
         }
     }
@@ -139,7 +129,7 @@ public class StudentController{
         }
     }
 
-    private void refresh(){
+    public void refresh(){
         try {
             student = Deserializer.deserializeStudent(filePath);
             setPreferedName();
@@ -153,11 +143,13 @@ public class StudentController{
     }
 
     private void setPreferedName(){
-        if (student.getPreferedName().isEmpty()){
+        if (student.getPreferedName() == null){
             stageTitle = (student.getFirstName()) + " - " + Studeteach.APP_NAME;
             preferedName = student.getFirstName();
-        }
-        else {
+        } else if (student.getPreferedName().isEmpty()){
+            stageTitle = (student.getFirstName()) + " - " + Studeteach.APP_NAME;
+            preferedName = student.getFirstName();
+        } else {
             stageTitle = (student.getPreferedName()) + " - " + Studeteach.APP_NAME;
             preferedName = student.getPreferedName();
         }
@@ -197,6 +189,49 @@ public class StudentController{
         stage.setTitle(preferedName + " - " + "Timetable Editor" + " - " + Studeteach.APP_NAME);
         stage.setScene(new Scene(timetableEditor));
         stage.showAndWait();
+    }
+
+    // File menu
+    public void fileSave(){
+        try {
+            Serializer.serializeStudent(filePath, student);
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public void fileSaveAs(){
+        String anotherFilePath = null;
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save As .studeteach");
+
+            FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Studeteach files", "*.studeteach");
+            fileChooser.setSelectedExtensionFilter(extensionFilter);
+
+            Stage currentStage = (Stage)labelAge.getScene().getWindow();
+            File file = fileChooser.showSaveDialog(currentStage);
+
+            anotherFilePath = file.getAbsolutePath();
+
+        } catch (Exception ex){
+            return;
+        }
+
+        try {
+            Serializer.serializeStudent(anotherFilePath, student);
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+    }
+
+    public void fileCloseProfile(){
+
+    }
+
+    public void fileExit(){
+        Platform.exit();
     }
 }
 

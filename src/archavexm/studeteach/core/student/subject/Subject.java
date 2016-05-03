@@ -1,5 +1,6 @@
 package archavexm.studeteach.core.student.subject;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -13,7 +14,7 @@ public class Subject {
         this.subject = subject;
     }
 
-    @XmlElement(name = "name")
+    @XmlAttribute
     public Subjects getSubject(){
         return subject;
     }

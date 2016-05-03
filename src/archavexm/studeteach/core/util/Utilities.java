@@ -88,8 +88,9 @@ public final class Utilities {
 
     @NotNull
     public static String capitalizeFirstLetter(String input){
-        String capital = (input.trim()).substring(0, 1).toUpperCase();
-        String output = capital + (input.trim()).substring(1);
+        String newInput = input.toLowerCase();
+        String capital = (newInput.trim()).substring(0, 1).toUpperCase();
+        String output = capital + (newInput.trim()).substring(1);
         return output;
     }
 

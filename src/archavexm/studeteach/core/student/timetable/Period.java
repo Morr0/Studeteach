@@ -6,12 +6,16 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "period")
+@XmlRootElement
 public class Period {
     private Subject subject;
     private int number;
 
     public Period(){}
+
+    public Period(int number){
+        this.number = number;
+    }
 
     public Period(Subject subject){
         this.subject = subject;

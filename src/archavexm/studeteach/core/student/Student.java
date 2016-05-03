@@ -4,10 +4,12 @@ import archavexm.studeteach.core.Person;
 import archavexm.studeteach.core.student.task.Task;
 import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.student.timetable.Timetable;
+import archavexm.studeteach.core.util.Utilities;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -27,7 +29,7 @@ public class Student implements Person {
 
     private LinkedList<Task> tasks;
 
-    private Timetable timetable = Timetable.getTimetable();
+    private LinkedList<Timetable> timetables = new LinkedList<>();
 
     private Student(){}
 
@@ -87,9 +89,20 @@ public class Student implements Person {
         return tasks;
     }
 
-    @XmlElement
-    public Timetable getTimetable(){
-        return timetable;
+    public LinkedList<String> getSchoolDaysInString(){
+        LinkedList<String> days = new LinkedList<>();
+
+        for (Day day: schoolDays){
+            String d = Utilities.capitalizeFirstLetter(day.toString());
+            days.add(d);
+        }
+
+        return days;
+    }
+
+    @XmlElement(name = "timetables")
+    public LinkedList<Timetable> getTimetables(){
+        return timetables;
     }
 
     public void setFirstName(String name){
@@ -132,6 +145,10 @@ public class Student implements Person {
         this.tasks = tasks;
     }
 
+    public void setTimetables(LinkedList<Timetable> timetables){
+        this.timetables = timetables;
+    }
+
     public boolean doesHaveThisDay(Day day){
         for (Day d: getSchoolDays()){
             if (d == day){
@@ -139,10 +156,6 @@ public class Student implements Person {
             }
         }
         return false;
-    }
-
-    public void setTimetable(Timetable timetable){
-        this.timetable = timetable;
     }
 
 }

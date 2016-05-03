@@ -1,5 +1,6 @@
 package archavexm.studeteach.app.student.window;
 
+import archavexm.studeteach.app.student.StudentController;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.student.subject.Subject;
 import archavexm.studeteach.core.student.timetable.Day;
@@ -10,15 +11,22 @@ import archavexm.studeteach.core.util.Serializer;
 import archavexm.studeteach.core.util.Utilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
 
 public class TimetableEditorController {
+    @FXML
+    private TextField textTimetableName;
     @FXML
     private ComboBox<String> comboSchoolDays;
 
@@ -43,10 +51,8 @@ public class TimetableEditorController {
     private TextField textPeriod9;
 
     private String filePath;
-    private String selectedDay;
-    private boolean isReadyToSave;
+    private Day selectedDay;
 
-    private Student oStudent;
     private Student student;
     private Timetable timetable;
 
@@ -56,121 +62,113 @@ public class TimetableEditorController {
 
     public void init(){
         try {
-            oStudent = Deserializer.deserializeStudent(filePath);
-            timetable = oStudent.getTimetable();
+            student = Deserializer.deserializeStudent(filePath);
+            timetable = student.getTimetables().get(0);
 
-            HashMap<Day, LinkedList<Period>> days = timetable.getDayPeriods();
-            for (Day d: oStudent.getSchoolDays())
-                days.put(d, null);
-            timetable.setDayPeriods(days);
-
-            for (Day day: oStudent.getSchoolDays()){
-                comboSchoolDays.getItems().add(Utilities.capitalizeFirstLetter((day.toString()).toLowerCase()));
+            if (timetable.getName() == null){
+                timetable.setName("");
+            } else {
+                textTimetableName.setText(timetable.getName());
             }
 
-        }
-        catch (Exception ex){
+            for (Day day: student.getSchoolDays()){
+                comboSchoolDays.getItems().add(Utilities.capitalizeFirstLetter(day.toString()));
+            }
+
+            } catch (Exception ex){
             ex.printStackTrace();
         }
     }
 
     public void updateContext(ActionEvent event){
-        ComboBox<String> d = (ComboBox<String>) event.getSource();
-        selectedDay = d.getSelectionModel().getSelectedItem();
+        ComboBox<String> comboCurrent = (ComboBox<String>) event.getSource();
+        selectedDay = Utilities.toDayFromString(comboCurrent.getValue());
 
-        Day day = Utilities.toDayFromString(selectedDay);
-        LinkedList<Period> periods = new LinkedList<>();
-        HashMap<Day, LinkedList<Period>> dayPeriods = new HashMap<>(7);
-
-        for (Map.Entry<Day, LinkedList<Period>> dp: timetable.getDayPeriods().entrySet()){
-            if (dp.getKey() == day){
-                if (dp.getValue() == null){
-                    break;
-                }
-                else {
-                    for (Period p: dp.getValue()){
-                        periods.add(p);
-                    }
+        LinkedList<Period> periods = timetable.getDayPeriods(selectedDay);
+        if (!periods.isEmpty()){
+            for (Period p: periods){
+                switch (p.getNumber()){
+                    case 1:
+                        textPeriod1.setText(p.getSubject().getSubjectInString());
+                        break;
+                    case 2:
+                        textPeriod2.setText(p.getSubject().getSubjectInString());
+                        break;
+                    case 3:
+                        textPeriod3.setText(p.getSubject().getSubjectInString());
+                        break;
+                    case 4:
+                        textPeriod4.setText(p.getSubject().getSubjectInString());
+                        break;
+                    case 5:
+                        textPeriod5.setText(p.getSubject().getSubjectInString());
+                        break;
+                    case 6:
+                        textPeriod6.setText(p.getSubject().getSubjectInString());
+                        break;
+                    case 7:
+                        textPeriod7.setText(p.getSubject().getSubjectInString());
+                        break;
+                    case 8:
+                        textPeriod8.setText(p.getSubject().getSubjectInString());
+                        break;
+                    case 9:
+                        textPeriod9.setText(p.getSubject().getSubjectInString());
+                        break;
                 }
             }
         }
-
-        for (Period p: periods){
-            int num = p.getNumber();
-            if (num == 1){
-                textPeriod1.setText(p.getSubject().getSubjectInString());
-            }
-            else if (num == 2){
-                textPeriod2.setText(p.getSubject().getSubjectInString());
-            }
-            else if (num == 3){
-                textPeriod3.setText(p.getSubject().getSubjectInString());
-            }
-            else if (num == 4){
-                textPeriod4.setText(p.getSubject().getSubjectInString());
-            }
-            else if (num == 5){
-                textPeriod5.setText(p.getSubject().getSubjectInString());
-            }
-            else if (num == 6){
-                textPeriod6.setText(p.getSubject().getSubjectInString());
-            }
-            else if (num == 7){
-                textPeriod7.setText(p.getSubject().getSubjectInString());
-            }
-            else if (num == 8){
-                textPeriod8.setText(p.getSubject().getSubjectInString());
-            }
-            else if (num == 9){
-                textPeriod9.setText(p.getSubject().getSubjectInString());
-            }
-        }
-
-        save();
     }
 
     public void save(){
-        ArrayList<String> periodsInString = new ArrayList<>(9);
+        HashMap<Integer, String> strings = new HashMap<>();
         LinkedList<Period> periods = new LinkedList<>();
-        Day day = Utilities.toDayFromString(selectedDay);
+        String timetableName = textTimetableName.getText();
+        timetable.setName(timetableName);
 
-        periodsInString.add(textPeriod1.getText());
-        periodsInString.add(textPeriod2.getText());
-        periodsInString.add(textPeriod3.getText());
-        periodsInString.add(textPeriod4.getText());
-        periodsInString.add(textPeriod5.getText());
-        periodsInString.add(textPeriod6.getText());
-        periodsInString.add(textPeriod7.getText());
-        periodsInString.add(textPeriod8.getText());
-        periodsInString.add(textPeriod9.getText());
+        strings.put(1, textPeriod1.getText());
+        strings.put(2, textPeriod2.getText());
+        strings.put(3, textPeriod3.getText());
+        strings.put(4, textPeriod4.getText());
+        strings.put(5, textPeriod5.getText());
+        strings.put(6, textPeriod6.getText());
+        strings.put(7, textPeriod7.getText());
+        strings.put(8, textPeriod8.getText());
+        strings.put(9, textPeriod9.getText());
 
-        for (String s: periodsInString){
-            if (s != null){
-                periods.add(new Period(new Subject(Utilities.toSubjectsFromString(s))));
+        for (Map.Entry<Integer, String> string: strings.entrySet()){
+            if (string.getValue().isEmpty() || string.getValue() == null){
+                Period period = new Period(string.getKey());
+                periods.add(period);
+            } else {
+                Period period = new Period(new Subject(Utilities.toSubjectsFromString(string.getValue())), string.getKey());
+                periods.add(period);
             }
         }
 
-        HashMap<Day, LinkedList<Period>> dayperiods = timetable.getDayPeriods();
-        dayperiods.put(day, periods);
-        timetable.setDayPeriods(dayperiods);
-        student = oStudent;
-        try {
-            student.setTimetable(timetable);
-        }
-        catch (Exception ex){
-            ex.printStackTrace();
-            //System.out.println(ex.getMessage());
-        }
-        oStudent = null;
+        timetable.setDayPeriods(selectedDay, periods);
+        LinkedList<Timetable> timetables = new LinkedList<>();
+        timetables.add(timetable);
+        student.setTimetables(timetables);
 
         try {
             Serializer.serializeStudent(filePath, student);
-        }
-        catch (Exception ex){
+        } catch (Exception ex){
             ex.printStackTrace();
         }
+
+        Stage currentStage = (Stage) comboSchoolDays.getScene().getWindow();
+        currentStage.close();
+
     }
 }
+
+
+
+
+
+
+
 
 
 
