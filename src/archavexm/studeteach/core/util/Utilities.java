@@ -7,6 +7,7 @@ import com.sun.istack.internal.NotNull;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public final class Utilities {
     @NotNull
@@ -122,6 +123,15 @@ public final class Utilities {
             default:
                 return Subjects.OTHER;
         }
+    }
+
+    @NotNull
+    public static boolean isEmptyStringList(LinkedList<String> list){
+        for (String string: list)
+            if (!string.isEmpty())
+                return true;
+
+        return false;
     }
 
 }

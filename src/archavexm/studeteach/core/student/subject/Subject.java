@@ -1,6 +1,7 @@
 package archavexm.studeteach.core.student.subject;
 
-import javax.xml.bind.annotation.XmlAttribute;
+import archavexm.studeteach.core.util.Utilities;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -8,18 +9,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Subject {
     private Subjects subject;
 
-    public Subject(){}
+    public Subject(){
+        subject = Subjects.NONE;
+    }
 
     public Subject(Subjects subject) {
         this.subject = subject;
     }
 
-    @XmlAttribute
+    @XmlElement
     public Subjects getSubject(){
         return subject;
     }
 
     public String getSubjectInString(){
-        return (subject.toString()).toLowerCase();
+        if (subject == null){
+            return "";
+        } else
+            return Utilities.capitalizeFirstLetter(subject.toString());
     }
 }

@@ -3,6 +3,7 @@ package archavexm.studeteach.app.student.window;
 import archavexm.studeteach.app.student.StudentController;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.student.subject.Subject;
+import archavexm.studeteach.core.student.subject.Subjects;
 import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.student.timetable.Period;
 import archavexm.studeteach.core.student.timetable.Timetable;
@@ -63,7 +64,7 @@ public class TimetableEditorController {
     public void init(){
         try {
             student = Deserializer.deserializeStudent(filePath);
-            timetable = student.getTimetables().get(0);
+            timetable = student.getTimetables().getFirst();
 
             if (timetable.getName() == null){
                 timetable.setName("");
@@ -121,10 +122,30 @@ public class TimetableEditorController {
     }
 
     public void save(){
+        if (selectedDay == null)
+            saveName();
+        else
+            saveAll();
+
+        try {
+            Serializer.serializeStudent(filePath, student);
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        Stage currentStage = (Stage) comboSchoolDays.getScene().getWindow();
+        currentStage.close();
+
+    }
+
+    private void saveName(){
+        timetable.setName(textTimetableName.getText());
+    }
+
+    private void saveAll(){
+        saveName();
         HashMap<Integer, String> strings = new HashMap<>();
         LinkedList<Period> periods = new LinkedList<>();
-        String timetableName = textTimetableName.getText();
-        timetable.setName(timetableName);
 
         strings.put(1, textPeriod1.getText());
         strings.put(2, textPeriod2.getText());
@@ -136,30 +157,21 @@ public class TimetableEditorController {
         strings.put(8, textPeriod8.getText());
         strings.put(9, textPeriod9.getText());
 
-        for (Map.Entry<Integer, String> string: strings.entrySet()){
-            if (string.getValue().isEmpty() || string.getValue() == null){
-                Period period = new Period(string.getKey());
-                periods.add(period);
-            } else {
-                Period period = new Period(new Subject(Utilities.toSubjectsFromString(string.getValue())), string.getKey());
-                periods.add(period);
-            }
-        }
+        LinkedList<String> s = new LinkedList<>(strings.values());
+        if (!Utilities.isEmptyStringList(s))
+            for (Map.Entry<Integer, String> string: strings.entrySet())
+                if (string.getValue().isEmpty()) {
+                    Period period = new Period(new Subject(Subjects.NONE), string.getKey());
+                    periods.add(period);
+                } else {
+                    Period period = new Period(new Subject(Utilities.toSubjectsFromString(string.getValue())), string.getKey());
+                    periods.add(period);
+                }
 
         timetable.setDayPeriods(selectedDay, periods);
         LinkedList<Timetable> timetables = new LinkedList<>();
         timetables.add(timetable);
         student.setTimetables(timetables);
-
-        try {
-            Serializer.serializeStudent(filePath, student);
-        } catch (Exception ex){
-            ex.printStackTrace();
-        }
-
-        Stage currentStage = (Stage) comboSchoolDays.getScene().getWindow();
-        currentStage.close();
-
     }
 }
 

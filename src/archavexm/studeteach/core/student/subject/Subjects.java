@@ -14,5 +14,6 @@ public enum Subjects {
     SCIENCE,
     SPORT,
     COMPUTING,
-    OTHER
+    OTHER,
+    NONE
 }
