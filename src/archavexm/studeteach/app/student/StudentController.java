@@ -8,29 +8,25 @@ import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.student.timetable.Period;
 import archavexm.studeteach.core.student.timetable.Timetable;
-import archavexm.studeteach.core.util.Deserializer;
-
-import archavexm.studeteach.core.util.Serializer;
-import archavexm.studeteach.core.util.Utilities;
+import archavexm.studeteach.core.util.ObjectDeserializer;
+import archavexm.studeteach.core.util.ObjectSerializer;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MenuBar;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Map;
 
 public class StudentController{
     @FXML
@@ -83,7 +79,7 @@ public class StudentController{
 
     public void initStudent(){
         try {
-            student = Deserializer.deserializeStudent(filePath);
+            student = ObjectDeserializer.deserializeStudent(filePath);
             schoolDays = student.getSchoolDays();
 
             try {
@@ -92,7 +88,9 @@ public class StudentController{
                 timetable = new Timetable();
                 timetables.add(timetable);
                 student.setTimetables(timetables);
-                Serializer.serializeStudent(filePath, student);
+
+                ObjectSerializer.serializeStudent(filePath, student);
+                student = ObjectDeserializer.deserializeStudent(filePath);
             }
 
             if (timetable.isTimetableEmpty()){
@@ -121,8 +119,16 @@ public class StudentController{
             } else
                 updateTimetable();
 
+            getSchoolDays();
+
         } catch (Exception ex){
             ex.printStackTrace();
+        }
+
+        if (timetable != null){
+            for (Period p: timetable.getMondayPeriods()){
+                System.out.println(p.getSubject().toString());
+            }
         }
     }
 
@@ -133,7 +139,6 @@ public class StudentController{
 
             ProfileEditorController profileEditorController = loader.getController();
             profileEditorController.setFilePath(filePath);
-            profileEditorController.setStudent(student);
             profileEditorController.init();
 
             Stage stage = new Stage();
@@ -142,7 +147,7 @@ public class StudentController{
             stage.showAndWait();
 
             refresh();
-        } catch (IOException ex){
+        } catch (Exception ex){
             ex.printStackTrace();
         }
     }
@@ -164,63 +169,63 @@ public class StudentController{
 
             refresh();
         }
-        catch (IOException ex){
+        catch (Exception ex){
             ex.printStackTrace();
         }
     }
 
     public void refresh(){
         try {
-            student = Deserializer.deserializeStudent(filePath);
+            student = ObjectDeserializer.deserializeStudent(filePath);
             setPreferedName();
-            getSchoolDays();
             setTitle();
             updateNumberOfTasks();
-            adjustLists();
-
-            if (timetable.isTimetableEmpty()){
-                timetable = new Timetable();
-
-                Label label = new Label("You have not set your timetable. You can set your timetable down below.");
-                Button button = new Button("Set");
-                VBox vbox = new VBox();
-                vbox.getChildren().addAll(label, button);
-
-                button.setOnAction(e -> {
-                    try {
-                        toTimetableEditor();
-                    } catch (IOException ex){
-                        ex.printStackTrace();
-                    }
-                });
-
-                listMonday.setPlaceholder(vbox);
-                listTuesday.setVisible(false);
-                listWednesday.setVisible(false);
-                listThursday.setVisible(false);
-                listFriday.setVisible(false);
-                listSaturday.setVisible(false);
-                listSunday.setVisible(false);
-                buttonEdit.setVisible(false);
-                buttonDeleteTimetable.setVisible(false);
-            } else
-                updateTimetable();
         }
         catch (Exception ex){
             ex.printStackTrace();
         }
     }
 
+    private void refreshTimetable(){
+        if (timetable.isTimetableEmpty()){
+            timetable = new Timetable();
+
+            Label label = new Label("You have not set your timetable. You can set your timetable down below.");
+            Button button = new Button("Set");
+            VBox vbox = new VBox();
+            vbox.getChildren().addAll(label, button);
+
+            button.setOnAction(e -> {
+                try {
+                    toTimetableEditor();
+                } catch (IOException ex){
+                    ex.printStackTrace();
+                }
+            });
+
+            listMonday.setPlaceholder(vbox);
+            listTuesday.setVisible(false);
+            listWednesday.setVisible(false);
+            listThursday.setVisible(false);
+            listFriday.setVisible(false);
+            listSaturday.setVisible(false);
+            listSunday.setVisible(false);
+            buttonEdit.setVisible(false);
+            buttonDeleteTimetable.setVisible(false);
+        } else
+            updateTimetable();
+    }
+
     private void setPreferedName(){
-        if (student.getPreferedName() == null){
+        if (student.getPreferredName() == null){
             stageTitle = (student.getFirstName()) + " - " + Studeteach.APP_NAME;
             preferedName = student.getFirstName();
-        } else if (student.getPreferedName().isEmpty()){
+        } else if (student.getPreferredName().isEmpty()){
             stageTitle = (student.getFirstName()) + " - " + Studeteach.APP_NAME;
             preferedName = student.getFirstName();
         } else {
-            stageTitle = (student.getPreferedName()) + " - " + Studeteach.APP_NAME;
-            preferedName = student.getPreferedName();
+            stageTitle = (student.getPreferredName()) + " - " + Studeteach.APP_NAME;
+            preferedName = student.getPreferredName();
         }
     }
 
@@ -242,101 +247,55 @@ public class StudentController{
         labelNumberOfTasks.setText(num);
     }
 
-    private void adjustLists(){
-        for (Day day: schoolDays){
-            switch (day){
-                case MONDAY:
-                    listMonday.getItems().clear();
-                    break;
-                case TUESDAY:
-                    if (listTuesday.isVisible())
-                        listTuesday.setVisible(true);
-
-                    listTuesday.getItems().clear();
-                    break;
-                case WEDNESDAY:
-                    if (listWednesday.isVisible())
-                        listWednesday.setVisible(true);
-
-                    listWednesday.getItems().clear();
-                    break;
-                case THURSDAY:
-                    if (listThursday.isVisible())
-                        listThursday.setVisible(true);
-
-                    listThursday.getItems().clear();
-                    break;
-                case FRIDAY:
-                    if (listFriday.isVisible())
-                        listFriday.setVisible(true);
-
-                    listFriday.getItems().clear();
-                    break;
-                case SATURDAY:
-                    if (listSaturday.isVisible())
-                        listSaturday.setVisible(true);
-
-                    listSaturday.getItems().clear();
-                    break;
-                case SUNDAY:
-                    if (listSunday.isVisible())
-                        listSunday.setVisible(true);
-
-                    listSunday.getItems().clear();
-                    break;
-            }
-        }
-    }
-
     private void updateTimetable(){
         if (schoolDays.contains(Day.MONDAY)){
             if (timetable.getMondayPeriods().size() == 0)
                 listMonday.setPlaceholder(new Label("You have not set the periods on monday."));
             else
                 for (Period period: timetable.getMondayPeriods())
-                    listMonday.getItems().add(period.getNumber() + " - " + period.getSubject().getSubjectInString());
+                    listMonday.getItems().add(period.getNumber() + " - " + period.getSubject().toString());
         }
         if (schoolDays.contains(Day.TUESDAY)){
             if (timetable.getTuesdayPeriods().size() == 0)
                 listTuesday.setPlaceholder(new Label("You have not set the periods on tuesday."));
             else
                 for (Period period: timetable.getTuesdayPeriods())
-                    listTuesday.getItems().add(period.getNumber() + " - " + period.getSubject().getSubjectInString());
+                    listTuesday.getItems().add(period.getNumber() + " - " + period.getSubject().toString());
         }
         if (schoolDays.contains(Day.WEDNESDAY)){
             if (timetable.getWednesdayPeriods().size() == 0)
                 listWednesday.setPlaceholder(new Label("You have not set the periods on wednesday."));
             else
                 for (Period period: timetable.getWednesdayPeriods())
-                    listWednesday.getItems().add(period.getNumber() + " - " + period.getSubject().getSubjectInString());
+                    listWednesday.getItems().add(period.getNumber() + " - " + period.getSubject().toString());
         }
         if (schoolDays.contains(Day.THURSDAY)){
             if (timetable.getThursdayPeriods().size() == 0)
                 listThursday.setPlaceholder(new Label("You have not set the periods on thursday."));
             else
                 for (Period period: timetable.getThursdayPeriods())
-                    listThursday.getItems().add(period.getNumber() + " - " + period.getSubject().getSubjectInString());
+                    listThursday.getItems().add(period.getNumber() + " - " + period.getSubject().toString());
         }
         if (schoolDays.contains(Day.FRIDAY)){
             if (timetable.getFridayPeriods().size() == 0)
                 listFriday.setPlaceholder(new Label("You have not set the periods on friday."));
             else
                 for (Period period: timetable.getFridayPeriods())
-                    listFriday.getItems().add(period.getNumber() + " - " + period.getSubject().getSubjectInString());
+                    listFriday.getItems().add(period.getNumber() + " - " + period.getSubject().toString());
         }
         if (schoolDays.contains(Day.SATURDAY)){
             if (timetable.getSaturdayPeriods().size() == 0)
                 listSaturday.setPlaceholder(new Label("You have not set the periods on saturday."));
             else
                 for (Period period: timetable.getSaturdayPeriods())
-                    listSaturday.getItems().add(period.getNumber() + " - " + period.getSubject().getSubjectInString());
+                    listSaturday.getItems().add(period.getNumber() + " - " + period.getSubject().toString());
         }
         if (schoolDays.contains(Day.SUNDAY)){
             if (timetable.getSundayPeriods().size() == 0)
                 listSunday.setPlaceholder(new Label("You have not set the periods on sunday."));
             else
                 for (Period period: timetable.getSundayPeriods())
-                    listSunday.getItems().add(period.getNumber() + " - " + period.getSubject().getSubjectInString());
+                    listSunday.getItems().add(period.getNumber() + " - " + period.getSubject().toString());
         }
     }
 
@@ -366,7 +325,7 @@ public class StudentController{
         student.setTimetables(tts);
 
         try {
-            Serializer.serializeStudent(filePath, student);
+            ObjectSerializer.serializeStudent(filePath, student);
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -377,7 +336,7 @@ public class StudentController{
     // File menu
     public void fileSave(){
         try {
-            Serializer.serializeStudent(filePath, student);
+            ObjectSerializer.serializeStudent(filePath, student);
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -402,7 +361,7 @@ public class StudentController{
         }
 
         try {
-            Serializer.serializeStudent(anotherFilePath, student);
+            ObjectSerializer.serializeStudent(anotherFilePath, student);
         } catch (Exception ex){
             ex.printStackTrace();
         }

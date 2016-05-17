@@ -1,12 +1,12 @@
 package archavexm.studeteach.core.student.subject;
 
 import archavexm.studeteach.core.util.Utilities;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = "subject")
+@Root
 public class Subject {
+    @Element
     private Subjects subject;
 
     public Subject(){
@@ -17,15 +17,12 @@ public class Subject {
         this.subject = subject;
     }
 
-    @XmlElement
     public Subjects getSubject(){
         return subject;
     }
 
-    public String getSubjectInString(){
-        if (subject == null){
-            return "";
-        } else
-            return Utilities.capitalizeFirstLetter(subject.toString());
+    @Override
+    public String toString(){
+        return Utilities.capitalizeFirstLetter(subject.toString());
     }
 }

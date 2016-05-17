@@ -1,11 +1,14 @@
 package archavexm.studeteach.core.student;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Root;
 
-@XmlRootElement(name = "school")
+import javax.xml.bind.annotation.XmlElement;
+
+@Root
 public class School {
     private String name;
+    @Attribute
     private SchoolType schoolType;
 
     private static School instance = new School();
@@ -19,7 +22,6 @@ public class School {
         return instance;
     }
 
-    @XmlElement(name = "name")
     public String getSchoolName(){
         return instance.name;
     }

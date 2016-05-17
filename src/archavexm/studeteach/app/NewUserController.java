@@ -4,8 +4,7 @@ import archavexm.studeteach.app.student.StudentController;
 import archavexm.studeteach.core.student.SchoolType;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.teacher.Teacher;
-import archavexm.studeteach.core.util.Serializer;
-
+import archavexm.studeteach.core.util.ObjectSerializer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -86,21 +85,18 @@ public class NewUserController {
             return;
         }
 
-        if (textSchoolName.getText() == "" || textSchoolName.getText() == " "){
-            if (personText == "Student"){
+        if ((textSchoolName.getText().isEmpty()) || (textSchoolName.getText() == " ")){
+            if (personText == "Student")
                 alert.setContentText("You must provide the name of the school you are studying at right now.");
-            }
-            else if (personText == "Teacher"){
+            else if (personText == "Teacher")
                 alert.setContentText("You must provide the name of the school you are teaching at right now.");
-            }
+
 
             alert.showAndWait();
 
             return;
-        }
-        else {
+        } else
             schoolName = textSchoolName.getText();
-        }
 
         switch (comboSchoolType.getValue()){
             case "Primary":
@@ -133,7 +129,7 @@ public class NewUserController {
                 student.setFirstName(firstName);
                 student.setLastName(lastName);
                 student.setAge(age);
-                student.setPreferedName(preferedName);
+                student.setPreferredName(preferedName);
                 student.setSchoolName(schoolName);
                 student.setSchoolType(schoolType);
             }
@@ -163,10 +159,10 @@ public class NewUserController {
 
         try {
             if (personText == "Student"){
-                Serializer.serializeStudent(filePath, student);
+                ObjectSerializer.serializeStudent(filePath, student);
             }
             else {
-                Serializer.serializeTeacher(filePath, teacher);
+                ObjectSerializer.serializeTeacher(filePath, teacher);
             }
         }
         catch (Exception ex){

@@ -1,8 +1,8 @@
 package archavexm.studeteach.core.student.subject;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import org.simpleframework.xml.Root;
 
-@XmlRootElement(name = "subject")
+@Root
 public enum Subjects {
     LANGUAGE,
     GEOGRAPHY,

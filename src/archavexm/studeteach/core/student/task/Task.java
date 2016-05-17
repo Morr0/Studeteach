@@ -3,14 +3,23 @@ package archavexm.studeteach.core.student.task;
 import archavexm.studeteach.core.student.subject.Subject;
 import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.student.timetable.Period;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
 
 import java.time.LocalDate;
 
+@Root
 public abstract class Task {
+    @Attribute
     protected TaskType type;
+    @Attribute
     protected Subject subject;
+    @Attribute
     protected LocalDate dueDate;
+    @Element
     protected Period duePeriod;
+    @Attribute
     protected Day dueDay;
 
     public abstract TaskType getType();

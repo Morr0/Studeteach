@@ -1,12 +1,11 @@
 package archavexm.studeteach.app.student.window;
 
-
 import archavexm.studeteach.core.student.SchoolType;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.student.timetable.Day;
-import archavexm.studeteach.core.util.Deserializer;
-
-import archavexm.studeteach.core.util.Serializer;
+import archavexm.studeteach.core.student.timetable.Timetable;
+import archavexm.studeteach.core.util.ObjectDeserializer;
+import archavexm.studeteach.core.util.ObjectSerializer;
 import archavexm.studeteach.core.util.Utilities;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -14,7 +13,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 public class ProfileEditorController {
     @FXML
@@ -50,91 +51,86 @@ public class ProfileEditorController {
 
     private String filePath;
 
-    private Student oStudent;
     private Student student;
-
 
     public void setFilePath(String filePath){
         this.filePath = filePath;
     }
 
-    public void setStudent(Student student){
-        oStudent = student;
-    }
-
     public void init(){
         try {
-            textFirstName.setText(oStudent.getFirstName());
-            textLastName.setText(oStudent.getLastName());
-            textPreferedName.setText(oStudent.getPreferedName());
-            textAge.setText(Integer.toString(oStudent.getAge()));
-
-            if (!(oStudent.getSchoolYear() == 0)){
-                textYear.setText(Integer.toString(oStudent.getSchoolYear()));
-            }
-
-            textSchoolName.setText(oStudent.getSchoolName());
-
-            String content = Utilities.read(filePath);
-            if (content.contains("Primary")){
-                textSchoolType.setText("Primary");
-            }
-            else if (content.contains("Secondary")){
-                textSchoolType.setText("Secondary");
-            }
-            else if (content.contains("University")){
-                textSchoolType.setText("University");
-            }
-
-            HashSet<Day> schoolDays = oStudent.getSchoolDays();
-            if (!(schoolDays.isEmpty())) {
-                for (Day day: schoolDays){
-                    String name = day.toString().toLowerCase();
-
-                    switch (name){
-                        case "monday":
-                            checkMonday.setSelected(true);
-                            break;
-                        case "tuesday":
-                            checkTuesday.setSelected(true);
-                            break;
-                        case "wednesday":
-                            checkWednesday.setSelected(true);
-                            break;
-                        case "thursday":
-                            checkThursday.setSelected(true);
-                            break;
-                        case "friday":
-                            checkFriday.setSelected(true);
-                            break;
-                        case "saturday":
-                            checkSaturday.setSelected(true);
-                            break;
-                        case "sunday":
-                            checkSunday.setSelected(true);
-                            break;
-                    }
-                }
-            }
-
-            student = Deserializer.deserializeStudent(filePath);
-        }
-        catch (Exception ex){
+            student = ObjectDeserializer.deserializeStudent(filePath);
+        } catch (Exception ex) {
             ex.printStackTrace();
+        }
+
+        textFirstName.setText(student.getFirstName());
+        textLastName.setText(student.getLastName());
+        textPreferedName.setText(student.getPreferredName());
+        textAge.setText(Integer.toString(student.getAge()));
+
+        if (!(student.getSchoolYear() == 0)) {
+            textYear.setText(Integer.toString(student.getSchoolYear()));
+        }
+
+        textSchoolName.setText(student.getSchoolName());
+
+        String content = null;
+        try {
+            content = Utilities.read(filePath).toLowerCase();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        if (content.contains("primary"))
+            textSchoolType.setText("Primary");
+        else if (content.contains("secondary"))
+            textSchoolType.setText("Secondary");
+        else if (content.contains("university"))
+            textSchoolType.setText("University");
+        content = null;
+
+
+        HashSet<Day> schoolDays = student.getSchoolDays();
+        if (!schoolDays.isEmpty()) for (Day day : schoolDays) {
+            String name = day.toString().toLowerCase();
+
+            switch (name) {
+                case "monday":
+                    checkMonday.setSelected(true);
+                    break;
+                case "tuesday":
+                    checkTuesday.setSelected(true);
+                    break;
+                case "wednesday":
+                    checkWednesday.setSelected(true);
+                    break;
+                case "thursday":
+                    checkThursday.setSelected(true);
+                    break;
+                case "friday":
+                    checkFriday.setSelected(true);
+                    break;
+                case "saturday":
+                    checkSaturday.setSelected(true);
+                    break;
+                case "sunday":
+                    checkSunday.setSelected(true);
+                    break;
+            }
         }
     }
 
     public void save(){
         String firstName = null;
         String lastName = null;
-        String preferedName = null;
+        String preferredName = null;
         int age = 0;
         int year = 0;
         String schoolName = null;
         SchoolType schoolType = null;
         HashSet<Day> schoolDays = new HashSet<>(7);
 
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
 
         if (textFirstName.getText().isEmpty()){
             alert.setContentText("You must provide your first name. Otherwise you cannot proceed.");
@@ -145,7 +141,7 @@ public class ProfileEditorController {
 
         firstName = textFirstName.getText();
         lastName = textLastName.getText();
-        preferedName = textPreferedName.getText();
+        preferredName = textPreferedName.getText();
 
         if (!(Utilities.isDigit(textAge.getText()))){
             alert.setContentText("You must provide an integer in the age field.");
@@ -195,13 +191,13 @@ public class ProfileEditorController {
             return;
         }
 
-        if (textSchoolName.getText().isEmpty()){
+        if (textSchoolName.getText() == ""){
             alert.setContentText("You must provide the name of your school.");
             alert.showAndWait();
 
             return;
-        }
-        schoolName = textSchoolName.getText();
+        } else
+            schoolName = textSchoolName.getText();
 
         String st = textSchoolType.getText().toLowerCase();
 
@@ -223,44 +219,42 @@ public class ProfileEditorController {
         }
 
         if (checkMonday.isSelected()){
-            schoolDays.add(Day.MONDAY);
+                schoolDays.add(Day.MONDAY);
         }
         if (checkTuesday.isSelected()){
-            schoolDays.add(Day.TUESDAY);
+                schoolDays.add(Day.TUESDAY);
         }
         if (checkWednesday.isSelected()){
-            schoolDays.add(Day.WEDNESDAY);
+                schoolDays.add(Day.WEDNESDAY);
         }
         if (checkThursday.isSelected()){
-            schoolDays.add(Day.THURSDAY);
+                schoolDays.add(Day.THURSDAY);
         }
         if (checkFriday.isSelected()){
-            schoolDays.add(Day.FRIDAY);
+                schoolDays.add(Day.FRIDAY);
         }
         if (checkSaturday.isSelected()){
-            schoolDays.add(Day.SATURDAY);
+                schoolDays.add(Day.SATURDAY);
         }
         if (checkSunday.isSelected()){
-            schoolDays.add(Day.SUNDAY);
+                schoolDays.add(Day.SUNDAY);
         }
-
-        alert = null;
 
         student.setFirstName(firstName);
         student.setLastName(lastName);
-        student.setPreferedName(preferedName);
+        student.setPreferredName(preferredName);
         student.setAge(age);
         student.setSchoolYear(year);
         student.setSchoolName(schoolName);
-
         student.setSchoolType(schoolType);
-
         student.setSchoolDays(schoolDays);
 
+        LinkedList<Timetable> timetables = student.getTimetables();
+        student.setTimetables(timetables);
+
         try {
-            Serializer.serializeStudent(filePath, student);
-        }
-        catch (Exception ex){
+            ObjectSerializer.serializeStudent(filePath, student);
+        } catch (Exception ex){
             System.out.println(ex.getMessage());
             ex.printStackTrace();
         }

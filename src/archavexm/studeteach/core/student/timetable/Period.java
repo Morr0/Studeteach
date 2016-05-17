@@ -1,14 +1,15 @@
 package archavexm.studeteach.core.student.timetable;
 
 import archavexm.studeteach.core.student.subject.Subject;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
+@Root
 public class Period {
+    @Element
     private Subject subject;
+    @Attribute
     private int number;
 
     public Period(){}
@@ -26,7 +27,6 @@ public class Period {
         this.number = number;
     }
 
-    @XmlAttribute(name = "number")
     public int getNumber() {
         return number;
     }
@@ -35,7 +35,6 @@ public class Period {
         this.number = number;
     }
 
-    @XmlElement
     public Subject getSubject(){
         return subject;
     }

@@ -5,30 +5,41 @@ import archavexm.studeteach.core.student.task.Task;
 import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.student.timetable.Timetable;
 import archavexm.studeteach.core.util.Utilities;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Root;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-@XmlRootElement(name = "student")
+@Root(name = "student")
 public class Student implements Person {
 
     private static Student student = new Student();
 
+    @Attribute(name = "first_name")
     private String firstName;
+    @Attribute(name = "last_name")
     private String lastName;
-    private String preferedName;
+    @Attribute(name = "preferred_name")
+    private String preferredName;
+    @Attribute(name = "age")
     private int age;
 
+    @Element(name = "school")
     private School school = School.getInstance(null, null);
+    @Attribute(name = "school_name")
+    private String schoolName;
+    @Attribute(name = "school_year")
     private int schoolYear;
+    @ElementList(name = "days", entry = "day")
     private HashSet<Day> schoolDays = new HashSet<>(7);
 
+    @ElementList(name = "tasks", entry = "task", required = false)
     private LinkedList<Task> tasks;
 
+    @ElementList(name = "timetables", entry = "timetable")
     private LinkedList<Timetable> timetables = new LinkedList<>();
 
     private Student(){}
@@ -37,12 +48,10 @@ public class Student implements Person {
         return student;
     }
 
-    @XmlAttribute(name = "firstName")
     public String getFirstName(){
         return firstName;
     }
 
-    @XmlAttribute(name = "lastName")
     public String getLastName(){
         return lastName;
     }
@@ -51,40 +60,34 @@ public class Student implements Person {
         return firstName + " " + lastName;
     }
 
-    @XmlAttribute(name = "nickname")
-    public String getPreferedName(){
-        return preferedName;
+    public String getPreferredName(){
+        return preferredName;
     }
 
     public String getSchoolName(){
-        return school.getSchoolName();
+        return schoolName;
     }
 
     public String getSchoolType(){
         return school.getSchoolType();
     }
 
-    @XmlAttribute(name = "year")
     public int getSchoolYear(){
         return schoolYear;
     }
 
-    @XmlElement(name = "school_days")
     public HashSet<Day> getSchoolDays(){
         return schoolDays;
     }
 
-    @XmlElement
     public School getSchool(){
         return school;
     }
 
-    @XmlAttribute(name = "age")
     public int getAge(){
         return age;
     }
 
-    @XmlElement(name = "tasks")
     public LinkedList<Task> getTasks(){
         return tasks;
     }
@@ -100,7 +103,6 @@ public class Student implements Person {
         return days;
     }
 
-    @XmlElement(name = "timetables")
     public LinkedList<Timetable> getTimetables(){
         return timetables;
     }
@@ -113,8 +115,8 @@ public class Student implements Person {
         lastName = name;
     }
 
-    public void setPreferedName(String name){
-        preferedName = name;
+    public void setPreferredName(String name){
+        preferredName = name;
     }
 
     public void setAge(int age){
@@ -123,6 +125,7 @@ public class Student implements Person {
 
     public void setSchoolName(String schoolName){
         school.setSchoolName(schoolName);
+        this.schoolName = schoolName;
     }
 
     public void setSchool(School school){

@@ -1,29 +1,22 @@
 package archavexm.studeteach.app.student.window;
 
-import archavexm.studeteach.app.student.StudentController;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.student.subject.Subject;
-import archavexm.studeteach.core.student.subject.Subjects;
 import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.student.timetable.Period;
 import archavexm.studeteach.core.student.timetable.Timetable;
-import archavexm.studeteach.core.util.Deserializer;
-import archavexm.studeteach.core.util.Serializer;
+import archavexm.studeteach.core.util.ObjectDeserializer;
+import archavexm.studeteach.core.util.ObjectSerializer;
 import archavexm.studeteach.core.util.Utilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Objects;
 
 public class TimetableEditorController {
     @FXML
@@ -63,7 +56,7 @@ public class TimetableEditorController {
 
     public void init(){
         try {
-            student = Deserializer.deserializeStudent(filePath);
+            student = ObjectDeserializer.deserializeStudent(filePath);
             timetable = student.getTimetables().getFirst();
 
             if (timetable.getName() == null){
@@ -90,31 +83,31 @@ public class TimetableEditorController {
             for (Period p: periods){
                 switch (p.getNumber()){
                     case 1:
-                        textPeriod1.setText(p.getSubject().getSubjectInString());
+                        textPeriod1.setText(p.getSubject().toString());
                         break;
                     case 2:
-                        textPeriod2.setText(p.getSubject().getSubjectInString());
+                        textPeriod2.setText(p.getSubject().toString());
                         break;
                     case 3:
-                        textPeriod3.setText(p.getSubject().getSubjectInString());
+                        textPeriod3.setText(p.getSubject().toString());
                         break;
                     case 4:
-                        textPeriod4.setText(p.getSubject().getSubjectInString());
+                        textPeriod4.setText(p.getSubject().toString());
                         break;
                     case 5:
-                        textPeriod5.setText(p.getSubject().getSubjectInString());
+                        textPeriod5.setText(p.getSubject().toString());
                         break;
                     case 6:
-                        textPeriod6.setText(p.getSubject().getSubjectInString());
+                        textPeriod6.setText(p.getSubject().toString());
                         break;
                     case 7:
-                        textPeriod7.setText(p.getSubject().getSubjectInString());
+                        textPeriod7.setText(p.getSubject().toString());
                         break;
                     case 8:
-                        textPeriod8.setText(p.getSubject().getSubjectInString());
+                        textPeriod8.setText(p.getSubject().toString());
                         break;
                     case 9:
-                        textPeriod9.setText(p.getSubject().getSubjectInString());
+                        textPeriod9.setText(p.getSubject().toString());
                         break;
                 }
             }
@@ -122,13 +115,16 @@ public class TimetableEditorController {
     }
 
     public void save(){
-        if (selectedDay == null)
+        try {
             saveName();
-        else
             saveAll();
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+
 
         try {
-            Serializer.serializeStudent(filePath, student);
+            ObjectSerializer.serializeStudent(filePath, student);
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -143,7 +139,6 @@ public class TimetableEditorController {
     }
 
     private void saveAll(){
-        saveName();
         HashMap<Integer, String> strings = new HashMap<>();
         LinkedList<Period> periods = new LinkedList<>();
 
@@ -158,17 +153,11 @@ public class TimetableEditorController {
         strings.put(9, textPeriod9.getText());
 
         LinkedList<String> s = new LinkedList<>(strings.values());
-        if (!Utilities.isEmptyStringList(s))
-            for (Map.Entry<Integer, String> string: strings.entrySet())
-                if (string.getValue().isEmpty()) {
-                    Period period = new Period(new Subject(Subjects.NONE), string.getKey());
-                    periods.add(period);
-                } else {
-                    Period period = new Period(new Subject(Utilities.toSubjectsFromString(string.getValue())), string.getKey());
-                    periods.add(period);
-                }
+        for (Map.Entry<Integer, String> string: strings.entrySet())
+            periods.add(new Period(new Subject(Utilities.toSubjectsFromString(string.getValue())), string.getKey()));
 
-        timetable.setDayPeriods(selectedDay, periods);
+        if (selectedDay != null)
+            timetable.setDayPeriods(selectedDay, periods);
         LinkedList<Timetable> timetables = new LinkedList<>();
         timetables.add(timetable);
         student.setTimetables(timetables);

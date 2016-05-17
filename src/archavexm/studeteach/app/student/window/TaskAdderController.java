@@ -9,22 +9,14 @@ import archavexm.studeteach.core.student.task.Homework;
 import archavexm.studeteach.core.student.task.Task;
 import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.student.timetable.Period;
-
-import archavexm.studeteach.core.util.Deserializer;
+import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.Utilities;
-import javafx.application.Platform;
-import javafx.collections.ObservableArray;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.LinkedList;
 
 public class TaskAdderController {
     @FXML
@@ -55,7 +47,7 @@ public class TaskAdderController {
 
     public void init(){
         try {
-            student = Deserializer.deserializeStudent(filePath);
+            student = ObjectDeserializer.deserializeStudent(filePath);
 
             for (Day d: student.getSchoolDays()){
                 String ddd = Utilities.capitalizeFirstLetter((d.toString()).toLowerCase());
