@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.student.StudentController">
    <children>
       <MenuBar fx:id="menuBar" layoutY="2.0" prefHeight="25.0" prefWidth="1024.0">
@@ -23,12 +17,14 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem mnemonicParsing="false" text="Edit Profile" onAction="#showProfileEditor" />
+              <MenuItem mnemonicParsing="false" text="Task Manager" onAction="#toTaskManager" />
+              <MenuItem mnemonicParsing="false" text="TODO List" onAction="#toTODOList" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" text="About" onAction="#toAboutMenu" />
             </items>
           </Menu>
         </menus>

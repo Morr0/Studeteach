@@ -44,27 +44,6 @@ public final class Utilities {
     }
 
     @NotNull
-    public static String firstLetterToCapitalCaseOnSchoolType(String input){
-        char[] array = input.toCharArray();
-        String newString = null;
-
-        if (array[0] == 'p'){
-            array[0] = 'P';
-            newString = array.toString();
-        }
-        else if (array[0] == 's'){
-            array[0] = 'S';
-            newString = array.toString();
-        }
-        else if (array[0] == 'u'){
-            array[0] = 'U';
-            newString = array.toString();
-        }
-
-        return newString;
-    }
-
-    @NotNull
     public static Day toDayFromString(String input){
         String i = input.toLowerCase();
 
@@ -101,6 +80,8 @@ public final class Utilities {
         switch (i){
             case "":
                 return Subjects.NONE;
+            case "none":
+                return Subjects.NONE;
             case "language":
                 return Subjects.LANGUAGE;
             case "geography":
@@ -124,6 +105,23 @@ public final class Utilities {
             default:
                 return Subjects.OTHER;
         }
+    }
+
+    @NotNull
+    public static int getIdFromTask(String input){
+        String reversedText = (new StringBuilder(input)).reverse().toString();
+        StringBuilder sb = new StringBuilder();
+
+        for (Character character: reversedText.toCharArray()){
+            if (character == ':')
+                break;
+
+            sb.append(character);
+        }
+        sb.reverse();
+
+        int output = Integer.parseInt(sb.toString());
+        return output;
     }
 }
 

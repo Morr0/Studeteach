@@ -3,20 +3,27 @@ package archavexm.studeteach.app.student.window;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.student.subject.Subject;
 import archavexm.studeteach.core.student.subject.Subjects;
-import archavexm.studeteach.core.student.task.Assignment;
-import archavexm.studeteach.core.student.task.Exam;
-import archavexm.studeteach.core.student.task.Homework;
 import archavexm.studeteach.core.student.task.Task;
+import archavexm.studeteach.core.student.task.TaskType;
 import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.student.timetable.Period;
+import archavexm.studeteach.core.student.timetable.Timetable;
 import archavexm.studeteach.core.util.ObjectDeserializer;
+import archavexm.studeteach.core.util.ObjectSerializer;
 import archavexm.studeteach.core.util.Utilities;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.stage.Stage;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.Random;
 
 public class TaskAdderController {
     @FXML
@@ -26,28 +33,39 @@ public class TaskAdderController {
     @FXML
     private ComboBox<String> comboDay;
     @FXML
-    private ComboBox<Period> comboDuePeriod;
+    private ComboBox<String> comboDuePeriod;
 
     private String filePath;
-    private String typeOfTask;
 
     private Student student;
+    private Timetable timetable;
 
-    private Assignment assignment;
-    private Exam exam;
-    private Homework homework;
+    private TaskType taskType;
+    private Task task;
+    private Day day;
+    private Subject subject;
+    private Period duePeriod;
 
     public void setFilePath(String filePath){
         this.filePath = filePath;
     }
 
-    public void setTypeOfTask(String typeOfTask){
-        this.typeOfTask = typeOfTask;
-    }
-
     public void init(){
         try {
             student = ObjectDeserializer.deserializeStudent(filePath);
+            timetable = student.getTimetables().get(0);
+
+            if (student.getSchoolDays().size() == 1){
+                for (Day d: student.getSchoolDays()){
+                    day = d;
+                    comboDay.setValue(Utilities.capitalizeFirstLetter(d.toString()));
+                }
+                refreshPeriods();
+            } else if (student.doesHaveThisDay(Day.MONDAY)){
+                comboDay.setValue("Monday");
+                day = Day.MONDAY;
+                refreshPeriods();
+            }
 
             for (Day d: student.getSchoolDays()){
                 String ddd = Utilities.capitalizeFirstLetter((d.toString()).toLowerCase());
@@ -59,114 +77,107 @@ public class TaskAdderController {
         }
     }
 
-    public void setAssignment(Assignment assignment){
-        this.assignment = assignment;
+    public void refreshPeriods(){
+        comboDuePeriod.getItems().clear();
+
+        LinkedList<Period> periods = timetable.getDayPeriods(day);
+        ObservableList<String> strings = FXCollections.observableArrayList();
+
+        for (Period period: periods){
+            if (period.getSubject().getSubject() != Subjects.NONE){
+                strings.add((period.getNumber()) + " - " + period.getSubject().toString());
+            }
+        }
+
+        comboDuePeriod.setItems(strings);
     }
 
-    public void setExam(Exam exam){
-        this.exam = exam;
-    }
-
-    public void setHomework(Homework homework){
-        this.homework = homework;
+    public void setTaskType(TaskType taskType){
+        this.taskType = taskType;
     }
 
     public void save(){
         try {
-            Task task = null;
+            Alert alert = new Alert(Alert.AlertType.ERROR);
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            if (comboSubject.getValue() == "Select a Subject:"){
+                alert.setContentText("You must choose the subject you are tested on.");
+                alert.showAndWait();
 
-            if (typeOfTask == "Assignment"){
-                task = assignment;
-            }
-            else if (typeOfTask == "Exam"){
-                task = exam;
-            }
-            else {
-                task = homework;
-            }
-
-            Subject subject = null;
-
-            // Checking for the subject
-            {
-                if (comboSubject.getValue() == null){
-                    alert.setContentText("You must select the subject you are test/assessed on.");
-                    alert.showAndWait();
-
-                    return;
-                }
-
-                String subj = comboSubject.getSelectionModel().getSelectedItem();
-                if (subj == "language"){
-                    subject = new Subject(Subjects.LANGUAGE);
-                }
-                else if (subj == "Mathematics"){
-                    subject = new Subject(Subjects.MATHEMATICS);
-                }
-                else if (subj == "Science"){
-                    subject = new Subject(Subjects.SCIENCE);
-                }
-                else if (subj == "Sport"){
-                    subject = new Subject(Subjects.SPORT);
-                }
-                else if (subj == "Computing"){
-                    subject = new Subject(Subjects.COMPUTING);
-                }
-                else if (subj == "Geography"){
-                    subject = new Subject(Subjects.GEOGRAPHY);
-                }
-                else if (subj == "History"){
-                    subject = new Subject(Subjects.HISTORY);
-                }
-                else if (subj == "Commerce"){
-                    subject = new Subject(Subjects.COMMERCE);
-                }
-                else if (subj == "Art"){
-                    subject = new Subject(Subjects.ART);
-                }
-                else if (subj == "Music") {
-                    subject = new Subject(Subjects.MUSIC);
-                }
-                else if (subj.isEmpty()) {
-                    alert.setContentText("You must select the subject you are tested/assessed on.");
-                    alert.showAndWait();
-
-                    return;
-                }
-            }
-
-            LocalDate dueDate = null;
+                return;
+            } else
+                subject = new Subject(Utilities.toSubjectsFromString(comboSubject.getValue()));
 
             if (pickerDueDate.getValue() == null) {
-            alert.setContentText("You must provide the due date.");
-            alert.showAndWait();
+                alert.setContentText("You must provide the due date.");
+                alert.showAndWait();
 
             return;
             }
 
-            dueDate = pickerDueDate.getValue();
+            LocalDate d = pickerDueDate.getValue();
+            Date dueDate = Date.from(d.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-            Day day = null;
+            if (comboDay.getValue() == "Select a Day:"){
+                LocalDate ld = dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                day = Utilities.toDayFromString(ld.getDayOfWeek().toString());
 
-            // Checks if the date is for that day and checks if the student has this day in the school days
-            {
-                if (comboDay.getValue() == null){
-                    day = Utilities.toDayFromString(dueDate.getDayOfWeek().toString());
-                }
-                else {
-                    day = Utilities.toDayFromString(comboDay.getValue());
-                }
-
-                if (day != (Utilities.toDayFromString(dueDate.getDayOfWeek().toString()))){
-                    alert.setContentText("You have provided the wrong day. Can you please correct it.");
+                if (!student.doesHaveThisDay(day)){
+                    alert.setContentText("The selected day is not one of your school days.");
                     alert.showAndWait();
 
                     return;
                 }
+            } else {
+                day = Utilities.toDayFromString(comboDay.getSelectionModel().getSelectedItem());
             }
 
+            if (comboDuePeriod.getValue() == "Select a Due Period:"){
+                if (timetable.containsPeriodOnDay(subject, day)){
+                    int periodNumber = timetable.getPeriodNumber(day, subject.getSubject());
+                    for (Period p: timetable.getDayPeriods(day)){
+                        if (p.getNumber() == periodNumber)
+                            duePeriod = new Period(subject, periodNumber);
+                    }
+                } else {
+                    alert.setContentText("You must select the due period.");
+                    alert.showAndWait();
+
+                    return;
+                }
+            } else {
+                String pn = comboDuePeriod.getSelectionModel().getSelectedItem().substring(0, 1);
+                int periodNumber = Integer.parseInt(pn);
+                Subjects subj = null;
+
+                for (Period period: timetable.getDayPeriods(day)) {
+                    if (period.getNumber() == periodNumber) {
+                        subj = period.getSubject().getSubject();
+                        break;
+                    }
+                }
+
+                duePeriod = new Period(new Subject(subj), periodNumber);
+            }
+
+            task = new Task(taskType, subject, dueDate, duePeriod, day);
+            LinkedList<Task> tasks = student.getTasks();
+
+            int id = new Random().nextInt(9999);
+            for (Task t: tasks){
+                if (t.getTaskId() == id){
+                    id = new Random().nextInt(9999);
+                }
+            }
+
+            task.setTaskId(id);
+            tasks.add(task);
+            student.setTasks(tasks);
+
+            ObjectSerializer.serializeStudent(filePath, student);
+
+            Stage current = (Stage) comboDuePeriod.getScene().getWindow();
+            current.close();
         }
         catch (Exception ex){
             ex.printStackTrace();

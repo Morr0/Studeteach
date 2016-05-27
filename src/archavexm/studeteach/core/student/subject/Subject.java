@@ -4,7 +4,7 @@ import archavexm.studeteach.core.util.Utilities;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
-@Root
+@Root(name = "subject")
 public class Subject {
     @Element
     private Subjects subject;

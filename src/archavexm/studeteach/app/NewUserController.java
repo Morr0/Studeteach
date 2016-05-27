@@ -191,10 +191,12 @@ public class NewUserController {
 
         StudentController sc = loader.getController();
         sc.setFilePath(filePath);
-        sc.initStudent();
 
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
+
+        sc.setCurrentStage(stage);
+        sc.initStudent();
         stage.show();
 
         Stage current = (Stage)textFirstName.getScene().getWindow();

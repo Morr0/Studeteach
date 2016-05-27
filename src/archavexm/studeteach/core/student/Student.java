@@ -1,6 +1,6 @@
 package archavexm.studeteach.core.student;
 
-import archavexm.studeteach.core.Person;
+import archavexm.studeteach.core.common.Person;
 import archavexm.studeteach.core.student.task.Task;
 import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.student.timetable.Timetable;
@@ -36,8 +36,8 @@ public class Student implements Person {
     @ElementList(name = "days", entry = "day")
     private HashSet<Day> schoolDays = new HashSet<>(7);
 
-    @ElementList(name = "tasks", entry = "task", required = false)
-    private LinkedList<Task> tasks;
+    @ElementList(name = "tasks", entry = "task")
+    private LinkedList<Task> tasks = new LinkedList<>();
 
     @ElementList(name = "timetables", entry = "timetable")
     private LinkedList<Timetable> timetables = new LinkedList<>();

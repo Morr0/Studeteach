@@ -1,34 +1,53 @@
 package archavexm.studeteach.core.student.timetable;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import archavexm.studeteach.core.student.subject.Subject;
+import archavexm.studeteach.core.student.subject.Subjects;
+import archavexm.studeteach.core.util.Utilities;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Root;
+
 import java.util.LinkedList;
 
-@XmlRootElement(name = "timetable")
+@Root
 public class Timetable {
+    @Attribute(required = false)
     private String name;
 
-    private LinkedList<Period> mondayPeriods = new LinkedList<>();
-    private LinkedList<Period> tuesdayPeriods = new LinkedList<>();
-    private LinkedList<Period> wednesdayPeriods = new LinkedList<>();
-    private LinkedList<Period> thursdayPeriods = new LinkedList<>();
-    private LinkedList<Period> fridayPeriods = new LinkedList<>();
-    private LinkedList<Period> saturdayPeriods = new LinkedList<>();
-    private LinkedList<Period> sundayPeriods = new LinkedList<>();
+    @ElementList(name = "monday_periods", required = false)
+    private LinkedList<Period> mondayPeriods;
+    @ElementList(name = "tuesday_periods", required = false)
+    private LinkedList<Period> tuesdayPeriods;
+    @ElementList(name = "wednesday_periods", required = false)
+    private LinkedList<Period> wednesdayPeriods;
+    @ElementList(name = "thursday_periods", required = false)
+    private LinkedList<Period> thursdayPeriods;
+    @ElementList(name = "friday_periods", required = false)
+    private LinkedList<Period> fridayPeriods;
+    @ElementList(name = "saturday_periods", required = false)
+    private LinkedList<Period> saturdayPeriods;
+    @ElementList(name = "sunday_periods", required = false)
+    private LinkedList<Period> sundayPeriods;
+
+    public Timetable() {
+        mondayPeriods = new LinkedList<>();
+        tuesdayPeriods = new LinkedList<>();
+        wednesdayPeriods = new LinkedList<>();
+        thursdayPeriods = new LinkedList<>();
+        fridayPeriods = new LinkedList<>();
+        saturdayPeriods = new LinkedList<>();
+        sundayPeriods = new LinkedList<>();
+    }
 
     public String getName() {
         return name;
     }
 
-    @XmlAttribute(name = "name")
     public void setName(String name) {
         this.name = name;
     }
 
-    @XmlElement(name = "monday")
     public LinkedList<Period> getMondayPeriods() {
-
         return mondayPeriods;
     }
 
@@ -36,7 +55,6 @@ public class Timetable {
         this.mondayPeriods = mondayPeriods;
     }
 
-    @XmlElement(name = "tuesday")
     public LinkedList<Period> getTuesdayPeriods() {
         return tuesdayPeriods;
     }
@@ -45,7 +63,6 @@ public class Timetable {
         this.tuesdayPeriods = tuesdayPeriods;
     }
 
-    @XmlElement(name = "wednesday")
     public LinkedList<Period> getWednesdayPeriods() {
         return wednesdayPeriods;
     }
@@ -54,7 +71,6 @@ public class Timetable {
         this.wednesdayPeriods = wednesdayPeriods;
     }
 
-    @XmlElement(name = "thursday")
     public LinkedList<Period> getThursdayPeriods() {
         return thursdayPeriods;
     }
@@ -63,7 +79,6 @@ public class Timetable {
         this.thursdayPeriods = thursdayPeriods;
     }
 
-    @XmlElement(name = "friday")
     public LinkedList<Period> getFridayPeriods() {
         return fridayPeriods;
     }
@@ -72,7 +87,6 @@ public class Timetable {
         this.fridayPeriods = fridayPeriods;
     }
 
-    @XmlElement(name = "saturday")
     public LinkedList<Period> getSaturdayPeriods() {
         return saturdayPeriods;
     }
@@ -81,7 +95,6 @@ public class Timetable {
         this.saturdayPeriods = saturdayPeriods;
     }
 
-    @XmlElement(name = "sunday")
     public LinkedList<Period> getSundayPeriods() {
         return sundayPeriods;
     }
@@ -110,25 +123,26 @@ public class Timetable {
     }
 
     public LinkedList<Period> getDayPeriods(Day input){
-        String day = input.toString().toLowerCase();
+        String day = Utilities.capitalizeFirstLetter(input.toString());
 
         switch (day){
-            case "monday":
+            case "Monday":
                 return mondayPeriods;
-            case "tuesday":
-                return mondayPeriods;
-            case "wednesday":
-                return mondayPeriods;
-            case "thursday":
-                return mondayPeriods;
-            case "friday":
-                return mondayPeriods;
-            case "saturday":
-                return mondayPeriods;
-            case "sunday":
-                return mondayPeriods;
+            case "Tuesday":
+                return tuesdayPeriods;
+            case "Wednesday":
+                return wednesdayPeriods;
+            case "Thursday":
+                return thursdayPeriods;
+            case "Friday":
+                return fridayPeriods;
+            case "Saturday":
+                return saturdayPeriods;
+            case "Sunday":
+                return sundayPeriods;
             default:
-                return null;
+                return new LinkedList<>();
+
         }
     }
 
@@ -155,12 +169,40 @@ public class Timetable {
             case SUNDAY:
                 sundayPeriods = periods;
                 break;
+            default:
+                break;
         }
     }
 
-    @Override
-    public String toString(){
-        return "Hello, world";
+    public boolean containsPeriodOnDay(Day day){
+        LinkedList<Period> periods = getDayPeriods(day);
+
+        if (periods.isEmpty())
+            return false;
+        else
+            return true;
+
+    }
+
+    public boolean containsPeriodOnDay(Subject subject, Day day){
+        LinkedList<Period> periods = getDayPeriods(day);
+
+        for (Period period: periods){
+            if (period.getSubject().getSubject() == subject.getSubject())
+                return true;
+        }
+        return false;
+    }
+
+    public int getPeriodNumber(Day day, Subjects subject){
+        LinkedList<Period> periods = getDayPeriods(day);
+
+        for (Period period: periods){
+            if (period.getSubject().getSubject() == subject){
+                return period.getNumber();
+            }
+        }
+        return -1;
     }
 }
 

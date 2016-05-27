@@ -2,7 +2,6 @@ package archavexm.studeteach.app;
 
 import archavexm.studeteach.app.student.StudentController;
 import archavexm.studeteach.core.Studeteach;
-
 import archavexm.studeteach.core.util.Utilities;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +11,8 @@ import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 public class ToMainMenuController {
     @FXML
@@ -87,11 +87,12 @@ public class ToMainMenuController {
             Parent root = loader.load(getClass().getResource("student/Student.fxml").openStream());
 
             StudentController sc = loader.getController();
-            sc.setFilePath(filePath);
-            sc.initStudent();
-
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
+
+            sc.setFilePath(filePath);
+            sc.setCurrentStage(stage);
+            sc.initStudent();
             stage.show();
 
             Stage currentStage = (Stage)labelTitle.getScene().getWindow();

@@ -77,6 +77,10 @@ public class StudentController{
         this.filePath = filePath;
     }
 
+    public void setCurrentStage(Stage stage){
+        currentStage = stage;
+    }
+
     public void initStudent(){
         try {
             student = ObjectDeserializer.deserializeStudent(filePath);
@@ -124,12 +128,6 @@ public class StudentController{
         } catch (Exception ex){
             ex.printStackTrace();
         }
-
-        if (timetable != null){
-            for (Period p: timetable.getMondayPeriods()){
-                System.out.println(p.getSubject().toString());
-            }
-        }
     }
 
     public void showProfileEditor(){
@@ -159,7 +157,6 @@ public class StudentController{
 
             TaskManagerController taskManagerController = loader.getController();
             taskManagerController.setFilePath(filePath);
-            taskManagerController.setOldStudent(student);
             taskManagerController.init();
 
             Stage stage = new Stage();
@@ -172,6 +169,14 @@ public class StudentController{
         catch (Exception ex){
             ex.printStackTrace();
         }
+    }
+
+    public void toTODOList(){
+
+    }
+
+    public void toAboutMenu(){
+
     }
 
     public void refresh(){
@@ -230,7 +235,6 @@ public class StudentController{
     }
 
     private void setTitle(){
-        currentStage = (Stage)labelName.getScene().getWindow();
         currentStage.setTitle(stageTitle);
     }
 
@@ -369,7 +373,19 @@ public class StudentController{
     }
 
     public void fileCloseProfile(){
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            Parent mainMenu = loader.load(new File("C:\\Users\\csram\\Google Drive\\Studeteach\\Desktop\\Studeteach\\src\\archavexm\\studeteach\\app\\Startup.fxml").toURI().toURL());
 
+            Stage stage = new Stage();
+            stage.setTitle(Studeteach.APP_NAME);
+            stage.setScene(new Scene(mainMenu));
+            stage.show();
+        } catch (IOException ex){
+            ex.printStackTrace();
+        }
+
+        currentStage.close();
     }
 
     public void fileExit(){
