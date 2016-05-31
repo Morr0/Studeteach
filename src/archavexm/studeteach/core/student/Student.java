@@ -1,6 +1,7 @@
 package archavexm.studeteach.core.student;
 
 import archavexm.studeteach.core.common.Person;
+import archavexm.studeteach.core.common.TODOList;
 import archavexm.studeteach.core.student.task.Task;
 import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.student.timetable.Timetable;
@@ -41,6 +42,9 @@ public class Student implements Person {
 
     @ElementList(name = "timetables", entry = "timetable")
     private LinkedList<Timetable> timetables = new LinkedList<>();
+
+    @ElementList(name = "todo_lists", entry = "list", required = false)
+    private LinkedList<TODOList> todoLists = new LinkedList<>();
 
     private Student(){}
 
@@ -107,6 +111,10 @@ public class Student implements Person {
         return timetables;
     }
 
+    public LinkedList<TODOList> getTodoLists() {
+        return todoLists;
+    }
+
     public void setFirstName(String name){
         firstName = name;
     }
@@ -152,6 +160,10 @@ public class Student implements Person {
         this.timetables = timetables;
     }
 
+    public void setTodoLists(LinkedList<TODOList> todoLists) {
+        this.todoLists = todoLists;
+    }
+
     public boolean doesHaveThisDay(Day day){
         for (Day d: getSchoolDays()){
             if (d == day){
@@ -161,6 +173,20 @@ public class Student implements Person {
         return false;
     }
 
+    public TODOList getSelectedTODOList(String list){
+        boolean ticked = false;
+        String name;
+
+        if (list.contains("-")){
+            ticked = true;
+            int c = list.indexOf("-");
+            name = list.substring(0, c);
+        } else
+            name = list;
+
+        TODOList todoList = new TODOList(name, ticked);
+        return todoList;
+    }
 }
 
 

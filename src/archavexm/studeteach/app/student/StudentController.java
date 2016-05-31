@@ -1,5 +1,8 @@
 package archavexm.studeteach.app.student;
 
+import archavexm.studeteach.app.StartupController;
+import archavexm.studeteach.app.common.AboutController;
+import archavexm.studeteach.app.common.todolist.TODOController;
 import archavexm.studeteach.app.student.window.ProfileEditorController;
 import archavexm.studeteach.app.student.window.TaskManagerController;
 import archavexm.studeteach.app.student.window.TimetableEditorController;
@@ -25,6 +28,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -172,11 +176,37 @@ public class StudentController{
     }
 
     public void toTODOList(){
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            URL url = TODOController.class.getResource("TODO.fxml");
+            Parent todoList = loader.load(url.openStream());
 
+            TODOController todoController = loader.getController();
+            todoController.setFilePath(filePath);
+            todoController.init();
+
+            Stage stage = new Stage();
+            stage.setTitle("Todo List - " + Studeteach.APP_NAME);
+            stage.setScene(new Scene(todoList));
+            stage.showAndWait();
+        } catch (IOException ex){
+            ex.printStackTrace();
+        }
     }
 
     public void toAboutMenu(){
+        try {
+            URL url = AboutController.class.getResource("About.fxml");
+            FXMLLoader loader = new FXMLLoader();
+            Parent aboutWindow = loader.load(url);
 
+            Stage stage = new Stage();
+            stage.setTitle("About - " + Studeteach.APP_NAME);
+            stage.setScene(new Scene(aboutWindow));
+            stage.showAndWait();
+        } catch (IOException ex){
+            ex.printStackTrace();
+        }
     }
 
     public void refresh(){
@@ -375,7 +405,8 @@ public class StudentController{
     public void fileCloseProfile(){
         try {
             FXMLLoader loader = new FXMLLoader();
-            Parent mainMenu = loader.load(new File("C:\\Users\\csram\\Google Drive\\Studeteach\\Desktop\\Studeteach\\src\\archavexm\\studeteach\\app\\Startup.fxml").toURI().toURL());
+            URL url = StartupController.class.getResource("Startup.fxml");
+            Parent mainMenu = loader.load(url);
 
             Stage stage = new Stage();
             stage.setTitle(Studeteach.APP_NAME);
@@ -392,20 +423,3 @@ public class StudentController{
         Platform.exit();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
