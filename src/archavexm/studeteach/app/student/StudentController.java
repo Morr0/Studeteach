@@ -90,6 +90,7 @@ public class StudentController{
             student = ObjectDeserializer.deserializeStudent(filePath);
             schoolDays = student.getSchoolDays();
             setPreferedName();
+            setLabels();
             setTitle();
 
             try {
@@ -193,12 +194,28 @@ public class StudentController{
         try {
             student = ObjectDeserializer.deserializeStudent(filePath);
             setPreferedName();
+            setLabels();
             setTitle();
-            updateNumberOfTasks();
         }
         catch (Exception ex){
             ex.printStackTrace();
         }
+    }
+
+    private void setLabels(){
+        if (preferedName == null)
+            labelName.setText(student.getFirstName());
+        else
+            labelName.setText(preferedName);
+
+        labelAge.setText(Integer.toString(student.getAge()));
+
+        if (student.getSchoolYear() == 0)
+            labelYear.setText("Not Specified");
+        else
+            labelYear.setText(Integer.toString(student.getSchoolYear()));
+
+        labelNumberOfTasks.setText(Integer.toString(student.getTasks().size()));
     }
 
     private void refreshTimetable(){
@@ -250,19 +267,6 @@ public class StudentController{
 
     private void setTitle(){
         currentStage.setTitle(stageTitle);
-    }
-
-    private void updateNumberOfTasks(){
-        String num = null;
-
-        if (student.getTasks() == null){
-            num = "0";
-        }
-        else {
-            num = Integer.toString(student.getTasks().size());
-        }
-
-        labelNumberOfTasks.setText(num);
     }
 
     private void updateTimetable(){
