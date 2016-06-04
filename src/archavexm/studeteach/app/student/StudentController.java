@@ -33,49 +33,46 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 public class StudentController{
-    @FXML
-    private MenuBar menuBar;
-    @FXML
-    private Label labelName;
-    @FXML
-    private Label labelAge;
-    @FXML
-    private Label labelYear;
-    @FXML
-    private Label labelNumberOfTasks;
+    // menu bar and other labels
+    @FXML private MenuBar menuBar;
+    @FXML private Label labelName;
+    @FXML private Label labelAge;
+    @FXML private Label labelYear;
+    @FXML private Label labelNumberOfTasks;
 
     // Periods on days lists
-    @FXML
-    private ListView<String> listMonday;
-    @FXML
-    private ListView<String> listTuesday;
-    @FXML
-    private ListView<String> listWednesday;
-    @FXML
-    private ListView<String> listThursday;
-    @FXML
-    private ListView<String> listFriday;
-    @FXML
-    private ListView<String> listSaturday;
-    @FXML
-    private ListView<String> listSunday;
+    @FXML private ListView<String> listMonday;
+    @FXML private ListView<String> listTuesday;
+    @FXML private ListView<String> listWednesday;
+    @FXML private ListView<String> listThursday;
+    @FXML private ListView<String> listFriday;
+    @FXML private ListView<String> listSaturday;
+    @FXML private ListView<String> listSunday;
 
-    @FXML
-    private Button buttonEdit;
-    @FXML
-    private Button buttonDeleteTimetable;
+    // The labels for week days
+    @FXML private Label labelMonday;
+    @FXML private Label labelTuesday;
+    @FXML private Label labelWednesday;
+    @FXML private Label labelThursday;
+    @FXML private Label labelFriday;
+    @FXML private Label labelSaturday;
+    @FXML private Label labelSunday;
+
+    // Edits the timetable
+    @FXML private Button buttonEdit;
+    // Deletes the timetable
+    @FXML private Button buttonDeleteTimetable;
 
     private Student student;
     private Timetable timetable;
-    private String preferedName;
-
     private String filePath;
+
+    private String preferedName;
     private String stageTitle;
+    private Stage currentStage;
 
     private HashSet<Day> schoolDays = new HashSet<>();
     private LinkedList<Timetable> timetables = new LinkedList<>();
-
-    private Stage currentStage;
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
@@ -83,12 +80,17 @@ public class StudentController{
 
     public void setCurrentStage(Stage stage){
         currentStage = stage;
+        currentStage.setOnCloseRequest(event -> {
+            Platform.exit();
+        });
     }
 
     public void initStudent(){
         try {
             student = ObjectDeserializer.deserializeStudent(filePath);
             schoolDays = student.getSchoolDays();
+            setPreferedName();
+            setTitle();
 
             try {
                 timetable = student.getTimetables().getFirst();
@@ -101,32 +103,7 @@ public class StudentController{
                 student = ObjectDeserializer.deserializeStudent(filePath);
             }
 
-            if (timetable.isTimetableEmpty()){
-                Label label = new Label("You have not set your timetable. You can set your timetable down below.");
-                Button button = new Button("Set");
-                VBox vbox = new VBox();
-                vbox.getChildren().addAll(label, button);
-
-                button.setOnAction(e -> {
-                    try {
-                        toTimetableEditor();
-                    } catch (IOException ex){
-                        ex.printStackTrace();
-                    }
-                });
-
-                listMonday.setPlaceholder(vbox);
-                listTuesday.setVisible(false);
-                listWednesday.setVisible(false);
-                listThursday.setVisible(false);
-                listFriday.setVisible(false);
-                listSaturday.setVisible(false);
-                listSunday.setVisible(false);
-                buttonEdit.setVisible(false);
-                buttonDeleteTimetable.setVisible(false);
-            } else
-                updateTimetable();
-
+            refreshTimetable();
             getSchoolDays();
 
         } catch (Exception ex){
@@ -149,7 +126,8 @@ public class StudentController{
             stage.showAndWait();
 
             refresh();
-        } catch (Exception ex){
+        } catch (IllegalStateException ex){}
+        catch (IOException ex){
             ex.printStackTrace();
         }
     }
@@ -169,8 +147,8 @@ public class StudentController{
             stage.showAndWait();
 
             refresh();
-        }
-        catch (Exception ex){
+        } catch (IllegalStateException ex){}
+        catch (IOException ex){
             ex.printStackTrace();
         }
     }
@@ -189,7 +167,8 @@ public class StudentController{
             stage.setTitle("Todo List - " + Studeteach.APP_NAME);
             stage.setScene(new Scene(todoList));
             stage.showAndWait();
-        } catch (IOException ex){
+        } catch (IllegalStateException ex){}
+        catch (IOException ex){
             ex.printStackTrace();
         }
     }
@@ -204,7 +183,8 @@ public class StudentController{
             stage.setTitle("About - " + Studeteach.APP_NAME);
             stage.setScene(new Scene(aboutWindow));
             stage.showAndWait();
-        } catch (IOException ex){
+        } catch (IllegalStateException ex){}
+            catch (IOException ex){
             ex.printStackTrace();
         }
     }
@@ -230,13 +210,7 @@ public class StudentController{
             VBox vbox = new VBox();
             vbox.getChildren().addAll(label, button);
 
-            button.setOnAction(e -> {
-                try {
-                    toTimetableEditor();
-                } catch (IOException ex){
-                    ex.printStackTrace();
-                }
-            });
+            button.setOnAction(e -> toTimetableEditor());
 
             listMonday.setPlaceholder(vbox);
             listTuesday.setVisible(false);
@@ -245,6 +219,16 @@ public class StudentController{
             listFriday.setVisible(false);
             listSaturday.setVisible(false);
             listSunday.setVisible(false);
+
+            labelMonday.setVisible(false);
+            labelTuesday.setVisible(false);
+            labelWednesday.setVisible(false);
+            labelThursday.setVisible(false);
+            labelFriday.setVisible(false);
+            labelSaturday.setVisible(false);
+            labelSunday.setVisible(false);
+
+
             buttonEdit.setVisible(false);
             buttonDeleteTimetable.setVisible(false);
         } else
@@ -288,13 +272,20 @@ public class StudentController{
             else
                 for (Period period: timetable.getMondayPeriods())
                     listMonday.getItems().add(period.getNumber() + " - " + period.getSubject().toString());
+        } else{
+            listMonday.setVisible(false);
+            labelMonday.setVisible(false);
         }
+
         if (schoolDays.contains(Day.TUESDAY)){
             if (timetable.getTuesdayPeriods().size() == 0)
                 listTuesday.setPlaceholder(new Label("You have not set the periods on tuesday."));
             else
                 for (Period period: timetable.getTuesdayPeriods())
                     listTuesday.getItems().add(period.getNumber() + " - " + period.getSubject().toString());
+        } else{
+            listTuesday.setVisible(false);
+            labelTuesday.setVisible(false);
         }
         if (schoolDays.contains(Day.WEDNESDAY)){
             if (timetable.getWednesdayPeriods().size() == 0)
@@ -302,6 +293,9 @@ public class StudentController{
             else
                 for (Period period: timetable.getWednesdayPeriods())
                     listWednesday.getItems().add(period.getNumber() + " - " + period.getSubject().toString());
+        } else {
+            listWednesday.setVisible(false);
+            labelWednesday.setVisible(false);
         }
         if (schoolDays.contains(Day.THURSDAY)){
             if (timetable.getThursdayPeriods().size() == 0)
@@ -309,6 +303,9 @@ public class StudentController{
             else
                 for (Period period: timetable.getThursdayPeriods())
                     listThursday.getItems().add(period.getNumber() + " - " + period.getSubject().toString());
+        } else {
+            listThursday.setVisible(false);
+            labelThursday.setVisible(false);
         }
         if (schoolDays.contains(Day.FRIDAY)){
             if (timetable.getFridayPeriods().size() == 0)
@@ -316,6 +313,9 @@ public class StudentController{
             else
                 for (Period period: timetable.getFridayPeriods())
                     listFriday.getItems().add(period.getNumber() + " - " + period.getSubject().toString());
+        } else {
+            listFriday.setVisible(false);
+            labelFriday.setVisible(false);
         }
         if (schoolDays.contains(Day.SATURDAY)){
             if (timetable.getSaturdayPeriods().size() == 0)
@@ -323,6 +323,9 @@ public class StudentController{
             else
                 for (Period period: timetable.getSaturdayPeriods())
                     listSaturday.getItems().add(period.getNumber() + " - " + period.getSubject().toString());
+        } else {
+            listSaturday.setVisible(false);
+            labelSaturday.setVisible(false);
         }
         if (schoolDays.contains(Day.SUNDAY)){
             if (timetable.getSundayPeriods().size() == 0)
@@ -330,6 +333,9 @@ public class StudentController{
             else
                 for (Period period: timetable.getSundayPeriods())
                     listSunday.getItems().add(period.getNumber() + " - " + period.getSubject().toString());
+        } else {
+            listSunday.setVisible(false);
+            labelSunday.setVisible(false);
         }
     }
 
@@ -339,18 +345,23 @@ public class StudentController{
         }
     }
 
-    public void toTimetableEditor() throws IOException{
-        FXMLLoader loader = new FXMLLoader();
-        Parent timetableEditor = loader.load(getClass().getResource("window/TimetableEditor.fxml").openStream());
+    public void toTimetableEditor(){
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            Parent timetableEditor = loader.load(getClass().getResource("window/TimetableEditor.fxml").openStream());
 
-        TimetableEditorController timetableEditorController = loader.getController();
-        timetableEditorController.setFilePath(filePath);
-        timetableEditorController.init();
+            TimetableEditorController timetableEditorController = loader.getController();
+            timetableEditorController.setFilePath(filePath);
+            timetableEditorController.init();
 
-        Stage stage = new Stage();
-        stage.setTitle(preferedName + " - " + "Timetable Editor" + " - " + Studeteach.APP_NAME);
-        stage.setScene(new Scene(timetableEditor));
-        stage.showAndWait();
+            Stage stage = new Stage();
+            stage.setTitle(preferedName + " - " + "Timetable Editor" + " - " + Studeteach.APP_NAME);
+            stage.setScene(new Scene(timetableEditor));
+            stage.showAndWait();
+        } catch (IllegalStateException ex){}
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     public void deleteTimetable(){
@@ -364,6 +375,7 @@ public class StudentController{
             ex.printStackTrace();
         }
 
+        refreshTimetable();
         refresh();
     }
 

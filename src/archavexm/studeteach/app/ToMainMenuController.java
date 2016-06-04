@@ -40,43 +40,40 @@ public class ToMainMenuController {
     }
 
     public void openUser(){
-        String filePath = null;
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open .studeteach file");
-
-        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Studeteach files", "*.studeteach");
-        fileChooser.getExtensionFilters().add(extensionFilter);
-
-        Stage currentStage = (Stage)labelTitle.getScene().getWindow();
-        File file = fileChooser.showOpenDialog(currentStage);
-
-        filePath = file.getAbsolutePath();
-
-        String content = null;
         try {
-            content = Utilities.read(filePath);
-        }
-        catch (IOException ex){
-            ex.printStackTrace();
-        }
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open .studeteach file");
 
-        if (person == "Student"){
-            if (content.contains("student")){
-                makeWindow(filePath);
+            FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Studeteach files", "*.studeteach");
+            fileChooser.getExtensionFilters().add(extensionFilter);
+
+            Stage currentStage = (Stage) labelTitle.getScene().getWindow();
+            File file = fileChooser.showOpenDialog(currentStage);
+
+            String filePath = file.getAbsolutePath();
+
+            String content = null;
+            content = Utilities.read(filePath);
+
+            if (person == "Student") {
+                if (content.contains("student")) {
+                    makeWindow(filePath);
+                } else if (content.contains("Teacher")) {
+                    person = "Teacher";
+                    return;
+                }
+            } else {
+                if (content.contains("Teacher")) {
+                    makeWindow(filePath);
+                } else if (content.contains("Student")) {
+                    person = "Student";
+                    return;
+                }
             }
-            else if (content.contains("Teacher")){
-                person = "Teacher";
-                return;
-            }
-        }
-        else {
-            if (content.contains("Teacher")){
-                makeWindow(filePath);
-            }
-            else if (content.contains("Student")) {
-                person = "Student";
-                return;
-            }
+        } catch (NullPointerException ex){
+            return;
+        } catch (IOException ex){
+            ex.printStackTrace();
         }
 
     }

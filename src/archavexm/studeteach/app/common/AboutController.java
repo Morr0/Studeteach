@@ -4,6 +4,9 @@ import archavexm.studeteach.core.Studeteach;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
+import java.awt.*;
+import java.net.URI;
+
 public class AboutController {
 
     @FXML
@@ -23,5 +26,13 @@ public class AboutController {
         labelDescription.setText(Studeteach.APP_DESCRIPTION);
         labelPublisher.setText(Studeteach.APP_PUBLISHER);
         labelCopyright.setText(Studeteach.APP_COPYRIGHT);
+    }
+
+    public void toWebsite(){
+        try {
+            if (Desktop.isDesktopSupported()){
+                Desktop.getDesktop().browse(new URI("https://github.com/Morr0/Studeteach"));
+            }
+        } catch (Exception ex){}
     }
 }
