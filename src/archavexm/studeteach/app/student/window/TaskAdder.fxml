@@ -3,9 +3,9 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.text.Font?>
 <?import java.lang.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.student.window.TaskAdderController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="269.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.student.window.TaskAdderController">
    <children>
       <Label layoutX="9.0" layoutY="11.0" prefHeight="32.0" prefWidth="87.0" text="Subject:">
          <font>
@@ -33,20 +33,14 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <DatePicker fx:id="pickerDueDate" layoutX="97.0" layoutY="71.0" prefHeight="31.0" prefWidth="376.0" promptText="Select a Date:" />
-      <Label layoutX="11.0" layoutY="119.0" prefHeight="32.0" prefWidth="84.0" text="Day:">
+      <DatePicker fx:id="pickerDueDate" layoutX="97.0" layoutY="71.0" onAction="#refreshPeriods" prefHeight="31.0" prefWidth="376.0" promptText="Select a Date:" />
+      <Label layoutX="11.0" layoutY="128.0" prefHeight="32.0" prefWidth="84.0" text="Due Period:">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <ComboBox fx:id="comboDay" layoutX="97.0" layoutY="120.0" onAction="#refreshPeriods" prefHeight="31.0" prefWidth="377.0" promptText="Select a Day:" />
-      <Label layoutX="9.0" layoutY="165.0" prefHeight="32.0" prefWidth="84.0" text="Due Period:">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Label>
-      <ComboBox fx:id="comboDuePeriod" layoutX="96.0" layoutY="164.0" prefHeight="31.0" prefWidth="377.0" promptText="Select a Due Period:" />
-      <Button layoutX="175.0" layoutY="233.0" mnemonicParsing="false" onAction="#save" prefHeight="80.0" prefWidth="137.0" text="Add">
+      <ComboBox fx:id="comboDuePeriod" layoutX="96.0" layoutY="128.0" prefHeight="31.0" prefWidth="377.0" promptText="Select a Due Period:" />
+      <Button layoutX="172.0" layoutY="175.0" mnemonicParsing="false" onAction="#save" prefHeight="80.0" prefWidth="137.0" text="Add">
          <font>
             <Font size="32.0" />
          </font>

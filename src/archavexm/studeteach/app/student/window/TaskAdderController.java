@@ -26,17 +26,11 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class TaskAdderController {
-    @FXML
-    private ComboBox<String> comboSubject;
-    @FXML
-    private DatePicker pickerDueDate;
-    @FXML
-    private ComboBox<String> comboDay;
-    @FXML
-    private ComboBox<String> comboDuePeriod;
+    @FXML private ComboBox<String> comboSubject;
+    @FXML private DatePicker pickerDueDate;
+    @FXML private ComboBox<String> comboDuePeriod;
 
     private String filePath;
-
     private Student student;
     private Timetable timetable;
 
@@ -55,41 +49,41 @@ public class TaskAdderController {
             student = ObjectDeserializer.deserializeStudent(filePath);
             timetable = student.getTimetables().get(0);
 
-            if (student.getSchoolDays().size() == 1){
-                for (Day d: student.getSchoolDays()){
-                    day = d;
-                    comboDay.setValue(Utilities.capitalizeFirstLetter(d.toString()));
-                }
-                refreshPeriods();
-            } else if (student.doesHaveThisDay(Day.MONDAY)){
-                comboDay.setValue("Monday");
-                day = Day.MONDAY;
-                refreshPeriods();
-            }
-
-            for (Day d: student.getSchoolDays()){
-                String ddd = Utilities.capitalizeFirstLetter((d.toString()).toLowerCase());
-                comboDay.getItems().add(ddd);
-            }
         }
         catch (Exception ex){
             ex.printStackTrace();
         }
     }
 
+    private void setDay(){
+            if (pickerDueDate.getValue() != null)
+                day = Utilities.toDayFromString(pickerDueDate.getValue().getDayOfWeek().toString());
+    }
+
     public void refreshPeriods(){
+        setDay();
         comboDuePeriod.getItems().clear();
 
-        LinkedList<Period> periods = timetable.getDayPeriods(day);
-        ObservableList<String> strings = FXCollections.observableArrayList();
+        if (student.doesHaveThisDay(day)){
+            LinkedList<Period> periods = timetable.getDayPeriods(day);
+            ObservableList<String> strings = FXCollections.observableArrayList();
 
-        for (Period period: periods){
-            if (period.getSubject().getSubject() != Subjects.NONE){
-                strings.add((period.getNumber()) + " - " + period.getSubject().toString());
+            for (Period period: periods){
+                if (period.getSubject().getSubject() != Subjects.NONE){
+                    strings.add((period.getNumber()) + " - " + period.getSubject().toString());
+                }
             }
-        }
 
-        comboDuePeriod.setItems(strings);
+            comboDuePeriod.setItems(strings);
+        } else {
+            pickerDueDate.setValue(null);
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("The day you chose is not one of your school days.");
+            alert.showAndWait();
+
+            return;
+        }
     }
 
     public void setTaskType(TaskType taskType){
@@ -118,24 +112,10 @@ public class TaskAdderController {
             LocalDate d = pickerDueDate.getValue();
             Date dueDate = Date.from(d.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-            if (comboDay.getValue() == "Select a Day:"){
-                LocalDate ld = dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                day = Utilities.toDayFromString(ld.getDayOfWeek().toString());
-
-                if (!student.doesHaveThisDay(day)){
-                    alert.setContentText("The selected day is not one of your school days.");
-                    alert.showAndWait();
-
-                    return;
-                }
-            } else {
-                day = Utilities.toDayFromString(comboDay.getSelectionModel().getSelectedItem());
-            }
-
             if (comboDuePeriod.getValue() == "Select a Due Period:"){
-                if (timetable.containsPeriodOnDay(subject, day)){
+                if (timetable.containsPeriodOnDay(subject, day)) {
                     int periodNumber = timetable.getPeriodNumber(day, subject.getSubject());
-                    for (Period p: timetable.getDayPeriods(day)){
+                    for (Period p : timetable.getDayPeriods(day)) {
                         if (p.getNumber() == periodNumber)
                             duePeriod = new Period(subject, periodNumber);
                     }
@@ -146,9 +126,15 @@ public class TaskAdderController {
                     return;
                 }
             } else {
-                String pn = comboDuePeriod.getSelectionModel().getSelectedItem().substring(0, 1);
-                int periodNumber = Integer.parseInt(pn);
+                String pn;
+                int periodNumber;
                 Subjects subj = null;
+                try {
+                    pn = comboDuePeriod.getSelectionModel().getSelectedItem().substring(0, 1);
+                    periodNumber = Integer.parseInt(pn);
+                } catch (NullPointerException ex){
+                    return;
+                }
 
                 for (Period period: timetable.getDayPeriods(day)) {
                     if (period.getNumber() == periodNumber) {
@@ -176,22 +162,11 @@ public class TaskAdderController {
 
             ObjectSerializer.serializeStudent(filePath, student);
 
-            Stage current = (Stage) comboDuePeriod.getScene().getWindow();
-            current.close();
+            Stage currentStage = (Stage) comboDuePeriod.getScene().getWindow();
+            currentStage.close();
         }
         catch (Exception ex){
             ex.printStackTrace();
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
