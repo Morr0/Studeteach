@@ -17,7 +17,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#showProfileEditor" text="Edit Profile" />
+              <MenuItem mnemonicParsing="false" onAction="#toProfileEditor" text="Edit Profile" />
               <MenuItem mnemonicParsing="false" onAction="#toTaskManager" text="Task Manager" />
               <MenuItem mnemonicParsing="false" onAction="#toTODOList" text="TODO List" />
             </items>
@@ -41,7 +41,7 @@
       <Label fx:id="labelYear" layoutX="251.0" layoutY="27.0" prefHeight="25.0" prefWidth="107.0" />
       <Label layoutX="364.0" layoutY="27.0" prefHeight="25.0" prefWidth="50.0" text="Tasks:" />
       <Label fx:id="labelNumberOfTasks" layoutX="397.0" layoutY="27.0" prefHeight="25.0" prefWidth="50.0" />
-      <Button layoutX="642.0" layoutY="27.0" mnemonicParsing="false" onAction="#showProfileEditor" prefHeight="25.0" prefWidth="137.0" text="Edit Profile" />
+      <Button layoutX="642.0" layoutY="27.0" mnemonicParsing="false" onAction="#toProfileEditor" prefHeight="25.0" prefWidth="137.0" text="Edit Profile" />
       <Button layoutX="771.0" layoutY="27.0" mnemonicParsing="false" onAction="#toTaskManager" prefHeight="25.0" prefWidth="131.0" text="Task Manager" />
       <Button layoutX="894.0" layoutY="27.0" mnemonicParsing="false" onAction="#toTODOList" prefHeight="25.0" prefWidth="131.0" text="TODO" />
       <ListView fx:id="listMonday" layoutX="62.0" layoutY="128.0" prefHeight="261.0" prefWidth="174.0" />

@@ -18,12 +18,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuBar;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -112,80 +110,59 @@ public class StudentController{
         }
     }
 
-    public void showProfileEditor(){
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            Parent profileEditor = loader.load(getClass().getResource("window/ProfileEditor.fxml").openStream());
-
-            ProfileEditorController profileEditorController = loader.getController();
-            profileEditorController.setFilePath(filePath);
-            profileEditorController.init();
-
-            Stage stage = new Stage();
-            stage.setTitle(preferedName + " - " + "Profile Editor" + " - " + Studeteach.APP_NAME);
-            stage.setScene(new Scene(profileEditor));
-            stage.showAndWait();
-
-            refresh();
-        } catch (IllegalStateException ex){}
-        catch (IOException ex){
-            ex.printStackTrace();
-        }
+    public void toProfileEditor(){
+        URL url = ProfileEditorController.class.getResource("ProfileEditor.fxml");
+        toWindow(url, "ProfileEditor", preferedName + " - Profile Editor - " + Studeteach.APP_NAME);
+        refresh();
     }
 
     public void toTaskManager(){
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            Parent taskManager = loader.load(getClass().getResource("window/TaskManager.fxml").openStream());
+        if (timetable.isTimetableEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("You have not set your timetable. In order to access the task manager you have to have a timetable.");
+            alert.showAndWait();
 
-            TaskManagerController taskManagerController = loader.getController();
-            taskManagerController.setFilePath(filePath);
-            taskManagerController.init();
-
-            Stage stage = new Stage();
-            stage.setTitle(preferedName + " - " + "Task Manager" + " - " + Studeteach.APP_NAME);
-            stage.setScene(new Scene(taskManager));
-            stage.showAndWait();
-
-            refresh();
-        } catch (IllegalStateException ex){}
-        catch (IOException ex){
-            ex.printStackTrace();
+            return;
+        } else {
+            URL url = TaskManagerController.class.getResource("TaskManager.fxml");
+            toWindow(url, "TaskManager", "Task Manager - " + Studeteach.APP_NAME);
         }
     }
 
     public void toTODOList(){
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            URL url = TODOController.class.getResource("TODO.fxml");
-            Parent todoList = loader.load(url.openStream());
-
-            TODOController todoController = loader.getController();
-            todoController.setFilePath(filePath);
-            todoController.init();
-
-            Stage stage = new Stage();
-            stage.setTitle("Todo List - " + Studeteach.APP_NAME);
-            stage.setScene(new Scene(todoList));
-            stage.showAndWait();
-        } catch (IllegalStateException ex){}
-        catch (IOException ex){
-            ex.printStackTrace();
-        }
+        URL url = TODOController.class.getResource("TODO.fxml");
+        toWindow(url, "TODO", "TODO List - " + Studeteach.APP_NAME);
     }
 
     public void toAboutMenu(){
+        URL url = AboutController.class.getResource("About.fxml");
+        toWindow(url, "About", "About - " + Studeteach.APP_NAME);
+    }
+
+    public void toTimetableEditor(){
+        URL url = TimetableEditorController.class.getResource("TimetableEditor.fxml");
+        toWindow(url, "TimetableEditor", "Timetable Editor - " + Studeteach.APP_NAME);
+    }
+
+    private void toWindow(URL url, String name, String title){
         try {
-            URL url = AboutController.class.getResource("About.fxml");
             FXMLLoader loader = new FXMLLoader();
-            Parent aboutWindow = loader.load(url);
+            Parent window = loader.load(url.openStream());
+
+            if (!name.equals("About")){
+                StudentWindow controller = loader.getController();
+                controller.setFilePath(filePath);
+                controller.init();
+            }
 
             Stage stage = new Stage();
-            stage.setTitle("About - " + Studeteach.APP_NAME);
-            stage.setScene(new Scene(aboutWindow));
+            stage.setTitle(title);
+            stage.setScene(new Scene(window));
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(currentStage);
             stage.showAndWait();
-        } catch (IllegalStateException ex){}
-            catch (IOException ex){
+
+        } catch (IOException ex){
             ex.printStackTrace();
         }
     }
@@ -349,21 +326,10 @@ public class StudentController{
         }
     }
 
-    public void toTimetableEditor(){
+    private void save(){
         try {
-            FXMLLoader loader = new FXMLLoader();
-            Parent timetableEditor = loader.load(getClass().getResource("window/TimetableEditor.fxml").openStream());
-
-            TimetableEditorController timetableEditorController = loader.getController();
-            timetableEditorController.setFilePath(filePath);
-            timetableEditorController.init();
-
-            Stage stage = new Stage();
-            stage.setTitle(preferedName + " - " + "Timetable Editor" + " - " + Studeteach.APP_NAME);
-            stage.setScene(new Scene(timetableEditor));
-            stage.showAndWait();
-        } catch (IllegalStateException ex){}
-        catch (Exception ex){
+            ObjectSerializer.serializeStudent(filePath, student);
+        } catch (Exception ex){
             ex.printStackTrace();
         }
     }
@@ -385,11 +351,7 @@ public class StudentController{
 
     // File menu
     public void fileSave(){
-        try {
-            ObjectSerializer.serializeStudent(filePath, student);
-        } catch (Exception ex){
-            ex.printStackTrace();
-        }
+        save();
     }
 
     public void fileSaveAs(){
@@ -410,12 +372,7 @@ public class StudentController{
             return;
         }
 
-        try {
-            ObjectSerializer.serializeStudent(anotherFilePath, student);
-        } catch (Exception ex){
-            ex.printStackTrace();
-        }
-
+        save();
     }
 
     public void fileCloseProfile(){
