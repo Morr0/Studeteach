@@ -1,5 +1,6 @@
 package archavexm.studeteach.app.common.todolist;
 
+import archavexm.studeteach.app.student.StudentWindow;
 import archavexm.studeteach.core.Studeteach;
 import archavexm.studeteach.core.common.TODOList;
 import archavexm.studeteach.core.student.Student;
@@ -17,7 +18,7 @@ import javafx.stage.Stage;
 
 import java.util.LinkedList;
 
-public class TODOController {
+public class TODOController implements StudentWindow {
     @FXML
     private ListView<String> listTODOLists;
 
@@ -26,10 +27,12 @@ public class TODOController {
     private LinkedList<TODOList> todoLists;
     private TODOList selectedTODOList;
 
+    @Override
     public void setFilePath(String filePath){
         this.filePath = filePath;
     }
 
+    @Override
     public void init(){
         try {
             student = ObjectDeserializer.deserializeStudent(filePath);

@@ -126,6 +126,7 @@ public class StudentController{
         } else {
             URL url = TaskManagerController.class.getResource("TaskManager.fxml");
             toWindow(url, "TaskManager", "Task Manager - " + Studeteach.APP_NAME);
+            refresh();
         }
     }
 
@@ -161,7 +162,6 @@ public class StudentController{
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(currentStage);
             stage.showAndWait();
-
         } catch (IOException ex){
             ex.printStackTrace();
         }

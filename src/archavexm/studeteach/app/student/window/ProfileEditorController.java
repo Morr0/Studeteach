@@ -1,5 +1,6 @@
 package archavexm.studeteach.app.student.window;
 
+import archavexm.studeteach.app.student.StudentWindow;
 import archavexm.studeteach.core.student.SchoolType;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.student.timetable.Day;
@@ -17,46 +18,33 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-public class ProfileEditorController {
-    @FXML
-    private TextField textFirstName;
-    @FXML
-    private TextField textLastName;
-    @FXML
-    private TextField textPreferedName;
-    @FXML
-    private TextField textAge;
-    @FXML
-    private TextField textYear;
-    @FXML
-    private TextField textSchoolName;
-    @FXML
-    private TextField textSchoolType;
+public class ProfileEditorController implements StudentWindow {
+    @FXML private TextField textFirstName;
+    @FXML private TextField textLastName;
+    @FXML private TextField textPreferedName;
+    @FXML private TextField textAge;
+    @FXML private TextField textYear;
+    @FXML private TextField textSchoolName;
+    @FXML private TextField textSchoolType;
 
     // Day checkboxes
-    @FXML
-    private CheckBox checkMonday;
-    @FXML
-    private CheckBox checkTuesday;
-    @FXML
-    private CheckBox checkWednesday;
-    @FXML
-    private CheckBox checkThursday;
-    @FXML
-    private CheckBox checkFriday;
-    @FXML
-    private CheckBox checkSaturday;
-    @FXML
-    private CheckBox checkSunday;
+    @FXML private CheckBox checkMonday;
+    @FXML private CheckBox checkTuesday;
+    @FXML private CheckBox checkWednesday;
+    @FXML private CheckBox checkThursday;
+    @FXML private CheckBox checkFriday;
+    @FXML private CheckBox checkSaturday;
+    @FXML private CheckBox checkSunday;
 
     private String filePath;
-
     private Student student;
 
+    @Override
     public void setFilePath(String filePath){
         this.filePath = filePath;
     }
 
+    @Override
     public void init(){
         try {
             student = ObjectDeserializer.deserializeStudent(filePath);
@@ -121,13 +109,13 @@ public class ProfileEditorController {
     }
 
     public void save(){
-        String firstName = null;
-        String lastName = null;
-        String preferredName = null;
-        int age = 0;
+        String firstName;
+        String lastName;
+        String preferredName;
+        int age;
         int year = 0;
-        String schoolName = null;
-        SchoolType schoolType = null;
+        String schoolName;
+        SchoolType schoolType;
         HashSet<Day> schoolDays = new HashSet<>(7);
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -255,7 +243,6 @@ public class ProfileEditorController {
         try {
             ObjectSerializer.serializeStudent(filePath, student);
         } catch (Exception ex){
-            System.out.println(ex.getMessage());
             ex.printStackTrace();
         }
 

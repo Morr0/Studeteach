@@ -1,5 +1,6 @@
 package archavexm.studeteach.app.student.window;
 
+import archavexm.studeteach.app.student.StudentWindow;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.student.subject.Subject;
 import archavexm.studeteach.core.student.timetable.Day;
@@ -18,7 +19,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class TimetableEditorController {
+public class TimetableEditorController implements StudentWindow {
     @FXML
     private TextField textTimetableName;
     @FXML
@@ -50,10 +51,12 @@ public class TimetableEditorController {
     private Student student;
     private Timetable timetable;
 
+    @Override
     public void setFilePath(String filePath){
         this.filePath = filePath;
     }
 
+    @Override
     public void init(){
         try {
             student = ObjectDeserializer.deserializeStudent(filePath);

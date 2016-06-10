@@ -48,7 +48,6 @@ public class TaskAdderController {
         try {
             student = ObjectDeserializer.deserializeStudent(filePath);
             timetable = student.getTimetables().get(0);
-
         }
         catch (Exception ex){
             ex.printStackTrace();
@@ -61,6 +60,16 @@ public class TaskAdderController {
     }
 
     public void refreshPeriods(){
+        LocalDate d = pickerDueDate.getValue();
+        Day dayByDate = Utilities.toDayFromString(d.getDayOfWeek().toString());
+        if (timetable.getDayPeriods(dayByDate).size() == 0){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("You do not have any periods on the selected day. Please select the correct day.");
+            alert.showAndWait();
+
+            return;
+        }
+
         setDay();
         comboDuePeriod.getItems().clear();
 
@@ -110,6 +119,15 @@ public class TaskAdderController {
             }
 
             LocalDate d = pickerDueDate.getValue();
+
+            LocalDate currentDate = LocalDate.now();
+            if (currentDate.isAfter(d)){
+                alert.setContentText("The date you have chosen is in the past.");
+                alert.showAndWait();
+
+                return;
+            }
+
             Date dueDate = Date.from(d.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
             if (comboDuePeriod.getValue() == "Select a Due Period:"){

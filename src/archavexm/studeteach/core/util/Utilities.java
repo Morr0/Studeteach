@@ -1,6 +1,7 @@
 package archavexm.studeteach.core.util;
 
 import archavexm.studeteach.core.student.subject.Subjects;
+import archavexm.studeteach.core.student.task.TaskType;
 import archavexm.studeteach.core.student.timetable.Day;
 import com.sun.istack.internal.NotNull;
 
@@ -122,6 +123,20 @@ public final class Utilities {
 
         int output = Integer.parseInt(sb.toString());
         return output;
+    }
+
+    @NotNull
+    public static TaskType toTaskTypeFromString(String input){
+        TaskType taskType = null;
+        if (input.equals("Assignment"))
+            taskType = TaskType.ASSIGNMENT;
+        else if (input.equals("Exam"))
+            taskType = TaskType.EXAM;
+        else if (input.equals("Homework"))
+            taskType = TaskType.HOMEWORK;
+
+        return taskType;
+
     }
 }
 

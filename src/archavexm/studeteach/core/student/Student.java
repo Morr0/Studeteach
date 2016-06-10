@@ -165,11 +165,10 @@ public class Student implements Person {
     }
 
     public boolean doesHaveThisDay(Day day){
-        for (Day d: getSchoolDays()){
-            if (d == day){
+        for (Day d: getSchoolDays())
+            if (d == day)
                 return true;
-            }
-        }
+
         return false;
     }
 
