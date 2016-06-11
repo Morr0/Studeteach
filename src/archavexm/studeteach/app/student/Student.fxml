@@ -2,10 +2,10 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.student.StudentController">
+<?import javafx.scene.text.*?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="659.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.student.StudentController">
    <children>
-      <MenuBar fx:id="menuBar" layoutY="2.0" prefHeight="25.0" prefWidth="1024.0">
+      <MenuBar fx:id="menuBar" layoutY="2.0" prefHeight="25.0" prefWidth="659.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -29,7 +29,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Label fx:id="labelName" layoutX="56.0" layoutY="27.0" prefHeight="25.0" prefWidth="100.0">
+      <Label fx:id="labelName" layoutX="56.0" layoutY="27.0" prefHeight="25.0" prefWidth="91.0">
          <font>
             <Font name="Arial" size="12.0" />
          </font>
@@ -38,32 +38,49 @@
       <Label layoutX="156.0" layoutY="27.0" prefHeight="25.0" prefWidth="30.0" text="Age: " />
       <Label fx:id="labelAge" layoutX="187.0" layoutY="27.0" prefHeight="25.0" prefWidth="30.0" />
       <Label layoutX="223.0" layoutY="27.0" prefHeight="25.0" prefWidth="28.0" text="Year:" />
-      <Label fx:id="labelYear" layoutX="251.0" layoutY="27.0" prefHeight="25.0" prefWidth="107.0" />
-      <Label layoutX="364.0" layoutY="27.0" prefHeight="25.0" prefWidth="50.0" text="Tasks:" />
-      <Label fx:id="labelNumberOfTasks" layoutX="397.0" layoutY="27.0" prefHeight="25.0" prefWidth="50.0" />
-      <Button layoutX="642.0" layoutY="27.0" mnemonicParsing="false" onAction="#toProfileEditor" prefHeight="25.0" prefWidth="137.0" text="Edit Profile" />
-      <Button layoutX="771.0" layoutY="27.0" mnemonicParsing="false" onAction="#toTaskManager" prefHeight="25.0" prefWidth="131.0" text="Task Manager" />
-      <Button layoutX="894.0" layoutY="27.0" mnemonicParsing="false" onAction="#toTODOList" prefHeight="25.0" prefWidth="131.0" text="TODO" />
-      <ListView fx:id="listMonday" layoutX="62.0" layoutY="128.0" prefHeight="261.0" prefWidth="174.0" />
-      <Label fx:id="labelMonday" alignment="CENTER" layoutX="14.0" layoutY="102.0" prefHeight="25.0" prefWidth="235.0" text="Monday" />
-      <Label fx:id="labelTuesday" alignment="CENTER" layoutX="263.0" layoutY="102.0" prefHeight="25.0" prefWidth="235.0" text="Tuesday" />
-      <Label fx:id="labelWednesday" alignment="CENTER" layoutX="512.0" layoutY="102.0" prefHeight="25.0" prefWidth="235.0" text="Wednesday" />
-      <Label fx:id="labelThursday" alignment="CENTER" layoutX="747.0" layoutY="102.0" prefHeight="25.0" prefWidth="235.0" text="Thursday" />
-      <ListView fx:id="listTuesday" layoutX="320.0" layoutY="128.0" prefHeight="261.0" prefWidth="174.0" />
-      <ListView fx:id="listWednesday" layoutX="588.0" layoutY="128.0" prefHeight="261.0" prefWidth="174.0" />
-      <ListView fx:id="listThursday" layoutX="836.0" layoutY="128.0" prefHeight="261.0" prefWidth="174.0" />
-      <Label fx:id="labelFriday" alignment="CENTER" layoutX="32.0" layoutY="397.0" prefHeight="25.0" prefWidth="235.0" text="Friday" />
-      <Label fx:id="labelSaturday" alignment="CENTER" layoutX="290.0" layoutY="397.0" prefHeight="25.0" prefWidth="235.0" text="Saturday" />
-      <Label fx:id="labelSunday" alignment="CENTER" layoutX="558.0" layoutY="397.0" prefHeight="25.0" prefWidth="235.0" text="Sunday" />
-      <ListView fx:id="listFriday" layoutX="63.0" layoutY="422.0" prefHeight="261.0" prefWidth="174.0" />
-      <ListView fx:id="listSaturday" layoutX="321.0" layoutY="422.0" prefHeight="261.0" prefWidth="174.0" />
-      <ListView fx:id="listSunday" layoutX="589.0" layoutY="422.0" prefHeight="261.0" prefWidth="174.0" />
-      <Button fx:id="buttonDeleteTimetable" layoutX="834.0" layoutY="553.0" mnemonicParsing="false" onAction="#deleteTimetable" prefHeight="49.0" prefWidth="174.0" text="Delete Timetable" />
-      <Button fx:id="buttonEdit" layoutX="834.0" layoutY="410.0" mnemonicParsing="false" onAction="#toTimetableEditor" prefHeight="132.0" prefWidth="174.0" text="Edit">
-         <font>
-            <Font size="48.0" />
-         </font>
-      </Button>
-      <Button layoutX="578.0" layoutY="27.0" mnemonicParsing="false" onAction="#refresh" prefHeight="25.0" prefWidth="71.0" text="Refresh" />
+      <Label fx:id="labelYear" layoutX="251.0" layoutY="27.0" prefHeight="25.0" prefWidth="57.0" />
+      <Label layoutX="316.0" layoutY="27.0" prefHeight="25.0" prefWidth="50.0" text="Tasks:" />
+      <Label fx:id="labelNumberOfTasks" layoutX="366.0" layoutY="27.0" prefHeight="25.0" prefWidth="50.0" />
+      <Button layoutX="438.0" layoutY="27.0" mnemonicParsing="false" onAction="#toProfileEditor" prefHeight="25.0" prefWidth="75.0" text="Edit Profile" />
+      <Button layoutX="513.0" layoutY="27.0" mnemonicParsing="false" onAction="#toTaskManager" prefHeight="25.0" prefWidth="91.0" text="Task Manager" />
+      <Button layoutX="598.0" layoutY="27.0" mnemonicParsing="false" onAction="#toTODOList" prefHeight="25.0" prefWidth="50.0" text="TODO" />
+      <AnchorPane fx:id="anchorTimetable" layoutX="19.0" layoutY="62.0" prefHeight="541.0" prefWidth="629.0">
+         <children>
+            <Label text="Timetable:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="comboDays" layoutX="301.0" onAction="#changedDay" prefHeight="27.0" prefWidth="112.0" promptText="Select Me:" />
+            <Label layoutX="251.0" prefHeight="27.0" prefWidth="42.0" text="Day:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="comboTimetables" layoutX="91.0" layoutY="1.0" onAction="#changedTimetable" prefHeight="27.0" prefWidth="149.0" promptText="Select Me:" />
+            <Label layoutX="422.0" prefHeight="27.0" prefWidth="165.0" text="Is Primary Timetable:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <CheckBox fx:id="checkPrimaryTimetable" alignment="CENTER" contentDisplay="CENTER" layoutX="594.0" layoutY="1.0" mnemonicParsing="false" onAction="#setPrimaryTimetable" prefHeight="27.0" prefWidth="21.0" />
+            <Button layoutX="311.0" layoutY="462.0" mnemonicParsing="false" onAction="#toTimetableEditor" prefHeight="82.0" prefWidth="118.0" text="Edit">
+               <font>
+                  <Font size="38.0" />
+               </font>
+            </Button>
+            <Button layoutX="422.0" layoutY="462.0" mnemonicParsing="false" onAction="#deleteTimetable" prefHeight="82.0" prefWidth="189.0" text="Remove">
+               <font>
+                  <Font size="38.0" />
+               </font>
+            </Button>
+            <ListView fx:id="listTimetable" layoutX="3.0" layoutY="32.0" prefHeight="430.0" prefWidth="607.0" />
+            <Button layoutX="3.0" layoutY="462.0" mnemonicParsing="false" onAction="#createTimetable" prefHeight="82.0" prefWidth="314.0" text="Create Timetable">
+               <font>
+                  <Font size="34.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

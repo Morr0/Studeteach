@@ -2,6 +2,9 @@ package archavexm.studeteach.app;
 
 import archavexm.studeteach.app.student.StudentController;
 import archavexm.studeteach.core.Studeteach;
+import archavexm.studeteach.core.student.Student;
+import archavexm.studeteach.core.util.ObjectDeserializer;
+import archavexm.studeteach.core.util.ObjectSerializer;
 import archavexm.studeteach.core.util.Utilities;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,10 +18,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class ToMainMenuController {
-    @FXML
-    private Label labelTitle;
+    @FXML private Label labelTitle;
 
     private String person;
+    private String filePath;
 
     public void setLabelTitle(String person){
         this.person = person;
@@ -50,7 +53,7 @@ public class ToMainMenuController {
             Stage currentStage = (Stage) labelTitle.getScene().getWindow();
             File file = fileChooser.showOpenDialog(currentStage);
 
-            String filePath = file.getAbsolutePath();
+            filePath = file.getAbsolutePath();
 
             String content = null;
             content = Utilities.read(filePath);
@@ -78,8 +81,16 @@ public class ToMainMenuController {
 
     }
 
+    private void organiseStudent() throws Exception{
+        Student student = ObjectDeserializer.deserializeStudent(filePath);
+        student.organiseTimetables();
+        ObjectSerializer.serializeStudent(filePath, student);
+    }
+
     private void makeWindow(String filePath){
         try {
+            organiseStudent();
+
             FXMLLoader loader = new FXMLLoader();
             Parent root = loader.load(getClass().getResource("student/Student.fxml").openStream());
 
@@ -94,8 +105,7 @@ public class ToMainMenuController {
 
             Stage currentStage = (Stage)labelTitle.getScene().getWindow();
             currentStage.close();
-        }
-        catch (IOException ex){
+        } catch (Exception ex){
             ex.printStackTrace();
         }
     }

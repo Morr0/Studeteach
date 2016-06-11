@@ -27,6 +27,8 @@ public class Student implements Person {
     private String preferredName;
     @Attribute(name = "age")
     private int age;
+    @Attribute(name = "primary_timetable")
+    private int primaryTimetableId;
 
     @Element(name = "school")
     private School school = School.getInstance(null, null);
@@ -92,6 +94,10 @@ public class Student implements Person {
         return age;
     }
 
+    public int getPrimaryTimetableId(){
+        return primaryTimetableId;
+    }
+
     public LinkedList<Task> getTasks(){
         return tasks;
     }
@@ -129,6 +135,10 @@ public class Student implements Person {
 
     public void setAge(int age){
         this.age = age;
+    }
+
+    public void setPrimaryTimetableId(int primaryTimetableId){
+        this.primaryTimetableId = primaryTimetableId;
     }
 
     public void setSchoolName(String schoolName){
@@ -185,6 +195,41 @@ public class Student implements Person {
 
         TODOList todoList = new TODOList(name, ticked);
         return todoList;
+    }
+
+    public void organiseTimetables(){
+        boolean organise = true;
+        for (Timetable timetable: timetables)
+            if (timetable.getId() == primaryTimetableId)
+                organise = false;
+
+        if (organise)
+            primaryTimetableId = 0;
+
+    }
+
+    public Timetable getPrimaryTimetable(){
+        Timetable t = null;
+        for (Timetable timetable: timetables)
+            if (timetable.getId() == primaryTimetableId)
+                t = timetable;
+        return t;
+    }
+
+    public boolean isPrimaryTimetable(Timetable timetable){
+        if (timetable.getId() == primaryTimetableId)
+            return true;
+        else
+            return false;
+    }
+
+    public Timetable getTimetable(String name){
+        Timetable t = null;
+        for (Timetable timetable: timetables)
+            if (t.getName().equals(name))
+                t = timetable;
+
+        return t;
     }
 }
 

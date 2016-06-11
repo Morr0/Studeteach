@@ -136,7 +136,6 @@ public final class Utilities {
             taskType = TaskType.HOMEWORK;
 
         return taskType;
-
     }
 }
 
