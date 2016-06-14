@@ -13,6 +13,8 @@ import java.util.LinkedList;
 public class Timetable {
     @Attribute(required = false)
     private String name;
+    @Attribute(required = true)
+    private int id;
 
     @ElementList(name = "monday_periods", required = false)
     private LinkedList<Period> mondayPeriods;
@@ -45,6 +47,14 @@ public class Timetable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getId(){
+        return id;
+    }
+
+    public void setId(int id){
+        this.id = id;
     }
 
     public LinkedList<Period> getMondayPeriods() {

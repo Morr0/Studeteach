@@ -1,6 +1,6 @@
 package archavexm.studeteach.app.student;
 
-import archavexm.studeteach.app.StartupController;
+import archavexm.studeteach.app.ToMainMenuController;
 import archavexm.studeteach.app.common.AboutController;
 import archavexm.studeteach.app.common.todolist.TODOController;
 import archavexm.studeteach.app.student.window.ProfileEditorController;
@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Random;
 
 public class StudentController{
     // menu bar and other labels
@@ -49,7 +48,7 @@ public class StudentController{
     @FXML private AnchorPane anchorTimetable;
     @FXML private ComboBox<String> comboTimetables;
     @FXML private ComboBox<String> comboDays;
-    @FXML private CheckBox checkPrimaryTimetable;
+    @FXML private Label checkPrimaryTimetable;
     @FXML private ListView<String> listTimetable;
 
     private Student student;
@@ -134,6 +133,12 @@ public class StudentController{
 
             if (!name.equals("About")){
                 StudentWindow controller = loader.getController();
+
+                if (controller instanceof ITimetable){
+                    ITimetable timetableController = (ITimetable) controller;
+                    timetableController.setTimetable(selectedTimetable);
+                }
+
                 controller.setFilePath(filePath);
                 controller.init();
             }
@@ -226,31 +231,25 @@ public class StudentController{
 
     public void changedTimetable(){
         if (comboTimetables.getItems().size() > 1){
-            selectedTimetable = student.getTimetable(comboTimetables.getValue());
+            selectedTimetable = student.getTimetable(comboTimetables.getSelectionModel().getSelectedItem());
 
             if (student.isPrimaryTimetable(selectedTimetable)){
                 primaryTimetable = selectedTimetable;
-                checkPrimaryTimetable.setSelected(true);
+                checkPrimaryTimetable.setText("Yes");
             } else
-                checkPrimaryTimetable.setSelected(false);
+                checkPrimaryTimetable.setText("No");
         }
     }
 
     public void changedDay(){
         selectedDay = Utilities.toDayFromString(comboDays.getSelectionModel().getSelectedItem());
+        if (student.isPrimaryTimetable(selectedTimetable))
+            checkPrimaryTimetable.setText("Yes");
+        else
+            checkPrimaryTimetable.setText("No");
+
+
         refreshTimetable();
-    }
-
-    public void setPrimaryTimetable(){
-        if (checkPrimaryTimetable.isSelected()){
-            checkPrimaryTimetable.setSelected(false);
-            student.setPrimaryTimetableId(0);
-        } else {
-            checkPrimaryTimetable.setSelected(true);
-            student.setPrimaryTimetableId(selectedTimetable.getId());
-        }
-
-        save();
     }
 
     public void getTimetables() {
@@ -267,17 +266,21 @@ public class StudentController{
             for (Timetable t : student.getTimetables()){
                 timetables.add(t);
                 comboTimetables.getItems().add(t.getName());
-            }
-            primaryTimetable = student.getPrimaryTimetable();
-            if (primaryTimetable != null)
-                selectedTimetable = primaryTimetable;
-             else
-                selectedTimetable = student.getTimetables().getFirst();
 
-            comboTimetables.setPromptText(selectedTimetable.getName());
-            checkPrimaryTimetable.setSelected(true);
-        }
-        else {
+                if (student.isPrimaryTimetable(t)){
+                    primaryTimetable = t;
+                    selectedTimetable = t;
+                    comboTimetables.setPromptText(selectedTimetable.getName());
+                    checkPrimaryTimetable.setText("Yes");
+                }
+            }
+
+            if (primaryTimetable == null)
+                if (timetables.size() == 1){
+                    selectedTimetable = timetables.getFirst();
+                    comboTimetables.setPromptText(selectedTimetable.getName());
+                }
+        } else {
             anchorTimetable.getChildren().clear();
 
             Label info = new Label("You do not have any timetable do you want to create one.");
@@ -285,7 +288,7 @@ public class StudentController{
             button.setOnAction(event -> {
                 primaryTimetable = new Timetable();
                 primaryTimetable.setName(preferredName + "'s timetable");
-                primaryTimetable.setId(new Random().nextInt(1000));
+                primaryTimetable.setId(student.generateRandomIdForTimetable());
                 timetables.add(primaryTimetable);
                 student.setTimetables(timetables);
                 student.setPrimaryTimetableId(primaryTimetable.getId());
@@ -307,7 +310,7 @@ public class StudentController{
             listTimetable.setPlaceholder(new Label("You don't have any periods on " + Utilities.capitalizeFirstLetter(selectedDay.toString())));
         } else {
             for (Period period: periods){
-                String line = null;
+                String line;
                 if (period.getSubject().getSubject().equals(Subjects.NONE))
                     line = "Period " + period.getNumber() + ": no class" ;
                 else
@@ -319,7 +322,17 @@ public class StudentController{
     }
 
     public void createTimetable(){
+        String anotherTimetableName = selectedTimetable.getName() + (student.getTimetables().size() + 1);
+        int id = student.generateRandomIdForTimetable();
 
+        Timetable anotherTimetable = new Timetable();
+        anotherTimetable.setName(anotherTimetableName);
+        anotherTimetable.setId(id);
+
+        timetables.add(anotherTimetable);
+        student.setTimetables(timetables);
+        save();
+        unpackStudent();
     }
 
     public void deleteTimetable(){
@@ -333,23 +346,13 @@ public class StudentController{
         setLabels();
         }
 
-
-    private int generateRandomTimetableId(){
-        int id = (new Random()).nextInt(1000);
-        for (Timetable t: timetables)
-            if (t.getId() == id)
-                generateRandomTimetableId();
-
-        return id;
-    }
-
     // File menu
     public void fileSave(){
         save();
     }
 
     public void fileSaveAs(){
-        String anotherFilePath = null;
+        String anotherFilePath;
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save As .studeteach");
@@ -372,8 +375,11 @@ public class StudentController{
     public void fileCloseProfile(){
         try {
             FXMLLoader loader = new FXMLLoader();
-            URL url = StartupController.class.getResource("Startup.fxml");
-            Parent mainMenu = loader.load(url);
+            URL url = ToMainMenuController.class.getResource("ToMainMenu.fxml");
+            Parent mainMenu = loader.load(url.openStream());
+
+            ToMainMenuController toMainMenuController = loader.getController();
+            toMainMenuController.setLabelTitle("Student");
 
             Stage stage = new Stage();
             stage.setTitle(Studeteach.APP_NAME);

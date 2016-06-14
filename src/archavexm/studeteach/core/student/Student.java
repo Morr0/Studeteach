@@ -13,6 +13,7 @@ import org.simpleframework.xml.Root;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Random;
 
 @Root(name = "student")
 public class Student implements Person {
@@ -226,10 +227,19 @@ public class Student implements Person {
     public Timetable getTimetable(String name){
         Timetable t = null;
         for (Timetable timetable: timetables)
-            if (t.getName().equals(name))
+            if (timetable.getName().equals(name))
                 t = timetable;
 
         return t;
+    }
+
+    public int generateRandomIdForTimetable(){
+        int id = new Random().nextInt(10000);
+        for (Timetable timetable: timetables)
+            if (timetable.getId() == id)
+                generateRandomIdForTimetable();
+
+        return id;
     }
 }
 
