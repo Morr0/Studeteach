@@ -82,9 +82,10 @@ public class StudentController{
             unpackStudent();
             anchorTimetableChildren = anchorTimetable.getChildren();
             schoolDays = student.getSchoolDays();
-            setPreferedName();
+            setPreferredName();
             setLabels();
             setTitle();
+            getSchoolDays();
 
             if (schoolDays.size() == 0) {
                 Label label = new Label("You have not set your school days. You can press the button below in order to edit your profile and set your school days.");
@@ -173,7 +174,7 @@ public class StudentController{
     public void refresh(){
         try {
             unpackStudent();
-            setPreferedName();
+            setPreferredName();
             setLabels();
             setTitle();
         }
@@ -185,13 +186,12 @@ public class StudentController{
     private void unpackStudent(){
         try {
             student = ObjectDeserializer.deserializeStudent(filePath);
-            getSchoolDays();
         } catch (Exception ex){
             ex.printStackTrace();
         }
     }
 
-    private void setPreferedName(){
+    private void setPreferredName(){
         if (student.getPreferredName() == null){
             stageTitle = (student.getFirstName()) + " - " + Studeteach.APP_NAME;
             preferredName = student.getFirstName();

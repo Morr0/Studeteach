@@ -83,14 +83,32 @@ public final class Utilities {
                 return Subjects.NONE;
             case "none":
                 return Subjects.NONE;
+            case "english":
+                return Subjects.ENGLISH;
+            case "arabic":
+                return Subjects.ARABIC;
+            case "chinese":
+                return Subjects.CHINESE;
+            case "french":
+                return Subjects.FRENCH;
+            case "assyrian":
+                return Subjects.ASSYRIAN;
             case "language":
                 return Subjects.LANGUAGE;
             case "geography":
                 return Subjects.GEOGRAPHY;
             case "history":
                 return Subjects.HISTORY;
+            case "religion":
+                return Subjects.RELIGION;
             case "science":
                 return Subjects.SCIENCE;
+            case "physics":
+                return Subjects.PHYSICS;
+            case "chemistry":
+                return Subjects.CHEMISTRY;
+            case "biology":
+                return Subjects.BIOLOGY;
             case "music":
                 return Subjects.MUSIC;
             case "art":

@@ -15,14 +15,23 @@
       <ComboBox fx:id="comboSubject" layoutX="97.0" layoutY="16.0" prefHeight="31.0" prefWidth="285.0" promptText="Select a Subject:">
          <items>
             <FXCollections fx:factory="observableArrayList">
+               <String fx:value="English" />
+               <String fx:value="Arabic" />
+               <String fx:value="French" />
+               <String fx:value="Chinese" />
+               <String fx:value="Assyrian" />
                <String fx:value="Language" />
                <String fx:value="Mathematics" />
                <String fx:value="Geography" />
+               <String fx:value="Religion" />
                <String fx:value="History" />
                <String fx:value="Commerce" />
                <String fx:value="Art" />
                <String fx:value="Music" />
                <String fx:value="Science" />
+               <String fx:value="Physics" />
+               <String fx:value="Chemistry" />
+               <String fx:value="Biology" />
                <String fx:value="Sport" />
                <String fx:value="Computing" />
             </FXCollections>
