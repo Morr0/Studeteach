@@ -1,9 +1,9 @@
 package archavexm.studeteach.app.common.todolist;
 
-import archavexm.studeteach.app.student.StudentWindow;
 import archavexm.studeteach.core.Studeteach;
 import archavexm.studeteach.core.common.TODOList;
 import archavexm.studeteach.core.student.Student;
+import archavexm.studeteach.core.student.util.StudentWindow;
 import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.ObjectSerializer;
 import javafx.collections.FXCollections;

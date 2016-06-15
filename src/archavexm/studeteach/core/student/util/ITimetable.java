@@ -1,4 +1,4 @@
-package archavexm.studeteach.app.student;
+package archavexm.studeteach.core.student.util;
 
 import archavexm.studeteach.core.student.timetable.Timetable;
 

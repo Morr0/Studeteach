@@ -1,5 +1,6 @@
 package archavexm.studeteach.app;
 
+import archavexm.studeteach.app.common.AboutController;
 import archavexm.studeteach.app.student.StudentController;
 import archavexm.studeteach.core.Studeteach;
 import archavexm.studeteach.core.student.Student;
@@ -12,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -20,7 +22,7 @@ import java.io.IOException;
 public class ToMainMenuController {
     @FXML private Label labelTitle;
 
-    private String person;
+    private String person = "Student";
     private String filePath;
 
     public void setLabelTitle(String person){
@@ -28,18 +30,42 @@ public class ToMainMenuController {
         labelTitle.setText(person);
     }
 
-    public void newUser() throws Exception{
-        FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(getClass().getResource("NewUser.fxml").openStream());
-        NewUserController nuc = (NewUserController)loader.getController();
-        nuc.setPersonText(person);
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setTitle("New " + person + " - " + Studeteach.APP_NAME);
-        stage.show();
+    public void newUser(){
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            Parent root = loader.load(getClass().getResource("NewUser.fxml").openStream());
+
+            NewUserController nuc = loader.getController();
+            nuc.setPersonText(person);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("New " + person + " - " + Studeteach.APP_NAME);
+            stage.show();
+        } catch (IOException ex){
+            ex.printStackTrace();
+        }
 
         Stage current = (Stage)labelTitle.getScene().getWindow();
         current.close();
+    }
+
+    public void openAboutWindow(){
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            Parent aboutWindow = loader.load(AboutController.class.getResource("About.fxml"));
+
+            Stage currentStage = (Stage) labelTitle.getScene().getWindow();
+            Stage stage = new Stage();
+            stage.initOwner(currentStage);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.setTitle("About - " + Studeteach.APP_NAME);
+            stage.setScene(new Scene(aboutWindow));
+            stage.showAndWait();
+
+        } catch (IOException ex){
+            ex.printStackTrace();
+        }
     }
 
     public void openUser(){
@@ -52,7 +78,6 @@ public class ToMainMenuController {
 
             Stage currentStage = (Stage) labelTitle.getScene().getWindow();
             File file = fileChooser.showOpenDialog(currentStage);
-
             filePath = file.getAbsolutePath();
 
             String content = null;
@@ -102,12 +127,12 @@ public class ToMainMenuController {
             sc.setCurrentStage(stage);
             sc.initStudent();
             stage.show();
-
-            Stage currentStage = (Stage)labelTitle.getScene().getWindow();
-            currentStage.close();
         } catch (Exception ex){
             ex.printStackTrace();
         }
+
+        Stage currentStage = (Stage)labelTitle.getScene().getWindow();
+        currentStage.close();
     }
 
 }

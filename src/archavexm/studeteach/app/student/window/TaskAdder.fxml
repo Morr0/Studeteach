@@ -5,14 +5,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import java.lang.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="269.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.student.window.TaskAdderController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="269.0" prefWidth="399.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.student.window.TaskAdderController">
    <children>
       <Label layoutX="9.0" layoutY="11.0" prefHeight="32.0" prefWidth="87.0" text="Subject:">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <ComboBox fx:id="comboSubject" layoutX="97.0" layoutY="16.0" prefHeight="31.0" prefWidth="375.0" promptText="Select a Subject:">
+      <ComboBox fx:id="comboSubject" layoutX="97.0" layoutY="16.0" prefHeight="31.0" prefWidth="285.0" promptText="Select a Subject:">
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="Language" />
@@ -33,14 +33,14 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <DatePicker fx:id="pickerDueDate" layoutX="97.0" layoutY="71.0" onAction="#refreshPeriods" prefHeight="31.0" prefWidth="376.0" promptText="Select a Date:" />
+      <DatePicker fx:id="pickerDueDate" layoutX="97.0" layoutY="71.0" onAction="#refreshPeriods" prefHeight="31.0" prefWidth="285.0" promptText="Select a Date:" />
       <Label layoutX="11.0" layoutY="128.0" prefHeight="32.0" prefWidth="84.0" text="Due Period:">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <ComboBox fx:id="comboDuePeriod" layoutX="96.0" layoutY="128.0" prefHeight="31.0" prefWidth="377.0" promptText="Select a Due Period:" />
-      <Button layoutX="172.0" layoutY="175.0" mnemonicParsing="false" onAction="#save" prefHeight="80.0" prefWidth="137.0" text="Add">
+      <ComboBox fx:id="comboDuePeriod" layoutX="96.0" layoutY="128.0" prefHeight="31.0" prefWidth="285.0" promptText="Select a Due Period:" />
+      <Button layoutX="131.0" layoutY="175.0" mnemonicParsing="false" onAction="#save" prefHeight="80.0" prefWidth="137.0" text="Add">
          <font>
             <Font size="32.0" />
          </font>

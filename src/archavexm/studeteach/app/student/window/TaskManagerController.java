@@ -1,10 +1,10 @@
 package archavexm.studeteach.app.student.window;
 
-import archavexm.studeteach.app.student.StudentWindow;
 import archavexm.studeteach.core.Studeteach;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.student.task.Task;
 import archavexm.studeteach.core.student.task.TaskType;
+import archavexm.studeteach.core.student.util.StudentWindow;
 import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.ObjectSerializer;
 import archavexm.studeteach.core.util.Utilities;

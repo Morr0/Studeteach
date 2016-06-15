@@ -1,13 +1,13 @@
 package archavexm.studeteach.app.student.window;
 
-import archavexm.studeteach.app.student.ITimetable;
-import archavexm.studeteach.app.student.StudentWindow;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.student.subject.Subject;
 import archavexm.studeteach.core.student.subject.Subjects;
 import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.student.timetable.Period;
 import archavexm.studeteach.core.student.timetable.Timetable;
+import archavexm.studeteach.core.student.util.ITimetable;
+import archavexm.studeteach.core.student.util.StudentWindow;
 import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.ObjectSerializer;
 import archavexm.studeteach.core.util.Utilities;

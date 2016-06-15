@@ -41,7 +41,7 @@
       <Label fx:id="labelYear" layoutX="251.0" layoutY="27.0" prefHeight="25.0" prefWidth="57.0" />
       <Label layoutX="316.0" layoutY="27.0" prefHeight="25.0" prefWidth="50.0" text="Tasks:" />
       <Label fx:id="labelNumberOfTasks" layoutX="366.0" layoutY="27.0" prefHeight="25.0" prefWidth="50.0" />
-      <Button layoutX="438.0" layoutY="27.0" mnemonicParsing="false" onAction="#toProfileEditor" prefHeight="25.0" prefWidth="75.0" text="Edit Profile" />
+      <Button layoutX="438.0" layoutY="27.0" mnemonicParsing="false" onAction="#toProfileEditor" prefHeight="25.0" prefWidth="83.0" text="Edit Profile" />
       <Button layoutX="513.0" layoutY="27.0" mnemonicParsing="false" onAction="#toTaskManager" prefHeight="25.0" prefWidth="91.0" text="Task Manager" />
       <Button layoutX="598.0" layoutY="27.0" mnemonicParsing="false" onAction="#toTODOList" prefHeight="25.0" prefWidth="50.0" text="TODO" />
       <AnchorPane fx:id="anchorTimetable" layoutX="19.0" layoutY="62.0" prefHeight="541.0" prefWidth="629.0">

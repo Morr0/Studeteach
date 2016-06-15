@@ -47,7 +47,7 @@ public class TaskAdderController {
     public void init(){
         try {
             student = ObjectDeserializer.deserializeStudent(filePath);
-            timetable = student.getTimetables().get(0);
+            timetable = student.getPrimaryTimetable();
         }
         catch (Exception ex){
             ex.printStackTrace();

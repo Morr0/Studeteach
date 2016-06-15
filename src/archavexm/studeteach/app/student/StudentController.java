@@ -12,6 +12,8 @@ import archavexm.studeteach.core.student.subject.Subjects;
 import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.student.timetable.Period;
 import archavexm.studeteach.core.student.timetable.Timetable;
+import archavexm.studeteach.core.student.util.ITimetable;
+import archavexm.studeteach.core.student.util.StudentWindow;
 import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.ObjectSerializer;
 import archavexm.studeteach.core.util.Utilities;
@@ -26,6 +28,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -71,9 +74,7 @@ public class StudentController{
 
     public void setCurrentStage(Stage stage){
         currentStage = stage;
-        currentStage.setOnCloseRequest(event -> {
-            Platform.exit();
-        });
+        currentStage.setOnCloseRequest(event -> Platform.exit());
     }
 
     public void initStudent(){
@@ -84,8 +85,23 @@ public class StudentController{
             setPreferedName();
             setLabels();
             setTitle();
-            getSchoolDays();
-            getTimetables();
+
+            if (schoolDays.size() == 0) {
+                Label label = new Label("You have not set your school days. You can press the button below in order to edit your profile and set your school days.");
+                label.setWrapText(true);
+                Button button = new Button("Edit Profile");
+                button.setOnAction(event -> toProfileEditor());
+                VBox vBox = new VBox();
+                vBox.getChildren().addAll(label, button);
+                anchorTimetable.getChildren().clear();
+                anchorTimetable.getChildren().add(vBox);
+            } else
+                getTimetables();
+
+            Label listTimetablePlaceholder = new Label("You have not selected any day for viewing your timetable. You can select above.");
+            listTimetablePlaceholder.setFont(new Font(18.0));
+            listTimetablePlaceholder.setWrapText(true);
+            listTimetable.setPlaceholder(listTimetablePlaceholder);
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -169,6 +185,7 @@ public class StudentController{
     private void unpackStudent(){
         try {
             student = ObjectDeserializer.deserializeStudent(filePath);
+            getSchoolDays();
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -376,10 +393,7 @@ public class StudentController{
         try {
             FXMLLoader loader = new FXMLLoader();
             URL url = ToMainMenuController.class.getResource("ToMainMenu.fxml");
-            Parent mainMenu = loader.load(url.openStream());
-
-            ToMainMenuController toMainMenuController = loader.getController();
-            toMainMenuController.setLabelTitle("Student");
+            Parent mainMenu = loader.load(url);
 
             Stage stage = new Stage();
             stage.setTitle(Studeteach.APP_NAME);
