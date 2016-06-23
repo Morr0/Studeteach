@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 <?import java.lang.String?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="469.0" prefWidth="383.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.NewUserController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="469.0" prefWidth="383.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.student.NewStudentController">
    <children>
       <Label alignment="CENTER" layoutX="6.0" layoutY="83.0" prefHeight="35.0" prefWidth="175.0" text="First Name:">
          <font>
@@ -40,7 +40,7 @@
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="Primary" />
-               <String fx:value="Secondary" />
+               <String fx:value="Secondary (High School)" />
                <String fx:value="University" />
             </FXCollections>
          </items>
@@ -55,9 +55,9 @@
          <font>
             <Font size="32.0" />
          </font></Button>
-      <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="63.0" prefWidth="356.0" text="New Profile">
+      <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="63.0" prefWidth="356.0" text="New Student Profile">
          <font>
-            <Font size="42.0" />
+            <Font size="32.0" />
          </font>
       </Label>
    </children>

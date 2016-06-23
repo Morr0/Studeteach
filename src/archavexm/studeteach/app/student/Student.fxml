@@ -9,8 +9,8 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#fileSave" text="Save" />
                   <MenuItem mnemonicParsing="false" onAction="#fileSaveAs" text="Save As" />
+                  <MenuItem mnemonicParsing="false" onAction="#fileDeleteProfile" text="Delete" />
                   <MenuItem mnemonicParsing="false" onAction="#fileCloseProfile" text="Close Profile" />
                   <MenuItem mnemonicParsing="false" onAction="#fileExit" text="Exit" />
             </items>

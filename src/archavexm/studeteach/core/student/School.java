@@ -1,9 +1,8 @@
 package archavexm.studeteach.core.student;
 
+import archavexm.studeteach.core.util.Utilities;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
-
-import javax.xml.bind.annotation.XmlElement;
 
 @Root
 public class School {
@@ -30,20 +29,8 @@ public class School {
         instance.name = name;
     }
 
-    @XmlElement(name = "type")
     public String getSchoolType(){
-        String output = null;
-
-        if (schoolType == SchoolType.PRIMARY){
-            output = "Primary";
-        }
-        else if(schoolType == SchoolType.SECONDARY) {
-            output = "Secondary";
-        }
-        else {
-            output = "University";
-        }
-
+        String output = Utilities.capitalizeFirstLetter(schoolType.toString());
         return output;
     }
 

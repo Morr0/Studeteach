@@ -7,9 +7,9 @@ import archavexm.studeteach.app.student.window.ProfileEditorController;
 import archavexm.studeteach.app.student.window.TaskManagerController;
 import archavexm.studeteach.app.student.window.TimetableEditorController;
 import archavexm.studeteach.core.Studeteach;
+import archavexm.studeteach.core.common.Day;
+import archavexm.studeteach.core.common.subject.Subjects;
 import archavexm.studeteach.core.student.Student;
-import archavexm.studeteach.core.student.subject.Subjects;
-import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.student.timetable.Period;
 import archavexm.studeteach.core.student.timetable.Timetable;
 import archavexm.studeteach.core.student.util.ITimetable;
@@ -26,6 +26,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -38,9 +39,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Optional;
 
+// The student main window
+// Here you can edit all the things that a student has
 public class StudentController{
-    // menu bar and other labels
+    // Menu bar and other labels
     @FXML private MenuBar menuBar;
     @FXML private Label labelName;
     @FXML private Label labelAge;
@@ -64,7 +68,7 @@ public class StudentController{
 
     private HashSet<Day> schoolDays = new HashSet<>();
     private LinkedList<Timetable> timetables = new LinkedList<>();
-    private ObservableList<Node> anchorTimetableChildren;
+    private ObservableList<Node> anchorTimetableChildren = FXCollections.observableArrayList();
     private Timetable selectedTimetable;
     private Day selectedDay;
 
@@ -80,12 +84,13 @@ public class StudentController{
     public void initStudent(){
         try {
             unpackStudent();
-            anchorTimetableChildren = anchorTimetable.getChildren();
             schoolDays = student.getSchoolDays();
             setPreferredName();
             setLabels();
             setTitle();
             getSchoolDays();
+            for (Node node: anchorTimetable.getChildren())
+                anchorTimetableChildren.add(node);
 
             if (schoolDays.size() == 0) {
                 Label label = new Label("You have not set your school days. You can press the button below in order to edit your profile and set your school days.");
@@ -111,19 +116,23 @@ public class StudentController{
     public void toProfileEditor(){
         URL url = ProfileEditorController.class.getResource("ProfileEditor.fxml");
         toWindow(url, "ProfileEditor", preferredName + " - Profile Editor - " + Studeteach.APP_NAME);
+        unpackStudent();
         refresh();
+        getSchoolDays();
+        getTimetables();
     }
 
     public void toTaskManager(){
-        if (primaryTimetable.isTimetableEmpty()){
+        if (primaryTimetable == null || primaryTimetable.isTimetableEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("You have not set your primaryTimetable. In order to access the task manager you have to have a primaryTimetable.");
+            alert.setContentText("You have not set your primary timetable. In order to access the task manager you have to have a primary timetable.");
             alert.showAndWait();
 
             return;
         } else {
             URL url = TaskManagerController.class.getResource("TaskManager.fxml");
             toWindow(url, "TaskManager", "Task Manager - " + Studeteach.APP_NAME);
+            unpackStudent();
             refresh();
         }
     }
@@ -139,8 +148,18 @@ public class StudentController{
     }
 
     public void toTimetableEditor(){
-        URL url = TimetableEditorController.class.getResource("TimetableEditor.fxml");
-        toWindow(url, "TimetableEditor", "Timetable Editor - " + Studeteach.APP_NAME);
+        if (schoolDays.size() > 0){
+            URL url = TimetableEditorController.class.getResource("TimetableEditor.fxml");
+            toWindow(url, "TimetableEditor", "Timetable Editor - " + Studeteach.APP_NAME);
+            unpackStudent();
+            refreshTimetable();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("In order to edit your timetable you have to add at least one school day to your profile.");
+            alert.showAndWait();
+
+            return;
+        }
     }
 
     private void toWindow(URL url, String name, String title){
@@ -161,6 +180,7 @@ public class StudentController{
             }
 
             Stage stage = new Stage();
+            stage.getIcons().add(new Image(Studeteach.APP_ICON));
             stage.setTitle(title);
             stage.setScene(new Scene(window));
             stage.initModality(Modality.WINDOW_MODAL);
@@ -168,17 +188,17 @@ public class StudentController{
             stage.showAndWait();
         } catch (IOException ex){
             ex.printStackTrace();
-        }
+        } catch (NullPointerException ex) {}
     }
 
     public void refresh(){
         try {
             unpackStudent();
+            schoolDays = student.getSchoolDays();
             setPreferredName();
             setLabels();
             setTitle();
-        }
-        catch (Exception ex){
+        } catch (Exception ex){
             ex.printStackTrace();
         }
     }
@@ -225,17 +245,16 @@ public class StudentController{
     }
 
     private void getSchoolDays(){
-        for (Day day: schoolDays){
-            comboDays.getItems().add(Utilities.capitalizeFirstLetter(day.toString()));
-        }
+        comboDays.getItems().clear();
+        ObservableList<String> strings = FXCollections.observableArrayList();
+
+        for (Day day: schoolDays)
+            strings.add(Utilities.capitalizeFirstLetter(day.toString()));
+        comboDays.setItems(strings);
     }
 
     private void save(){
-        try {
-            ObjectSerializer.serializeStudent(filePath, student);
-        } catch (Exception ex){
-            ex.printStackTrace();
-        }
+        save(filePath);
     }
 
     private void save(String path){
@@ -249,6 +268,8 @@ public class StudentController{
     public void changedTimetable(){
         if (comboTimetables.getItems().size() > 1){
             selectedTimetable = student.getTimetable(comboTimetables.getSelectionModel().getSelectedItem());
+            listTimetable.getItems().clear();
+            refreshTimetable();
 
             if (student.isPrimaryTimetable(selectedTimetable)){
                 primaryTimetable = selectedTimetable;
@@ -258,17 +279,22 @@ public class StudentController{
         }
     }
 
+    // Fired whenever the day in the comboDay is changed
     public void changedDay(){
-        selectedDay = Utilities.toDayFromString(comboDays.getSelectionModel().getSelectedItem());
-        if (student.isPrimaryTimetable(selectedTimetable))
-            checkPrimaryTimetable.setText("Yes");
-        else
-            checkPrimaryTimetable.setText("No");
+        try {
+            selectedDay = Utilities.toDayFromString(comboDays.getSelectionModel().getSelectedItem());
+            if (student.isPrimaryTimetable(selectedTimetable))
+                checkPrimaryTimetable.setText("Yes");
+            else
+                checkPrimaryTimetable.setText("No");
 
-
-        refreshTimetable();
+            refreshTimetable();
+            // empty catch block because whenever the user exits Profile Editor this will throw an exception for no reason
+        } catch (NullPointerException ex) {}
     }
 
+    // Reloads the timetable nodes
+    // Takes care of the timetable system
     public void getTimetables() {
         timetables.clear();
         comboTimetables.getItems().clear();
@@ -276,8 +302,7 @@ public class StudentController{
         if (student.getTimetables().size() > 0){
             if (!anchorTimetable.getChildren().equals(anchorTimetableChildren)){
                 anchorTimetable.getChildren().clear();
-                for (Node node: anchorTimetableChildren)
-                    anchorTimetable.getChildren().add(node);
+                anchorTimetable.getChildren().setAll(anchorTimetableChildren);
             }
 
             for (Timetable t : student.getTimetables()){
@@ -302,6 +327,10 @@ public class StudentController{
 
             Label info = new Label("You do not have any timetable do you want to create one.");
             Button button = new Button("Create");
+            VBox vbox = new VBox();
+            vbox.getChildren().addAll(info, button);
+            anchorTimetable.getChildren().add(vbox);
+
             button.setOnAction(event -> {
                 primaryTimetable = new Timetable();
                 primaryTimetable.setName(preferredName + "'s timetable");
@@ -311,33 +340,36 @@ public class StudentController{
                 student.setPrimaryTimetableId(primaryTimetable.getId());
                 selectedTimetable = primaryTimetable;
                 save();
+                unpackStudent();
+                getTimetables();
             });
-            VBox vbox = new VBox();
-            vbox.getChildren().addAll(info, button);
-            anchorTimetable.getChildren().add(vbox);
         }
     }
 
+    // Refreshes the timetable view from the specified day and timetable
     private void refreshTimetable(){
-        listTimetable.getItems().clear();
-        LinkedList<Period> periods = selectedTimetable.getDayPeriods(selectedDay);
-        ObservableList<String> strings = FXCollections.observableArrayList();
+        if (selectedDay != null){
+            listTimetable.getItems().clear();
+            LinkedList<Period> periods = selectedTimetable.getDayPeriods(selectedDay);
+            ObservableList<String> strings = FXCollections.observableArrayList();
 
-        if (periods.isEmpty()){
-            listTimetable.setPlaceholder(new Label("You don't have any periods on " + Utilities.capitalizeFirstLetter(selectedDay.toString())));
-        } else {
-            for (Period period: periods){
-                String line;
-                if (period.getSubject().getSubject().equals(Subjects.NONE))
-                    line = "Period " + period.getNumber() + ": no class" ;
-                else
-                    line = "Period " + period.getNumber() + ": " + period.getSubject().toString() + " class";
-                strings.add(line);
+            if (periods.isEmpty()){
+                listTimetable.setPlaceholder(new Label("You don't have any periods on " + Utilities.capitalizeFirstLetter(selectedDay.toString())));
+            } else {
+                for (Period period: periods){
+                    String line;
+                    if (period.getSubject().getSubject().equals(Subjects.NONE))
+                        line = "Period " + period.getNumber() + ": no class" ;
+                    else
+                        line = "Period " + period.getNumber() + ": " + period.getSubject().toString() + " class";
+                    strings.add(line);
+                }
             }
+            listTimetable.setItems(strings);
         }
-        listTimetable.setItems(strings);
     }
 
+    // Creates a new timetable with a unique name and auto-generated id
     public void createTimetable(){
         String anotherTimetableName = selectedTimetable.getName() + (student.getTimetables().size() + 1);
         int id = student.generateRandomIdForTimetable();
@@ -348,26 +380,46 @@ public class StudentController{
 
         timetables.add(anotherTimetable);
         student.setTimetables(timetables);
+        student.organiseTimetables();
         save();
         unpackStudent();
+        getTimetables();
     }
 
+    // Deletes the selected timetable
     public void deleteTimetable(){
         LinkedList<Timetable> newTimetables = new LinkedList<>();
         for (Timetable timetable: timetables)
-            if (timetable.getId() != selectedTimetable.getId())
+            if (student.isPrimaryTimetable(timetable))
+                student.setPrimaryTimetableId(0);
+            else if (timetable.getId() != selectedTimetable.getId())
                 newTimetables.add(timetable);
+
+        if (newTimetables.size() > 0){
+            int id = student.generateRandomIdForTimetable();
+            student.setPrimaryTimetableId(id);
+            Timetable timetable = newTimetables.getFirst();
+            int oldId = timetable.getId();
+            timetable.setId(id);
+
+            LinkedList<Timetable> tts = (LinkedList<Timetable>) newTimetables.clone();
+            newTimetables.clear();
+            for (Timetable t: tts)
+                if (t.getId() == oldId){
+                    t.setId(id);
+                    newTimetables.add(t);
+                } else
+                    newTimetables.add(t);
+        }
 
         student.setTimetables(newTimetables);
         save();
+        unpackStudent();
         setLabels();
-        }
-
-    // File menu
-    public void fileSave(){
-        save();
+        getTimetables();
     }
 
+    // File menus
     public void fileSaveAs(){
         String anotherFilePath;
         try {
@@ -389,6 +441,22 @@ public class StudentController{
         save(anotherFilePath);
     }
 
+    public void fileDeleteProfile(){
+        try {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setContentText("Are you sure that you want to delete your profile.");
+
+            Optional<ButtonType> button = alert.showAndWait();
+            if (button.get().equals(ButtonType.OK)){
+                Utilities.emptyTheFile(filePath);
+                fileCloseProfile();
+            } else
+                return;
+        } catch (IOException ex){
+            ex.printStackTrace();
+        }
+    }
+
     public void fileCloseProfile(){
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -396,6 +464,7 @@ public class StudentController{
             Parent mainMenu = loader.load(url);
 
             Stage stage = new Stage();
+            stage.getIcons().add(new Image(Studeteach.APP_ICON));
             stage.setTitle(Studeteach.APP_NAME);
             stage.setScene(new Scene(mainMenu));
             stage.show();

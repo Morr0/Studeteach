@@ -14,13 +14,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.LinkedList;
 
 public class TODOController implements StudentWindow {
-    @FXML
-    private ListView<String> listTODOLists;
+    @FXML private ListView<String> listTODOLists;
 
     private Student student;
     private String filePath;
@@ -41,9 +41,10 @@ public class TODOController implements StudentWindow {
         }
 
         todoLists = student.getTodoLists();
-
         if (todoLists.isEmpty()){
-            listTODOLists.setPlaceholder(new Label("You do not have any TODO Lists. You can add TODO Lists by pressing the + Button below."));
+            Label label = new Label("You do not have any TODO Lists. You can add TODO Lists by pressing the + Button below.");
+            label.setWrapText(true);
+            listTODOLists.setPlaceholder(label);
         }
 
         update();
@@ -84,8 +85,11 @@ public class TODOController implements StudentWindow {
             todoAdderController.setFilePath(filePath);
             todoAdderController.init();
 
+            Stage currentStage = (Stage) listTODOLists.getScene().getWindow();
             Stage stage = new Stage();
-            stage.setTitle("Todo List Adder - " + Studeteach.APP_NAME);
+            stage.initOwner(currentStage);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.setTitle("TODO List Adder - " + Studeteach.APP_NAME);
             stage.setScene(new Scene(todoAdder));
             stage.showAndWait();
         } catch (Exception ex){

@@ -1,4 +1,4 @@
-package archavexm.studeteach.core.student.timetable;
+package archavexm.studeteach.core.common;
 
 
 public enum Day {

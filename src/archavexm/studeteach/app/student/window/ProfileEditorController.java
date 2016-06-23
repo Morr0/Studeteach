@@ -1,9 +1,8 @@
 package archavexm.studeteach.app.student.window;
 
+import archavexm.studeteach.core.common.Day;
 import archavexm.studeteach.core.student.SchoolType;
 import archavexm.studeteach.core.student.Student;
-import archavexm.studeteach.core.student.timetable.Day;
-import archavexm.studeteach.core.student.timetable.Timetable;
 import archavexm.studeteach.core.student.util.StudentWindow;
 import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.ObjectSerializer;
@@ -11,13 +10,13 @@ import archavexm.studeteach.core.util.Utilities;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.HashSet;
-import java.util.LinkedList;
 
+// The profile editor for the student
 public class ProfileEditorController implements StudentWindow {
     @FXML private TextField textFirstName;
     @FXML private TextField textLastName;
@@ -25,7 +24,7 @@ public class ProfileEditorController implements StudentWindow {
     @FXML private TextField textAge;
     @FXML private TextField textYear;
     @FXML private TextField textSchoolName;
-    @FXML private TextField textSchoolType;
+    @FXML private ComboBox<String> comboSchoolType;
 
     // Day checkboxes
     @FXML private CheckBox checkMonday;
@@ -60,28 +59,19 @@ public class ProfileEditorController implements StudentWindow {
         if (!(student.getSchoolYear() == 0)) {
             textYear.setText(Integer.toString(student.getSchoolYear()));
         }
-
         textSchoolName.setText(student.getSchoolName());
 
-        String content = null;
-        try {
-            content = Utilities.read(filePath).toLowerCase();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        if (content.contains("primary"))
-            textSchoolType.setText("Primary");
-        else if (content.contains("secondary"))
-            textSchoolType.setText("Secondary");
-        else if (content.contains("university"))
-            textSchoolType.setText("University");
-        content = null;
-
+        String content = student.getSchoolType();
+        if (content.contains("Primary"))
+            comboSchoolType.setValue("Primary");
+        else if (content.contains("Secondary"))
+            comboSchoolType.setValue("Secondary (High School)");
+        else if (content.contains("University"))
+            comboSchoolType.setValue("University");
 
         HashSet<Day> schoolDays = student.getSchoolDays();
         if (!schoolDays.isEmpty()) for (Day day : schoolDays) {
             String name = day.toString().toLowerCase();
-
             switch (name) {
                 case "monday":
                     checkMonday.setSelected(true);
@@ -136,8 +126,7 @@ public class ProfileEditorController implements StudentWindow {
             alert.showAndWait();
 
             return;
-        }
-        else {
+        } else {
             age = Integer.parseInt(textAge.getText());
         }
 
@@ -146,33 +135,30 @@ public class ProfileEditorController implements StudentWindow {
             alert.showAndWait();
 
             return;
-        }
-        else if (age < 5){
+        } else if (age < 5){
             alert.setContentText("Your age must be over 5 years old.");
             alert.showAndWait();
 
             return;
-        }
-        else if (age > 75){
+        } else if (age > 75){
             alert.setContentText("Your age must be less than 75 years old.");
             alert.showAndWait();
 
             return;
         }
 
-        if (!(Utilities.isDigit(textYear.getText()))){
+        if (!(Utilities.isDigit(textYear.getText())))
             alert.setContentText("You must provide a non-negative number in the year field and it must not exceed 12.");
-        }
-        else {
+         else
             year = Integer.parseInt(textYear.getText());
-        }
+
+
         if (year == 0){
             alert.setContentText("You must provide the year you are studying in.");
             alert.showAndWait();
 
             return;
-        }
-        else if (year > 12 || year < 0){
+        } else if (year > 12 || year < 0){
             alert.setContentText("You should provide the correct year you are studying in.");
             alert.showAndWait();
 
@@ -187,13 +173,13 @@ public class ProfileEditorController implements StudentWindow {
         } else
             schoolName = textSchoolName.getText();
 
-        String st = textSchoolType.getText().toLowerCase();
+        String st = comboSchoolType.getSelectionModel().getSelectedItem().toLowerCase();
 
         switch (st){
             case "primary":
                 schoolType = SchoolType.PRIMARY;
                 break;
-            case "secondary":
+            case "secondary (high school)":
                 schoolType = SchoolType.SECONDARY;
                 break;
             case "university":
@@ -237,16 +223,13 @@ public class ProfileEditorController implements StudentWindow {
         student.setSchoolType(schoolType);
         student.setSchoolDays(schoolDays);
 
-        LinkedList<Timetable> timetables = student.getTimetables();
-        student.setTimetables(timetables);
-
         try {
             ObjectSerializer.serializeStudent(filePath, student);
         } catch (Exception ex){
             ex.printStackTrace();
         }
 
-        Stage currentStage = (Stage)textSchoolType.getScene().getWindow();
+        Stage currentStage = (Stage) textSchoolName.getScene().getWindow();
         currentStage.close();
 
     }

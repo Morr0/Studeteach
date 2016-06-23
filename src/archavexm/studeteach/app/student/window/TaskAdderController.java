@@ -1,11 +1,11 @@
 package archavexm.studeteach.app.student.window;
 
+import archavexm.studeteach.core.common.Day;
+import archavexm.studeteach.core.common.subject.Subject;
+import archavexm.studeteach.core.common.subject.Subjects;
+import archavexm.studeteach.core.common.task.Task;
+import archavexm.studeteach.core.common.task.TaskType;
 import archavexm.studeteach.core.student.Student;
-import archavexm.studeteach.core.student.subject.Subject;
-import archavexm.studeteach.core.student.subject.Subjects;
-import archavexm.studeteach.core.student.task.Task;
-import archavexm.studeteach.core.student.task.TaskType;
-import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.student.timetable.Period;
 import archavexm.studeteach.core.student.timetable.Timetable;
 import archavexm.studeteach.core.util.ObjectDeserializer;

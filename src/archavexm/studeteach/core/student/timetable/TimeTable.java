@@ -1,7 +1,8 @@
 package archavexm.studeteach.core.student.timetable;
 
-import archavexm.studeteach.core.student.subject.Subject;
-import archavexm.studeteach.core.student.subject.Subjects;
+import archavexm.studeteach.core.common.Day;
+import archavexm.studeteach.core.common.subject.Subject;
+import archavexm.studeteach.core.common.subject.Subjects;
 import archavexm.studeteach.core.util.Utilities;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
@@ -11,9 +12,9 @@ import java.util.LinkedList;
 
 @Root
 public class Timetable {
-    @Attribute(required = false)
+    @Attribute
     private String name;
-    @Attribute(required = true)
+    @Attribute
     private int id;
 
     @ElementList(name = "monday_periods", required = false)
@@ -215,8 +216,3 @@ public class Timetable {
         return -1;
     }
 }
-
-
-
-
-

@@ -12,8 +12,7 @@ import javafx.stage.Stage;
 import java.util.LinkedList;
 
 public class TODOAdderController {
-    @FXML
-    private TextField textTODO;
+    @FXML private TextField textTODO;
 
     private Student student;
     private String filePath;

@@ -1,9 +1,9 @@
 package archavexm.studeteach.app.student.window;
 
 import archavexm.studeteach.core.Studeteach;
+import archavexm.studeteach.core.common.task.Task;
+import archavexm.studeteach.core.common.task.TaskType;
 import archavexm.studeteach.core.student.Student;
-import archavexm.studeteach.core.student.task.Task;
-import archavexm.studeteach.core.student.task.TaskType;
 import archavexm.studeteach.core.student.util.StudentWindow;
 import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.ObjectSerializer;
@@ -16,6 +16,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -106,6 +107,7 @@ public class TaskManagerController implements StudentWindow {
 
             Stage currentStage = (Stage) listTasks.getScene().getWindow();
             Stage stage = new Stage();
+            stage.getIcons().add(new Image(Studeteach.APP_ICON));
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(currentStage);
             stage.setTitle(Utilities.capitalizeFirstLetter(selectedTaskType.toString()) + " Adder - " + Studeteach.APP_NAME);

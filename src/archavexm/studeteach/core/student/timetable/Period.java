@@ -1,6 +1,6 @@
 package archavexm.studeteach.core.student.timetable;
 
-import archavexm.studeteach.core.student.subject.Subject;
+import archavexm.studeteach.core.common.subject.Subject;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;

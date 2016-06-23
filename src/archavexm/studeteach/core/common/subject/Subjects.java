@@ -1,4 +1,4 @@
-package archavexm.studeteach.core.student.subject;
+package archavexm.studeteach.core.common.subject;
 
 import org.simpleframework.xml.Root;
 

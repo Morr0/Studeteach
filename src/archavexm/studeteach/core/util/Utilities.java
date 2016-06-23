@@ -1,14 +1,13 @@
 package archavexm.studeteach.core.util;
 
-import archavexm.studeteach.core.student.subject.Subjects;
-import archavexm.studeteach.core.student.task.TaskType;
-import archavexm.studeteach.core.student.timetable.Day;
+import archavexm.studeteach.core.common.Day;
+import archavexm.studeteach.core.common.subject.Subjects;
+import archavexm.studeteach.core.common.task.TaskType;
 import com.sun.istack.internal.NotNull;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
+// a bunch of utility methods
 public final class Utilities {
     @NotNull
     public static String read(String filePath) throws IOException{
@@ -26,6 +25,17 @@ public final class Utilities {
         String output = content.toString();
         return output;
     }
+
+    @NotNull
+    public static void emptyTheFile(String filePath) throws IOException{
+        File file = new File(filePath);
+        FileWriter fileWriter = new FileWriter(file);
+
+        char character = ' ';
+        fileWriter.write(character);
+        fileWriter.close();
+    }
+
 
     @NotNull
     public static boolean isDigit(String input){
@@ -120,6 +130,10 @@ public final class Utilities {
             case "sport":
                 return Subjects.SPORT;
             case "mathematics":
+                return Subjects.MATHEMATICS;
+            case "math":
+                return Subjects.MATHEMATICS;
+            case "maths":
                 return Subjects.MATHEMATICS;
             default:
                 return Subjects.OTHER;

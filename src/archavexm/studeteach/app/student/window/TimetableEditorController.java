@@ -1,9 +1,9 @@
 package archavexm.studeteach.app.student.window;
 
+import archavexm.studeteach.core.common.Day;
+import archavexm.studeteach.core.common.subject.Subject;
+import archavexm.studeteach.core.common.subject.Subjects;
 import archavexm.studeteach.core.student.Student;
-import archavexm.studeteach.core.student.subject.Subject;
-import archavexm.studeteach.core.student.subject.Subjects;
-import archavexm.studeteach.core.student.timetable.Day;
 import archavexm.studeteach.core.student.timetable.Period;
 import archavexm.studeteach.core.student.timetable.Timetable;
 import archavexm.studeteach.core.student.util.ITimetable;
@@ -13,6 +13,7 @@ import archavexm.studeteach.core.util.ObjectSerializer;
 import archavexm.studeteach.core.util.Utilities;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -132,43 +133,47 @@ public class TimetableEditorController implements StudentWindow, ITimetable {
 
     public void save(){
         try {
-            saveName();
-            saveAll();
-
+            saveTimetable();
+            timetables.add(timetable);
+            student.setTimetables(timetables);
             ObjectSerializer.serializeStudent(filePath, student);
+        } catch (NullPointerException ex){
+            return;
         } catch (Exception ex){
             ex.printStackTrace();
         }
 
         Stage currentStage = (Stage) comboSchoolDays.getScene().getWindow();
         currentStage.close();
-
     }
 
-    private void saveName(){
-        timetable.setName(textTimetableName.getText());
-    }
+    private void saveTimetable(){
+        if (textTimetableName.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("You must have a name for this timetable.");
+            alert.showAndWait();
 
-    private void saveAll(){
-        HashMap<Integer, String> strings = new HashMap<>();
-        LinkedList<Period> periods = new LinkedList<>();
+            return;
+        } else
+            timetable.setName(textTimetableName.getText());
 
-        strings.put(1, textPeriod1.getText());
-        strings.put(2, textPeriod2.getText());
-        strings.put(3, textPeriod3.getText());
-        strings.put(4, textPeriod4.getText());
-        strings.put(5, textPeriod5.getText());
-        strings.put(6, textPeriod6.getText());
-        strings.put(7, textPeriod7.getText());
-        strings.put(8, textPeriod8.getText());
-        strings.put(9, textPeriod9.getText());
+        if (selectedDay != null){
+            HashMap<Integer, String> strings = new HashMap<>();
+            LinkedList<Period> periods = new LinkedList<>();
 
-        LinkedList<String> s = new LinkedList<>(strings.values());
-        for (Map.Entry<Integer, String> string: strings.entrySet())
-            periods.add(new Period(new Subject(Utilities.toSubjectsFromString(string.getValue())), string.getKey()));
+            strings.put(1, textPeriod1.getText().trim());
+            strings.put(2, textPeriod2.getText().trim());
+            strings.put(3, textPeriod3.getText().trim());
+            strings.put(4, textPeriod4.getText().trim());
+            strings.put(5, textPeriod5.getText().trim());
+            strings.put(6, textPeriod6.getText().trim());
+            strings.put(7, textPeriod7.getText().trim());
+            strings.put(8, textPeriod8.getText().trim());
+            strings.put(9, textPeriod9.getText().trim());
 
-        timetable.setDayPeriods(selectedDay, periods);
-        timetables.add(timetable);
-        student.setTimetables(timetables);
+            for (Map.Entry<Integer, String> string: strings.entrySet())
+                periods.add(new Period(new Subject(Utilities.toSubjectsFromString(string.getValue())), string.getKey()));
+            timetable.setDayPeriods(selectedDay, periods);
+        }
     }
 }

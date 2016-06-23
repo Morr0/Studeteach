@@ -1,9 +1,9 @@
 package archavexm.studeteach.core.student;
 
+import archavexm.studeteach.core.common.Day;
 import archavexm.studeteach.core.common.Person;
 import archavexm.studeteach.core.common.TODOList;
-import archavexm.studeteach.core.student.task.Task;
-import archavexm.studeteach.core.student.timetable.Day;
+import archavexm.studeteach.core.common.task.Task;
 import archavexm.studeteach.core.student.timetable.Timetable;
 import archavexm.studeteach.core.util.Utilities;
 import org.simpleframework.xml.Attribute;
@@ -15,6 +15,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
 
+// The main student class
+// The entire student profile is here
 @Root(name = "student")
 public class Student implements Person {
 
@@ -28,8 +30,8 @@ public class Student implements Person {
     private String preferredName;
     @Attribute(name = "age")
     private int age;
-    @Attribute(name = "primary_timetable")
-    private int primaryTimetableId;
+
+    @Attribute(name = "primary_timetable") private int primaryTimetableId;
 
     @Element(name = "school")
     private School school = School.getInstance(null, null);
@@ -105,7 +107,6 @@ public class Student implements Person {
 
     public LinkedList<String> getSchoolDaysInString(){
         LinkedList<String> days = new LinkedList<>();
-
         for (Day day: schoolDays){
             String d = Utilities.capitalizeFirstLetter(day.toString());
             days.add(d);
@@ -214,6 +215,7 @@ public class Student implements Person {
         for (Timetable timetable: timetables)
             if (timetable.getId() == primaryTimetableId)
                 t = timetable;
+
         return t;
     }
 
@@ -242,27 +244,3 @@ public class Student implements Person {
         return id;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

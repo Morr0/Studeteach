@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -33,12 +34,14 @@ public class ToMainMenuController {
     public void newUser(){
         try {
             FXMLLoader loader = new FXMLLoader();
-            Parent root = loader.load(getClass().getResource("NewUser.fxml").openStream());
-
-            NewUserController nuc = loader.getController();
-            nuc.setPersonText(person);
+            Parent root;
+            if (person.equals("Student"))
+                root = loader.load(getClass().getResource("student/NewStudent.fxml"));
+            else
+                root = loader.load(getClass().getResource("teacher/NewTeacher.fxml"));
 
             Stage stage = new Stage();
+            stage.getIcons().add(new Image(Studeteach.APP_ICON));
             stage.setScene(new Scene(root));
             stage.setTitle("New " + person + " - " + Studeteach.APP_NAME);
             stage.show();
@@ -54,9 +57,10 @@ public class ToMainMenuController {
         try {
             FXMLLoader loader = new FXMLLoader();
             Parent aboutWindow = loader.load(AboutController.class.getResource("About.fxml"));
-
             Stage currentStage = (Stage) labelTitle.getScene().getWindow();
+
             Stage stage = new Stage();
+            stage.getIcons().add(new Image(Studeteach.APP_ICON));
             stage.initOwner(currentStage);
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setTitle("About - " + Studeteach.APP_NAME);
@@ -99,7 +103,7 @@ public class ToMainMenuController {
                 }
             }
         } catch (NullPointerException ex){
-            return;
+           return;
         } catch (IOException ex){
             ex.printStackTrace();
         }
@@ -121,6 +125,7 @@ public class ToMainMenuController {
 
             StudentController sc = loader.getController();
             Stage stage = new Stage();
+            stage.getIcons().add(new Image(Studeteach.APP_ICON));
             stage.setScene(new Scene(root));
 
             sc.setFilePath(filePath);
