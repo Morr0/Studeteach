@@ -1,7 +1,7 @@
 package archavexm.studeteach.app.common.todolist;
 
+import archavexm.studeteach.core.common.Person;
 import archavexm.studeteach.core.common.TODOList;
-import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.ObjectSerializer;
 import javafx.fxml.FXML;
@@ -14,7 +14,7 @@ import java.util.LinkedList;
 public class TODOAdderController {
     @FXML private TextField textTODO;
 
-    private Student student;
+    private Person person;
     private String filePath;
 
     public void setFilePath(String filePath){
@@ -23,7 +23,7 @@ public class TODOAdderController {
 
     public void init(){
         try {
-            student = ObjectDeserializer.deserializeStudent(filePath);
+            person = ObjectDeserializer.deserialize(filePath);
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -38,12 +38,12 @@ public class TODOAdderController {
             return;
         } else {
             TODOList todoList = new TODOList(textTODO.getText());
-            LinkedList<TODOList> todoLists = student.getTodoLists();
+            LinkedList<TODOList> todoLists = person.getTodoLists();
             todoLists.add(todoList);
 
-            student.setTodoLists(todoLists);
+            person.setTodoLists(todoLists);
             try {
-                ObjectSerializer.serializeStudent(filePath, student);
+                ObjectSerializer.serialize(filePath, person);
             } catch (Exception ex){
                 ex.printStackTrace();
             }

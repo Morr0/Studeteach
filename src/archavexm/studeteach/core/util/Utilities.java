@@ -36,6 +36,30 @@ public final class Utilities {
         fileWriter.close();
     }
 
+    @NotNull
+    public static boolean isValidStudeteachFile(String filePath) throws IOException{
+        boolean result = false;
+        String content = read(filePath);
+        if (!filePath.contains(".studeteach"))
+            return result;
+        else {
+            if (content.isEmpty())
+                return result;
+            else {
+                try {
+                    String firstTenCharacters = content.substring(0, 10);
+                    if (!(firstTenCharacters.contains("student") || firstTenCharacters.contains("teacher")))
+                        return result;
+                    else
+                        result = true;
+                } catch (StringIndexOutOfBoundsException ex){
+                    return result;
+                }
+            }
+        }
+
+        return result;
+    }
 
     @NotNull
     public static boolean isDigit(String input){

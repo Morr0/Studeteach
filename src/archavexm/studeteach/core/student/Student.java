@@ -31,7 +31,8 @@ public class Student implements Person {
     @Attribute(name = "age")
     private int age;
 
-    @Attribute(name = "primary_timetable") private int primaryTimetableId;
+    @Attribute(name = "primary_timetable")
+    private int primaryTimetableId;
 
     @Element(name = "school")
     private School school = School.getInstance(null, null);
@@ -44,10 +45,8 @@ public class Student implements Person {
 
     @ElementList(name = "tasks", entry = "task")
     private LinkedList<Task> tasks = new LinkedList<>();
-
     @ElementList(name = "timetables", entry = "timetable")
     private LinkedList<Timetable> timetables = new LinkedList<>();
-
     @ElementList(name = "todo_lists", entry = "list", required = false)
     private LinkedList<TODOList> todoLists = new LinkedList<>();
 
@@ -71,6 +70,11 @@ public class Student implements Person {
 
     public String getPreferredName(){
         return preferredName;
+    }
+
+    @Override
+    public PersonType getPersonType(){
+        return PersonType.STUDENT;
     }
 
     public String getSchoolName(){
@@ -119,6 +123,7 @@ public class Student implements Person {
         return timetables;
     }
 
+    @Override
     public LinkedList<TODOList> getTodoLists() {
         return todoLists;
     }
@@ -172,6 +177,7 @@ public class Student implements Person {
         this.timetables = timetables;
     }
 
+    @Override
     public void setTodoLists(LinkedList<TODOList> todoLists) {
         this.todoLists = todoLists;
     }
@@ -182,21 +188,6 @@ public class Student implements Person {
                 return true;
 
         return false;
-    }
-
-    public TODOList getSelectedTODOList(String list){
-        boolean ticked = false;
-        String name;
-
-        if (list.contains("-")){
-            ticked = true;
-            int c = list.indexOf("-");
-            name = list.substring(0, c);
-        } else
-            name = list;
-
-        TODOList todoList = new TODOList(name, ticked);
-        return todoList;
     }
 
     public void organiseTimetables(){

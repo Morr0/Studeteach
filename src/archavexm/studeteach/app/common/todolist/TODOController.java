@@ -1,8 +1,8 @@
 package archavexm.studeteach.app.common.todolist;
 
 import archavexm.studeteach.core.Studeteach;
+import archavexm.studeteach.core.common.Person;
 import archavexm.studeteach.core.common.TODOList;
-import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.student.util.StudentWindow;
 import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.ObjectSerializer;
@@ -22,7 +22,7 @@ import java.util.LinkedList;
 public class TODOController implements StudentWindow {
     @FXML private ListView<String> listTODOLists;
 
-    private Student student;
+    private Person person;
     private String filePath;
     private LinkedList<TODOList> todoLists;
     private TODOList selectedTODOList;
@@ -35,12 +35,12 @@ public class TODOController implements StudentWindow {
     @Override
     public void init(){
         try {
-            student = ObjectDeserializer.deserializeStudent(filePath);
+            person = ObjectDeserializer.deserialize(filePath);
         } catch (Exception ex){
             ex.printStackTrace();
         }
 
-        todoLists = student.getTodoLists();
+        todoLists = person.getTodoLists();
         if (todoLists.isEmpty()){
             Label label = new Label("You do not have any TODO Lists. You can add TODO Lists by pressing the + Button below.");
             label.setWrapText(true);
@@ -52,12 +52,12 @@ public class TODOController implements StudentWindow {
 
     private void refresh(){
         try {
-            student = ObjectDeserializer.deserializeStudent(filePath);
+            person = ObjectDeserializer.deserialize(filePath);
         } catch (Exception ex){
             ex.printStackTrace();
         }
 
-        todoLists = student.getTodoLists();
+        todoLists = person.getTodoLists();
         update();
     }
 
@@ -105,7 +105,7 @@ public class TODOController implements StudentWindow {
             todoLists.clear();
 
             for (TODOList todoList: lists){
-                String selected = student.getSelectedTODOList(listTODOLists.getSelectionModel().getSelectedItem()).getName().trim();
+                String selected = person.getSelectedTODOList(listTODOLists.getSelectionModel().getSelectedItem()).getName().trim();
 
                 if (!todoList.getName().trim().equals(selected))
                     todoLists.add(todoList);
@@ -117,7 +117,7 @@ public class TODOController implements StudentWindow {
 
     public void tick(){
         if (listTODOLists.getSelectionModel().getSelectedItem() != null){
-            selectedTODOList = student.getSelectedTODOList(listTODOLists.getSelectionModel().getSelectedItem());
+            selectedTODOList = person.getSelectedTODOList(listTODOLists.getSelectionModel().getSelectedItem());
             selectedTODOList.setTicked(true);
             LinkedList<TODOList> lists = new LinkedList<>();
 
@@ -135,10 +135,10 @@ public class TODOController implements StudentWindow {
     }
 
     private void save(){
-        student.setTodoLists(todoLists);
+        person.setTodoLists(todoLists);
 
         try {
-            ObjectSerializer.serializeStudent(filePath, student);
+            ObjectSerializer.serialize(filePath, person);
         } catch (Exception ex){
             ex.printStackTrace();
         }

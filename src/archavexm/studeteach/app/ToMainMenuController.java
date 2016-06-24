@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
@@ -84,33 +85,38 @@ public class ToMainMenuController {
             File file = fileChooser.showOpenDialog(currentStage);
             filePath = file.getAbsolutePath();
 
-            String content = null;
-            content = Utilities.read(filePath);
-
-            if (person == "Student") {
-                if (content.contains("student")) {
-                    makeWindow(filePath);
-                } else if (content.contains("Teacher")) {
-                    person = "Teacher";
-                    return;
+            if (Utilities.isValidStudeteachFile(filePath)){
+                String content = Utilities.read(filePath);
+                if (person == "Student") {
+                    if (content.contains("student"))
+                        makeWindow(filePath);
+                    else if (content.contains("Teacher")) {
+                        person = "Teacher";
+                        return;
+                    }
+                } else {
+                    if (content.contains("Teacher"))
+                        makeWindow(filePath);
+                    else if (content.contains("Student")) {
+                        person = "Student";
+                        return;
+                    }
                 }
             } else {
-                if (content.contains("Teacher")) {
-                    makeWindow(filePath);
-                } else if (content.contains("Student")) {
-                    person = "Student";
-                    return;
-                }
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("The file you are trying to open is not a valid .studeteach file.");
+                alert.showAndWait();
+
+                return;
             }
         } catch (NullPointerException ex){
            return;
         } catch (IOException ex){
             ex.printStackTrace();
         }
-
     }
 
-    private void organiseStudent() throws Exception{
+    private void organisePerson() throws Exception{
         Student student = ObjectDeserializer.deserializeStudent(filePath);
         student.organiseTimetables();
         ObjectSerializer.serializeStudent(filePath, student);
@@ -118,8 +124,7 @@ public class ToMainMenuController {
 
     private void makeWindow(String filePath){
         try {
-            organiseStudent();
-
+            organisePerson();
             FXMLLoader loader = new FXMLLoader();
             Parent root = loader.load(getClass().getResource("student/Student.fxml").openStream());
 
