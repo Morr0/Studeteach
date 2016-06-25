@@ -15,7 +15,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("ToMainMenu.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Startup.fxml"));
 
         primaryStage.getIcons().add(new Image(Studeteach.APP_ICON));
         primaryStage.setTitle(Studeteach.APP_NAME);

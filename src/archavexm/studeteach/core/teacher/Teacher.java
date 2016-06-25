@@ -1,10 +1,10 @@
 package archavexm.studeteach.core.teacher;
 
 import archavexm.studeteach.core.common.Person;
+import archavexm.studeteach.core.common.SchoolType;
 import archavexm.studeteach.core.common.TODOList;
-import archavexm.studeteach.core.common.subject.Subject;
+import archavexm.studeteach.core.common.subject.Subjects;
 import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
@@ -19,8 +19,14 @@ public class Teacher implements Person {
     private String firstName;
     @Attribute(name = "last_name")
     private String lastName;
-    @Element
-    private Subject subject;
+    @Attribute(name = "preferred_name")
+    private String preferredName;
+    @Attribute(name = "subject")
+    private Subjects subject;
+    @Attribute(name = "school_name")
+    private String schoolName;
+    @Attribute(name = "school_type")
+    private SchoolType schoolType;
 
     @ElementList(name = "todo_lists", entry = "list", required = false)
     private LinkedList<TODOList> todoLists = new LinkedList<>();
@@ -58,11 +64,11 @@ public class Teacher implements Person {
         this.lastName = lastName;
     }
 
-    public Subject getSubject() {
+    public Subjects getSubject() {
         return subject;
     }
 
-    public void setSubject(Subject subject) {
+    public void setSubject(Subjects subject) {
         this.subject = subject;
     }
 
@@ -78,7 +84,31 @@ public class Teacher implements Person {
 
     @Override
     public PersonType getPersonType(){
-        return PersonType.STUDENT;
+        return PersonType.TEACHER;
+    }
+
+    public String getPreferredName() {
+        return preferredName;
+    }
+
+    public void setPreferredName(String preferredName) {
+        this.preferredName = preferredName;
+    }
+
+    public String getSchoolName() {
+        return schoolName;
+    }
+
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
+    }
+
+    public SchoolType getSchoolType() {
+        return schoolType;
+    }
+
+    public void setSchoolType(SchoolType schoolType) {
+        this.schoolType = schoolType;
     }
 
     @Override

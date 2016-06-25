@@ -2,6 +2,7 @@ package archavexm.studeteach.core.student;
 
 import archavexm.studeteach.core.common.Day;
 import archavexm.studeteach.core.common.Person;
+import archavexm.studeteach.core.common.SchoolType;
 import archavexm.studeteach.core.common.TODOList;
 import archavexm.studeteach.core.common.task.Task;
 import archavexm.studeteach.core.student.timetable.Timetable;

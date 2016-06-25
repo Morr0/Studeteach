@@ -3,9 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="659.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.student.StudentController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="670.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.student.StudentController">
    <children>
-      <MenuBar fx:id="menuBar" layoutY="2.0" prefHeight="25.0" prefWidth="659.0">
+      <MenuBar fx:id="menuBar" layoutY="2.0" prefHeight="25.0" prefWidth="676.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -43,7 +43,7 @@
       <Label fx:id="labelNumberOfTasks" layoutX="366.0" layoutY="27.0" prefHeight="25.0" prefWidth="50.0" />
       <Button layoutX="438.0" layoutY="27.0" mnemonicParsing="false" onAction="#toProfileEditor" prefHeight="25.0" prefWidth="83.0" text="Edit Profile" />
       <Button layoutX="513.0" layoutY="27.0" mnemonicParsing="false" onAction="#toTaskManager" prefHeight="25.0" prefWidth="91.0" text="Task Manager" />
-      <Button layoutX="598.0" layoutY="27.0" mnemonicParsing="false" onAction="#toTODOList" prefHeight="25.0" prefWidth="50.0" text="TODO" />
+      <Button layoutX="598.0" layoutY="27.0" mnemonicParsing="false" onAction="#toTODOList" prefHeight="25.0" prefWidth="76.0" text="TODO" />
       <AnchorPane fx:id="anchorTimetable" layoutX="19.0" layoutY="62.0" prefHeight="541.0" prefWidth="629.0">
          <children>
             <Label text="Timetable:">

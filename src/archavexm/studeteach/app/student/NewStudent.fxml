@@ -36,7 +36,7 @@
             <Font name="Arial" size="20.0" />
          </font>
       </Label>
-      <ComboBox fx:id="comboSchoolType" layoutX="175.0" layoutY="282.0" prefHeight="25.0" prefWidth="185.0" promptText="School type">
+      <ComboBox fx:id="comboSchoolType" layoutX="175.0" layoutY="282.0" prefHeight="25.0" prefWidth="185.0" promptText="School Type:">
          <items>
             <FXCollections fx:factory="observableArrayList">
                <String fx:value="Primary" />
@@ -45,7 +45,7 @@
             </FXCollections>
          </items>
       </ComboBox>
-      <Label alignment="CENTER" layoutY="325.0" prefHeight="35.0" prefWidth="175.0" text="Prefered Name:">
+      <Label alignment="CENTER" layoutY="325.0" prefHeight="35.0" prefWidth="175.0" text="Preferred Name:">
          <font>
             <Font name="Arial" size="20.0" />
          </font>

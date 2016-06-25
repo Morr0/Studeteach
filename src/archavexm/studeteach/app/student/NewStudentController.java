@@ -1,7 +1,7 @@
 package archavexm.studeteach.app.student;
 
 import archavexm.studeteach.core.Studeteach;
-import archavexm.studeteach.core.student.SchoolType;
+import archavexm.studeteach.core.common.SchoolType;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.util.ObjectSerializer;
 import javafx.fxml.FXML;
@@ -126,14 +126,14 @@ public class NewStudentController {
     private void toProfile(){
         try {
             FXMLLoader loader = new FXMLLoader();
-            Parent root = loader.load(getClass().getResource("Student.fxml").openStream());
+            Parent studentWindow = loader.load(getClass().getResource("Student.fxml").openStream());
 
             StudentController sc = loader.getController();
             sc.setFilePath(filePath);
 
             Stage stage = new Stage();
             stage.getIcons().add(new Image(Studeteach.APP_ICON));
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(studentWindow));
 
             sc.setCurrentStage(stage);
             sc.initStudent();

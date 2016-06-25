@@ -1,4 +1,4 @@
-package archavexm.studeteach.core.student;
+package archavexm.studeteach.core.common;
 
 public enum SchoolType {
     PRIMARY,
@@ -6,9 +6,10 @@ public enum SchoolType {
     UNIVERSITY;
 
     public static SchoolType toSchoolType(String input){
-        if ((input.toLowerCase()) == "primary")
+        String in = input.toLowerCase();
+        if (in == "primary")
             return SchoolType.PRIMARY;
-         else if ((input.toLowerCase()) == "secondary")
+         else if (in == "secondary (high school)")
             return SchoolType.SECONDARY;
         else
             return SchoolType.UNIVERSITY;

@@ -1,5 +1,6 @@
 package archavexm.studeteach.core.student;
 
+import archavexm.studeteach.core.common.SchoolType;
 import archavexm.studeteach.core.util.Utilities;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;

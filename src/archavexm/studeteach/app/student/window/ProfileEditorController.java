@@ -1,7 +1,7 @@
 package archavexm.studeteach.app.student.window;
 
 import archavexm.studeteach.core.common.Day;
-import archavexm.studeteach.core.student.SchoolType;
+import archavexm.studeteach.core.common.SchoolType;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.student.util.StudentWindow;
 import archavexm.studeteach.core.util.ObjectDeserializer;
