@@ -4,6 +4,7 @@ import archavexm.studeteach.core.common.Person;
 import archavexm.studeteach.core.common.SchoolType;
 import archavexm.studeteach.core.common.TODOList;
 import archavexm.studeteach.core.common.subject.Subjects;
+import archavexm.studeteach.core.common.timetable.Timetable;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
@@ -28,8 +29,10 @@ public class Teacher implements Person {
     @Attribute(name = "school_type")
     private SchoolType schoolType;
 
-    @ElementList(name = "todo_lists", entry = "list", required = false)
+    @ElementList(name = "todo_lists", entry = "list")
     private LinkedList<TODOList> todoLists = new LinkedList<>();
+    @ElementList(name = "timetables", entry = "timetable")
+    private LinkedList<Timetable> timetables = new LinkedList<>();
 
     private Teacher() {}
 

@@ -2,7 +2,7 @@ package archavexm.studeteach.core.util;
 
 import archavexm.studeteach.core.common.Day;
 import archavexm.studeteach.core.common.subject.Subjects;
-import archavexm.studeteach.core.common.task.TaskType;
+import archavexm.studeteach.core.student.task.TaskType;
 import com.sun.istack.internal.NotNull;
 
 import java.io.*;
@@ -24,6 +24,15 @@ public final class Utilities {
 
         String output = content.toString();
         return output;
+    }
+
+    @NotNull
+    public static String readFirstLine(String filePath) throws IOException{
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
+        String line = bufferedReader.readLine();
+        bufferedReader.close();
+        return line;
+
     }
 
     @NotNull

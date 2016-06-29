@@ -1,8 +1,8 @@
-package archavexm.studeteach.core.common.task;
+package archavexm.studeteach.core.student.task;
 
 import archavexm.studeteach.core.common.Day;
 import archavexm.studeteach.core.common.subject.Subject;
-import archavexm.studeteach.core.student.timetable.Period;
+import archavexm.studeteach.core.common.timetable.Period;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;

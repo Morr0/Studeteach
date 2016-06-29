@@ -1,6 +1,6 @@
 package archavexm.studeteach.app.common.todolist;
 
-import archavexm.studeteach.core.Studeteach;
+import archavexm.studeteach.app.common.Studeteach;
 import archavexm.studeteach.core.common.Person;
 import archavexm.studeteach.core.common.TODOList;
 import archavexm.studeteach.core.student.util.StudentWindow;

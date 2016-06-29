@@ -1,9 +1,11 @@
 package archavexm.studeteach.app.teacher;
 
+import archavexm.studeteach.app.common.PersonController;
 import archavexm.studeteach.core.teacher.Teacher;
+import archavexm.studeteach.core.util.ObjectDeserializer;
 import javafx.stage.Stage;
 
-public class TeacherController {
+public class TeacherController implements PersonController {
     private String filePath;
     private Stage currentStage;
     private Teacher teacher;
@@ -16,7 +18,23 @@ public class TeacherController {
         this.currentStage = currentStage;
     }
 
-    public void initTeacher(){
+    public void init(){
+        try {
+            teacher = ObjectDeserializer.deserializeTeacher(filePath);
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public void toProfileEditor(){
+
+    }
+
+    public void toTodoList(){
+
+    }
+
+    private void toWindow(){
 
     }
 }

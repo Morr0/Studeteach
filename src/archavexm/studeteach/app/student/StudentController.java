@@ -2,16 +2,17 @@ package archavexm.studeteach.app.student;
 
 import archavexm.studeteach.app.ToMainMenuController;
 import archavexm.studeteach.app.common.AboutController;
+import archavexm.studeteach.app.common.PersonController;
+import archavexm.studeteach.app.common.Studeteach;
 import archavexm.studeteach.app.common.todolist.TODOController;
 import archavexm.studeteach.app.student.window.ProfileEditorController;
 import archavexm.studeteach.app.student.window.TaskManagerController;
 import archavexm.studeteach.app.student.window.TimetableEditorController;
-import archavexm.studeteach.core.Studeteach;
 import archavexm.studeteach.core.common.Day;
 import archavexm.studeteach.core.common.subject.Subjects;
+import archavexm.studeteach.core.common.timetable.Period;
+import archavexm.studeteach.core.common.timetable.Timetable;
 import archavexm.studeteach.core.student.Student;
-import archavexm.studeteach.core.student.timetable.Period;
-import archavexm.studeteach.core.student.timetable.Timetable;
 import archavexm.studeteach.core.student.util.ITimetable;
 import archavexm.studeteach.core.student.util.StudentWindow;
 import archavexm.studeteach.core.util.ObjectDeserializer;
@@ -43,7 +44,7 @@ import java.util.Optional;
 
 // The student main window
 // Here you can edit all the things that a student has
-public class StudentController{
+public class StudentController implements PersonController{
     // Menu bar and other labels
     @FXML private MenuBar menuBar;
     @FXML private Label labelName;
@@ -81,7 +82,7 @@ public class StudentController{
         currentStage.setOnCloseRequest(event -> Platform.exit());
     }
 
-    public void initStudent(){
+    public void init(){
         try {
             unpackStudent();
             schoolDays = student.getSchoolDays();

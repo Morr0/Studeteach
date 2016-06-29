@@ -1,6 +1,5 @@
 package archavexm.studeteach.app.common;
 
-import archavexm.studeteach.core.Studeteach;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 

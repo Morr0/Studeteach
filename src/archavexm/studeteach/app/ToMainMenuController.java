@@ -1,8 +1,9 @@
 package archavexm.studeteach.app;
 
 import archavexm.studeteach.app.common.AboutController;
-import archavexm.studeteach.app.student.StudentController;
-import archavexm.studeteach.core.Studeteach;
+import archavexm.studeteach.app.common.PersonController;
+import archavexm.studeteach.app.common.Studeteach;
+import archavexm.studeteach.core.common.Person;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.ObjectSerializer;
@@ -12,6 +13,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
@@ -20,11 +23,12 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 public class ToMainMenuController {
     @FXML private Label labelTitle;
 
-    private String person = "Student";
+    private String person = "Hi";
     private String filePath;
 
     public void setLabelTitle(String person){
@@ -33,25 +37,43 @@ public class ToMainMenuController {
     }
 
     public void newUser(){
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            Parent root;
-            if (person.equals("Student"))
-                root = loader.load(getClass().getResource("student/NewStudent.fxml"));
-            else
-                root = loader.load(getClass().getResource("teacher/NewTeacher.fxml"));
+        Alert studentOrTeacherDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        studentOrTeacherDialog.setContentText("If you want to create a new Student profile please press the Student button. If you do not want to create a " +
+                "Student profile you can create a Teacher profile for teacher by just pressing the Teacher button. " +
+                "Otherwise you can just press the Cancel button.");
 
-            Stage stage = new Stage();
-            stage.getIcons().add(new Image(Studeteach.APP_ICON));
-            stage.setScene(new Scene(root));
-            stage.setTitle("New " + person + " - " + Studeteach.APP_NAME);
-            stage.show();
-        } catch (IOException ex){
-            ex.printStackTrace();
+        ButtonType studentButton = new ButtonType("Student");
+        ButtonType teacherButton = new ButtonType("Teacher");
+        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        studentOrTeacherDialog.getButtonTypes().setAll(studentButton, teacherButton, cancelButton);
+        Optional<ButtonType> selectedPerson = studentOrTeacherDialog.showAndWait();
+
+        if (!selectedPerson.get().getText().equals("Cancel")){
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                String person = null;
+                Parent root = null;
+                if (selectedPerson.get().getText().equals("Student")){
+                    root = loader.load(getClass().getResource("student/NewStudent.fxml"));
+                    person = "Student";
+                }
+                else if (selectedPerson.get().getText().equals("Teacher")){
+                    root = loader.load(getClass().getResource("teacher/NewTeacher.fxml"));
+                    person = "Teacher";
+                }
+
+                Stage stage = new Stage();
+                stage.getIcons().add(new Image(Studeteach.APP_ICON));
+                stage.setScene(new Scene(root));
+                stage.setTitle("New " + person + " - " + Studeteach.APP_NAME);
+                stage.show();
+            } catch (IOException ex){
+                ex.printStackTrace();
+            }
+
+            Stage current = (Stage)labelTitle.getScene().getWindow();
+            current.close();
         }
-
-        Stage current = (Stage)labelTitle.getScene().getWindow();
-        current.close();
     }
 
     public void openAboutWindow(){
@@ -86,22 +108,14 @@ public class ToMainMenuController {
             filePath = file.getAbsolutePath();
 
             if (Utilities.isValidStudeteachFile(filePath)){
-                String content = Utilities.read(filePath);
-                if (person == "Student") {
-                    if (content.contains("student"))
-                        makeWindow(filePath);
-                    else if (content.contains("Teacher")) {
-                        person = "Teacher";
-                        return;
-                    }
-                } else {
-                    if (content.contains("Teacher"))
-                        makeWindow(filePath);
-                    else if (content.contains("Student")) {
-                        person = "Student";
-                        return;
-                    }
-                }
+                String content = Utilities.readFirstLine(filePath);
+                Person.PersonType personType = null;
+                if (content.contains("student"))
+                    personType = Person.PersonType.STUDENT;
+                else
+                    personType = Person.PersonType.TEACHER;
+
+                makeWindow(filePath, personType);
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("The file you are trying to open is not a valid .studeteach file.");
@@ -116,26 +130,30 @@ public class ToMainMenuController {
         }
     }
 
-    private void organisePerson() throws Exception{
+    private void organiseStudent() throws Exception{
         Student student = ObjectDeserializer.deserializeStudent(filePath);
         student.organiseTimetables();
         ObjectSerializer.serializeStudent(filePath, student);
     }
 
-    private void makeWindow(String filePath){
+    private void makeWindow(String filePath, Person.PersonType personType){
         try {
-            organisePerson();
             FXMLLoader loader = new FXMLLoader();
-            Parent root = loader.load(getClass().getResource("student/Student.fxml").openStream());
+            Parent root;
+            if (personType.equals(Person.PersonType.STUDENT)){
+                organiseStudent();
+                root = loader.load(getClass().getResource("student/Student.fxml").openStream());
+            } else
+                root = loader.load(getClass().getResource("teacher/Teacher.fxml").openStream());
 
-            StudentController sc = loader.getController();
+            PersonController personController = loader.getController();
             Stage stage = new Stage();
             stage.getIcons().add(new Image(Studeteach.APP_ICON));
             stage.setScene(new Scene(root));
 
-            sc.setFilePath(filePath);
-            sc.setCurrentStage(stage);
-            sc.initStudent();
+            personController.setFilePath(filePath);
+            personController.setCurrentStage(stage);
+            personController.init();
             stage.show();
         } catch (Exception ex){
             ex.printStackTrace();

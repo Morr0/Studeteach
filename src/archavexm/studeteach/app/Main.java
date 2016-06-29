@@ -1,6 +1,6 @@
 package archavexm.studeteach.app;
 
-import archavexm.studeteach.core.Studeteach;
+import archavexm.studeteach.app.common.Studeteach;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,7 +15,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("Startup.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("ToMainMenu.fxml"));
 
         primaryStage.getIcons().add(new Image(Studeteach.APP_ICON));
         primaryStage.setTitle(Studeteach.APP_NAME);

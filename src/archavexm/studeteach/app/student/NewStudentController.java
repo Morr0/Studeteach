@@ -1,6 +1,7 @@
 package archavexm.studeteach.app.student;
 
-import archavexm.studeteach.core.Studeteach;
+import archavexm.studeteach.app.common.NewPersonBackButton;
+import archavexm.studeteach.app.common.Studeteach;
 import archavexm.studeteach.core.common.SchoolType;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.util.ObjectSerializer;
@@ -9,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -19,7 +21,7 @@ import java.io.File;
 import java.io.IOException;
 
 // Handles the creation of a new user
-public class NewStudentController {
+public class NewStudentController implements NewPersonBackButton{
     @FXML private TextField textFirstName;
     @FXML private TextField textLastName;
     @FXML private TextField textAge;
@@ -29,6 +31,12 @@ public class NewStudentController {
 
     private String filePath;
     private Student student;
+
+    @FXML private Button buttonBack;
+
+    public void initialize(){
+        init(buttonBack, textFirstName);
+    }
 
     public void processNewPerson(){
         String firstName;
@@ -136,7 +144,7 @@ public class NewStudentController {
             stage.setScene(new Scene(studentWindow));
 
             sc.setCurrentStage(stage);
-            sc.initStudent();
+            sc.init();
             stage.show();
         } catch (IOException ex){
             ex.printStackTrace();

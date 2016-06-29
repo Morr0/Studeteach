@@ -1,4 +1,4 @@
-package archavexm.studeteach.core.student.timetable;
+package archavexm.studeteach.core.common.timetable;
 
 import archavexm.studeteach.core.common.Day;
 import archavexm.studeteach.core.common.subject.Subject;

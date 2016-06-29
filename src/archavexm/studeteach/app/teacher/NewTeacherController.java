@@ -1,6 +1,7 @@
 package archavexm.studeteach.app.teacher;
 
-import archavexm.studeteach.core.Studeteach;
+import archavexm.studeteach.app.common.NewPersonBackButton;
+import archavexm.studeteach.app.common.Studeteach;
 import archavexm.studeteach.core.common.SchoolType;
 import archavexm.studeteach.core.common.subject.Subjects;
 import archavexm.studeteach.core.teacher.Teacher;
@@ -11,14 +12,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 
-public class NewTeacherController {
+public class NewTeacherController implements NewPersonBackButton{
     @FXML private TextField textFirstName;
     @FXML private TextField textLastName;
     @FXML private TextField textPreferredName;
@@ -26,6 +29,12 @@ public class NewTeacherController {
 
     @FXML private ComboBox<String> comboSubject;
     @FXML private ComboBox<String> comboSchoolType;
+
+    @FXML private Button buttonBack;
+
+    public void initialize(){
+        init(buttonBack, textFirstName);
+    }
 
     public void create(){
         String firstName = textFirstName.getText();
@@ -92,10 +101,11 @@ public class NewTeacherController {
             TeacherController teacherController = loader.getController();
             teacherController.setFilePath(filePath);
             teacherController.setCurrentStage(currentStage);
-            teacherController.initTeacher();
+            teacherController.init();
 
             Stage stage = new Stage();
             stage.setTitle(Studeteach.APP_NAME);
+            stage.getIcons().add(new Image(Studeteach.APP_ICON));
             stage.setScene(new Scene(teacherWindow));
             stage.show();
 
