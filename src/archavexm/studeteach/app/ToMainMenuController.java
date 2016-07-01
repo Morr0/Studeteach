@@ -54,11 +54,11 @@ public class ToMainMenuController {
                 String person = null;
                 Parent root = null;
                 if (selectedPerson.get().getText().equals("Student")){
-                    root = loader.load(getClass().getResource("student/NewStudent.fxml"));
+                    root = loader.load(getClass().getResource("student/windows/NewStudent.fxml"));
                     person = "Student";
                 }
                 else if (selectedPerson.get().getText().equals("Teacher")){
-                    root = loader.load(getClass().getResource("teacher/NewTeacher.fxml"));
+                    root = loader.load(getClass().getResource("teacher/windows/NewTeacher.fxml"));
                     person = "Teacher";
                 }
 

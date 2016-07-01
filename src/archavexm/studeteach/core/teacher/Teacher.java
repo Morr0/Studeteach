@@ -1,5 +1,6 @@
 package archavexm.studeteach.core.teacher;
 
+import archavexm.studeteach.core.common.Day;
 import archavexm.studeteach.core.common.Person;
 import archavexm.studeteach.core.common.SchoolType;
 import archavexm.studeteach.core.common.TODOList;
@@ -9,6 +10,7 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 
 @Root(name = "teacher")
@@ -28,10 +30,12 @@ public class Teacher implements Person {
     private String schoolName;
     @Attribute(name = "school_type")
     private SchoolType schoolType;
+    @ElementList(name = "school_days", entry = "day", required = false)
+    private HashSet<Day> schoolDays = new HashSet<>();
 
-    @ElementList(name = "todo_lists", entry = "list")
+    @ElementList(name = "todo_lists", entry = "list", required = false)
     private LinkedList<TODOList> todoLists = new LinkedList<>();
-    @ElementList(name = "timetables", entry = "timetable")
+    @ElementList(name = "timetables", entry = "timetable", required = false)
     private LinkedList<Timetable> timetables = new LinkedList<>();
 
     private Teacher() {}
@@ -65,6 +69,10 @@ public class Teacher implements Person {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getFullName(){
+        return firstName + " " + lastName;
     }
 
     public Subjects getSubject() {
@@ -112,6 +120,25 @@ public class Teacher implements Person {
 
     public void setSchoolType(SchoolType schoolType) {
         this.schoolType = schoolType;
+    }
+
+    @Override
+    public HashSet<Day> getSchoolDays() {
+        return schoolDays;
+    }
+
+    public void setSchoolDays(HashSet<Day> schoolDays) {
+        this.schoolDays = schoolDays;
+    }
+
+    @Override
+    public LinkedList<Timetable> getTimetables() {
+        return timetables;
+    }
+
+    @Override
+    public void setTimetables(LinkedList<Timetable> timetables) {
+        this.timetables = timetables;
     }
 
     @Override

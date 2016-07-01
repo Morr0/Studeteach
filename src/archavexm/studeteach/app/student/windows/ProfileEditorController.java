@@ -1,9 +1,9 @@
-package archavexm.studeteach.app.student.window;
+package archavexm.studeteach.app.student.windows;
 
+import archavexm.studeteach.app.common.PersonWindow;
 import archavexm.studeteach.core.common.Day;
 import archavexm.studeteach.core.common.SchoolType;
 import archavexm.studeteach.core.student.Student;
-import archavexm.studeteach.core.student.util.StudentWindow;
 import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.ObjectSerializer;
 import archavexm.studeteach.core.util.Utilities;
@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import java.util.HashSet;
 
 // The profile editor for the student
-public class ProfileEditorController implements StudentWindow {
+public class ProfileEditorController implements PersonWindow {
     @FXML private TextField textFirstName;
     @FXML private TextField textLastName;
     @FXML private TextField textPreferedName;

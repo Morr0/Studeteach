@@ -1,7 +1,8 @@
-package archavexm.studeteach.app.teacher;
+package archavexm.studeteach.app.teacher.windows;
 
 import archavexm.studeteach.app.common.NewPersonBackButton;
 import archavexm.studeteach.app.common.Studeteach;
+import archavexm.studeteach.app.teacher.TeacherController;
 import archavexm.studeteach.core.common.SchoolType;
 import archavexm.studeteach.core.common.subject.Subjects;
 import archavexm.studeteach.core.teacher.Teacher;
@@ -96,7 +97,7 @@ public class NewTeacherController implements NewPersonBackButton{
             ObjectSerializer.serializeTeacher(filePath, teacher);
 
             FXMLLoader loader = new FXMLLoader();
-            Parent teacherWindow = loader.load(getClass().getResource("Teacher.fxml").openStream());
+            Parent teacherWindow = loader.load(TeacherController.class.getResource("Teacher.fxml").openStream());
 
             TeacherController teacherController = loader.getController();
             teacherController.setFilePath(filePath);
@@ -104,7 +105,7 @@ public class NewTeacherController implements NewPersonBackButton{
             teacherController.init();
 
             Stage stage = new Stage();
-            stage.setTitle(Studeteach.APP_NAME);
+            stage.setTitle(teacher.getTitleName() + " - " + Studeteach.APP_NAME);
             stage.getIcons().add(new Image(Studeteach.APP_ICON));
             stage.setScene(new Scene(teacherWindow));
             stage.show();

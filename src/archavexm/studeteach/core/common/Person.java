@@ -1,9 +1,28 @@
 package archavexm.studeteach.core.common;
 
+import archavexm.studeteach.core.common.timetable.Timetable;
+
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public interface Person{
     PersonType getPersonType();
+    HashSet<Day> getSchoolDays();
+
+    String getFirstName();
+    String getLastName();
+    String getFullName();
+    String getPreferredName();
+
+    default String getTitleName(){
+        if (getPreferredName() == null)
+            return getFirstName();
+        else
+            return getPreferredName();
+    }
+
+    LinkedList<Timetable> getTimetables();
+    void setTimetables(LinkedList<Timetable> timetables);
     void organiseTimetables();
 
     LinkedList<TODOList> getTodoLists();

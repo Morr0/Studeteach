@@ -1,13 +1,13 @@
-package archavexm.studeteach.app.student.window;
+package archavexm.studeteach.app.common.timetable;
 
+import archavexm.studeteach.app.common.ITimetable;
+import archavexm.studeteach.app.common.PersonWindow;
 import archavexm.studeteach.core.common.Day;
+import archavexm.studeteach.core.common.Person;
 import archavexm.studeteach.core.common.subject.Subject;
 import archavexm.studeteach.core.common.subject.Subjects;
 import archavexm.studeteach.core.common.timetable.Period;
 import archavexm.studeteach.core.common.timetable.Timetable;
-import archavexm.studeteach.core.student.Student;
-import archavexm.studeteach.core.student.util.ITimetable;
-import archavexm.studeteach.core.student.util.StudentWindow;
 import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.ObjectSerializer;
 import archavexm.studeteach.core.util.Utilities;
@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class TimetableEditorController implements StudentWindow, ITimetable {
+public class TimetableEditorController implements PersonWindow, ITimetable {
     @FXML private TextField textTimetableName;
     @FXML private ComboBox<String> comboSchoolDays;
 
@@ -41,7 +41,7 @@ public class TimetableEditorController implements StudentWindow, ITimetable {
     private String filePath;
     private Day selectedDay;
 
-    private Student student;
+    private Person person;
     private Timetable timetable;
     private LinkedList<Timetable> timetables = new LinkedList<>();
 
@@ -57,15 +57,15 @@ public class TimetableEditorController implements StudentWindow, ITimetable {
     @Override
     public void init(){
         try {
-            student = ObjectDeserializer.deserializeStudent(filePath);
+            person = ObjectDeserializer.deserializeStudent(filePath);
             textTimetableName.setText(timetable.getName());
 
-            for (Timetable t: student.getTimetables())
+            for (Timetable t: person.getTimetables())
                 if (t.getId() != timetable.getId())
                     timetables.add(t);
 
 
-            for (Day day: student.getSchoolDays())
+            for (Day day: person.getSchoolDays())
                 comboSchoolDays.getItems().add(Utilities.capitalizeFirstLetter(day.toString()));
 
 
@@ -135,8 +135,8 @@ public class TimetableEditorController implements StudentWindow, ITimetable {
         try {
             saveTimetable();
             timetables.add(timetable);
-            student.setTimetables(timetables);
-            ObjectSerializer.serializeStudent(filePath, student);
+            person.setTimetables(timetables);
+            ObjectSerializer.serialize(filePath, person);
         } catch (NullPointerException ex){
             return;
         } catch (Exception ex){

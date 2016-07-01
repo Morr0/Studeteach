@@ -1,10 +1,10 @@
-package archavexm.studeteach.app.student.window;
+package archavexm.studeteach.app.student.windows;
 
+import archavexm.studeteach.app.common.PersonWindow;
 import archavexm.studeteach.app.common.Studeteach;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.student.task.Task;
 import archavexm.studeteach.core.student.task.TaskType;
-import archavexm.studeteach.core.student.util.StudentWindow;
 import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.ObjectSerializer;
 import archavexm.studeteach.core.util.Utilities;
@@ -26,7 +26,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
-public class TaskManagerController implements StudentWindow {
+public class TaskManagerController implements PersonWindow {
     @FXML private Label labelNumberOfTasks;
     @FXML private ComboBox<String> comboTasks;
     @FXML private ListView<String> listTasks;

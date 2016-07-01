@@ -1,20 +1,16 @@
 package archavexm.studeteach.app.student;
 
 import archavexm.studeteach.app.ToMainMenuController;
-import archavexm.studeteach.app.common.AboutController;
-import archavexm.studeteach.app.common.PersonController;
-import archavexm.studeteach.app.common.Studeteach;
+import archavexm.studeteach.app.common.*;
+import archavexm.studeteach.app.common.timetable.TimetableEditorController;
 import archavexm.studeteach.app.common.todolist.TODOController;
-import archavexm.studeteach.app.student.window.ProfileEditorController;
-import archavexm.studeteach.app.student.window.TaskManagerController;
-import archavexm.studeteach.app.student.window.TimetableEditorController;
+import archavexm.studeteach.app.student.windows.ProfileEditorController;
+import archavexm.studeteach.app.student.windows.TaskManagerController;
 import archavexm.studeteach.core.common.Day;
 import archavexm.studeteach.core.common.subject.Subjects;
 import archavexm.studeteach.core.common.timetable.Period;
 import archavexm.studeteach.core.common.timetable.Timetable;
 import archavexm.studeteach.core.student.Student;
-import archavexm.studeteach.core.student.util.ITimetable;
-import archavexm.studeteach.core.student.util.StudentWindow;
 import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.ObjectSerializer;
 import archavexm.studeteach.core.util.Utilities;
@@ -42,9 +38,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Optional;
 
-// The student main window
+// The student main windows
 // Here you can edit all the things that a student has
-public class StudentController implements PersonController{
+public class StudentController implements PersonController {
     // Menu bar and other labels
     @FXML private MenuBar menuBar;
     @FXML private Label labelName;
@@ -84,11 +80,11 @@ public class StudentController implements PersonController{
 
     public void init(){
         try {
-            unpackStudent();
-            schoolDays = student.getSchoolDays();
+            unpack();
             setPreferredName();
             setLabels();
-            setTitle();
+            if (currentStage.getTitle() == null)
+                currentStage.setTitle(stageTitle);
             getSchoolDays();
             for (Node node: anchorTimetable.getChildren())
                 anchorTimetableChildren.add(node);
@@ -117,7 +113,7 @@ public class StudentController implements PersonController{
     public void toProfileEditor(){
         URL url = ProfileEditorController.class.getResource("ProfileEditor.fxml");
         toWindow(url, "ProfileEditor", preferredName + " - Profile Editor - " + Studeteach.APP_NAME);
-        unpackStudent();
+        unpack();
         refresh();
         getSchoolDays();
         getTimetables();
@@ -133,14 +129,14 @@ public class StudentController implements PersonController{
         } else {
             URL url = TaskManagerController.class.getResource("TaskManager.fxml");
             toWindow(url, "TaskManager", "Task Manager - " + Studeteach.APP_NAME);
-            unpackStudent();
+            unpack();
             refresh();
         }
     }
 
     public void toTODOList(){
         URL url = TODOController.class.getResource("TODO.fxml");
-        toWindow(url, "TODO", "TODO List - " + Studeteach.APP_NAME);
+        toWindow(url, "TODO", "TODO List Manager - " + Studeteach.APP_NAME);
     }
 
     public void toAboutMenu(){
@@ -152,7 +148,7 @@ public class StudentController implements PersonController{
         if (schoolDays.size() > 0){
             URL url = TimetableEditorController.class.getResource("TimetableEditor.fxml");
             toWindow(url, "TimetableEditor", "Timetable Editor - " + Studeteach.APP_NAME);
-            unpackStudent();
+            unpack();
             refreshTimetable();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -169,7 +165,7 @@ public class StudentController implements PersonController{
             Parent window = loader.load(url.openStream());
 
             if (!name.equals("About")){
-                StudentWindow controller = loader.getController();
+                PersonWindow controller = loader.getController();
 
                 if (controller instanceof ITimetable){
                     ITimetable timetableController = (ITimetable) controller;
@@ -194,17 +190,18 @@ public class StudentController implements PersonController{
 
     public void refresh(){
         try {
-            unpackStudent();
+            unpack();
             schoolDays = student.getSchoolDays();
             setPreferredName();
             setLabels();
-            setTitle();
+            if (currentStage.getTitle() == null)
+                currentStage.setTitle(stageTitle);
         } catch (Exception ex){
             ex.printStackTrace();
         }
     }
 
-    private void unpackStudent(){
+    private void unpack(){
         try {
             student = ObjectDeserializer.deserializeStudent(filePath);
         } catch (Exception ex){
@@ -212,17 +209,9 @@ public class StudentController implements PersonController{
         }
     }
 
-    private void setPreferredName(){
-        if (student.getPreferredName() == null){
-            stageTitle = (student.getFirstName()) + " - " + Studeteach.APP_NAME;
-            preferredName = student.getFirstName();
-        } else if (student.getPreferredName().isEmpty()){
-            stageTitle = (student.getFirstName()) + " - " + Studeteach.APP_NAME;
-            preferredName = student.getFirstName();
-        } else {
-            stageTitle = (student.getPreferredName()) + " - " + Studeteach.APP_NAME;
-            preferredName = student.getPreferredName();
-        }
+    public void setPreferredName(){
+        stageTitle = student.getTitleName() + " - " + Studeteach.APP_NAME;
+        preferredName = student.getTitleName();
     }
 
     private void setLabels(){
@@ -241,11 +230,8 @@ public class StudentController implements PersonController{
         labelNumberOfTasks.setText(Integer.toString(student.getTasks().size()));
     }
 
-    private void setTitle(){
-        currentStage.setTitle(stageTitle);
-    }
-
     private void getSchoolDays(){
+        schoolDays = student.getSchoolDays();
         comboDays.getItems().clear();
         ObservableList<String> strings = FXCollections.observableArrayList();
 
@@ -255,10 +241,10 @@ public class StudentController implements PersonController{
     }
 
     private void save(){
-        save(filePath);
+        pack(filePath);
     }
 
-    private void save(String path){
+    private void pack(String path){
         try {
             ObjectSerializer.serializeStudent(path, student);
         } catch (Exception ex){
@@ -341,7 +327,7 @@ public class StudentController implements PersonController{
                 student.setPrimaryTimetableId(primaryTimetable.getId());
                 selectedTimetable = primaryTimetable;
                 save();
-                unpackStudent();
+                unpack();
                 getTimetables();
             });
         }
@@ -383,7 +369,7 @@ public class StudentController implements PersonController{
         student.setTimetables(timetables);
         student.organiseTimetables();
         save();
-        unpackStudent();
+        unpack();
         getTimetables();
     }
 
@@ -415,7 +401,7 @@ public class StudentController implements PersonController{
 
         student.setTimetables(newTimetables);
         save();
-        unpackStudent();
+        unpack();
         setLabels();
         getTimetables();
     }
@@ -439,7 +425,7 @@ public class StudentController implements PersonController{
             return;
         }
 
-        save(anotherFilePath);
+        pack(anotherFilePath);
     }
 
     public void fileDeleteProfile(){

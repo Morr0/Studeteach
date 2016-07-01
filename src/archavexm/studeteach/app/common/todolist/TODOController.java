@@ -1,9 +1,9 @@
 package archavexm.studeteach.app.common.todolist;
 
+import archavexm.studeteach.app.common.PersonWindow;
 import archavexm.studeteach.app.common.Studeteach;
 import archavexm.studeteach.core.common.Person;
 import archavexm.studeteach.core.common.TODOList;
-import archavexm.studeteach.core.student.util.StudentWindow;
 import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.ObjectSerializer;
 import javafx.collections.FXCollections;
@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 
 import java.util.LinkedList;
 
-public class TODOController implements StudentWindow {
+public class TODOController implements PersonWindow {
     @FXML private ListView<String> listTODOLists;
 
     private Person person;
