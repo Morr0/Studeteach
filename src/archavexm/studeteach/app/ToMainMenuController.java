@@ -28,13 +28,7 @@ import java.util.Optional;
 public class ToMainMenuController {
     @FXML private Label labelTitle;
 
-    private String person = "Hi";
     private String filePath;
-
-    public void setLabelTitle(String person){
-        this.person = person;
-        labelTitle.setText(person);
-    }
 
     public void newUser(){
         Alert studentOrTeacherDialog = new Alert(Alert.AlertType.CONFIRMATION);

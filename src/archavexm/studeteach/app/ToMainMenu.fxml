@@ -5,7 +5,7 @@
 <?import javafx.scene.text.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="366.0" prefWidth="418.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.ToMainMenuController">
    <children>
-      <Label fx:id="labelTitle" alignment="CENTER" layoutY="17.0" prefHeight="50.0" prefWidth="410.0" text="Student" textAlignment="CENTER">
+      <Label fx:id="labelTitle" alignment="CENTER" layoutY="17.0" prefHeight="50.0" prefWidth="410.0" text="Studeteach" textAlignment="CENTER">
          <font>
             <Font name="Arial" size="32.0" />
          </font>

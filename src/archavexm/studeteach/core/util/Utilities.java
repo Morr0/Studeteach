@@ -1,6 +1,7 @@
 package archavexm.studeteach.core.util;
 
 import archavexm.studeteach.core.common.Day;
+import archavexm.studeteach.core.common.SchoolType;
 import archavexm.studeteach.core.common.subject.Subjects;
 import archavexm.studeteach.core.student.task.TaskType;
 import com.sun.istack.internal.NotNull;
@@ -201,6 +202,16 @@ public final class Utilities {
             taskType = TaskType.HOMEWORK;
 
         return taskType;
+    }
+
+    @NotNull
+    public static SchoolType toSchoolTypeFromString(String input){
+        if (input.equals("Primary"))
+            return SchoolType.PRIMARY;
+        else if (input.equals("Secondary (High School)"))
+            return SchoolType.SECONDARY;
+        else
+            return SchoolType.UNIVERSITY;
     }
 }
 

@@ -5,13 +5,17 @@ public enum SchoolType {
     SECONDARY,
     UNIVERSITY;
 
-    public static SchoolType toSchoolType(String input){
-        String in = input.toLowerCase();
-        if (in == "primary")
-            return SchoolType.PRIMARY;
-         else if (in == "secondary (high school)")
-            return SchoolType.SECONDARY;
-        else
-            return SchoolType.UNIVERSITY;
+    @Override
+    public String toString(){
+        switch (this){
+            case PRIMARY:
+                return "Primary";
+            case SECONDARY:
+                return "Secondary (High School)";
+            case UNIVERSITY:
+                return "University";
+            default:
+                return null;
+        }
     }
 }

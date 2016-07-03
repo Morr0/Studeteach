@@ -42,8 +42,8 @@ public class NewTeacherController implements NewPersonBackButton{
         String lastName = textLastName.getText();
         String preferredName = textPreferredName.getText();
         String schoolName = textSchoolName.getText();
-        Subjects specializedSubject = null;
-        SchoolType schoolType = null;
+        Subjects specializedSubject;
+        SchoolType schoolType;
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
         if (firstName.isEmpty()) {
@@ -74,7 +74,7 @@ public class NewTeacherController implements NewPersonBackButton{
 
             return;
         } else
-            schoolType = SchoolType.toSchoolType(comboSchoolType.getSelectionModel().getSelectedItem());
+            schoolType = Utilities.toSchoolTypeFromString(comboSchoolType.getSelectionModel().getSelectedItem());
 
         Teacher teacher = Teacher.getTeacher();
         teacher.setFirstName(firstName);
