@@ -4,10 +4,12 @@ import archavexm.studeteach.core.common.timetable.Timetable;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Random;
 
 public interface Person{
     PersonType getPersonType();
     HashSet<Day> getSchoolDays();
+    void setSchoolDays(HashSet<Day> schoolDays);
 
     String getFirstName();
     String getLastName();
@@ -15,15 +17,63 @@ public interface Person{
     String getPreferredName();
 
     default String getTitleName(){
-        if (getPreferredName() == null)
+        if (getPreferredName() == null || getPreferredName().isEmpty())
             return getFirstName();
         else
             return getPreferredName();
     }
 
+    default boolean doesHaveThisDay(Day day){
+        for (Day d: getSchoolDays())
+            if (d == day)
+                return true;
+
+        return false;
+    }
+
     LinkedList<Timetable> getTimetables();
     void setTimetables(LinkedList<Timetable> timetables);
-    void organiseTimetables();
+    int getPrimaryTimetableId();
+    void setPrimaryTimetableId(int primaryTimetableId);
+    default Timetable getPrimaryTimetable(){
+        Timetable t = null;
+        for (Timetable timetable: getTimetables())
+            if (timetable.getId() == getPrimaryTimetableId())
+                t = timetable;
+
+        return t;
+    }
+    default Timetable getTimetable(String name){
+        Timetable t = null;
+        for (Timetable timetable: getTimetables())
+            if (timetable.getName().equals(name))
+                t = timetable;
+
+        return t;
+    }
+    default void organiseTimetables(){
+        boolean organise = true;
+        for (Timetable timetable: getTimetables())
+            if (timetable.getId() == getPrimaryTimetableId())
+                organise = false;
+
+        if (organise)
+            setPrimaryTimetableId(0);
+    }
+    default int generateRandomIdForTimetable(){
+        int id = new Random().nextInt(10000);
+        for (Timetable timetable: getTimetables())
+            if (timetable.getId() == id)
+                generateRandomIdForTimetable();
+
+        return id;
+    }
+    default boolean isPrimaryTimetable(Timetable timetable){
+        if (timetable.getId() == getPrimaryTimetableId())
+            return true;
+        else
+            return false;
+    }
 
     LinkedList<TODOList> getTodoLists();
     void setTodoLists(LinkedList<TODOList> todoLists);

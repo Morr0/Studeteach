@@ -57,7 +57,7 @@ public class TimetableEditorController implements PersonWindow, ITimetable {
     @Override
     public void init(){
         try {
-            person = ObjectDeserializer.deserializeStudent(filePath);
+            person = ObjectDeserializer.deserialize(filePath);
             textTimetableName.setText(timetable.getName());
 
             for (Timetable t: person.getTimetables())

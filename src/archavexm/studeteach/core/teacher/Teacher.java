@@ -30,6 +30,8 @@ public class Teacher implements Person {
     private String schoolName;
     @Attribute(name = "school_type")
     private SchoolType schoolType;
+    @Attribute(name = "primary_timetable")
+    private int primaryTimetableId;
     @ElementList(name = "school_days", entry = "day", required = false)
     private HashSet<Day> schoolDays = new HashSet<>();
 
@@ -55,6 +57,7 @@ public class Teacher implements Person {
         Teacher.teacher = teacher;
     }
 
+    @Override
     public String getFirstName() {
         return firstName;
     }
@@ -63,6 +66,7 @@ public class Teacher implements Person {
         this.firstName = firstName;
     }
 
+    @Override
     public String getLastName() {
         return lastName;
     }
@@ -71,6 +75,7 @@ public class Teacher implements Person {
         this.lastName = lastName;
     }
 
+    @Override
     public String getFullName(){
         return firstName + " " + lastName;
     }
@@ -98,6 +103,7 @@ public class Teacher implements Person {
         return PersonType.TEACHER;
     }
 
+    @Override
     public String getPreferredName() {
         return preferredName;
     }
@@ -127,6 +133,7 @@ public class Teacher implements Person {
         return schoolDays;
     }
 
+    @Override
     public void setSchoolDays(HashSet<Day> schoolDays) {
         this.schoolDays = schoolDays;
     }
@@ -142,6 +149,12 @@ public class Teacher implements Person {
     }
 
     @Override
-    @Deprecated
-    public void organiseTimetables(){}
+    public int getPrimaryTimetableId() {
+        return primaryTimetableId;
+    }
+
+    @Override
+    public void setPrimaryTimetableId(int primaryTimetableId) {
+        this.primaryTimetableId = primaryTimetableId;
+    }
 }

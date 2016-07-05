@@ -14,7 +14,6 @@ import org.simpleframework.xml.Root;
 
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Random;
 
 // The main student class
 // The entire student profile is here
@@ -57,18 +56,22 @@ public class Student implements Person {
         return student;
     }
 
+    @Override
     public String getFirstName(){
         return firstName;
     }
 
+    @Override
     public String getLastName(){
         return lastName;
     }
 
+    @Override
     public String getFullName(){
         return firstName + " " + lastName;
     }
 
+    @Override
     public String getPreferredName(){
         return preferredName;
     }
@@ -90,6 +93,7 @@ public class Student implements Person {
         return schoolYear;
     }
 
+    @Override
     public HashSet<Day> getSchoolDays(){
         return schoolDays;
     }
@@ -102,6 +106,7 @@ public class Student implements Person {
         return age;
     }
 
+    @Override
     public int getPrimaryTimetableId(){
         return primaryTimetableId;
     }
@@ -120,6 +125,7 @@ public class Student implements Person {
         return days;
     }
 
+    @Override
     public LinkedList<Timetable> getTimetables(){
         return timetables;
     }
@@ -145,6 +151,7 @@ public class Student implements Person {
         this.age = age;
     }
 
+    @Override
     public void setPrimaryTimetableId(int primaryTimetableId){
         this.primaryTimetableId = primaryTimetableId;
     }
@@ -162,6 +169,7 @@ public class Student implements Person {
         schoolYear = year;
     }
 
+    @Override
     public void setSchoolDays(HashSet<Day> days){
         schoolDays = days;
     }
@@ -174,6 +182,7 @@ public class Student implements Person {
         this.tasks = tasks;
     }
 
+    @Override
     public void setTimetables(LinkedList<Timetable> timetables){
         this.timetables = timetables;
     }
@@ -181,58 +190,5 @@ public class Student implements Person {
     @Override
     public void setTodoLists(LinkedList<TODOList> todoLists) {
         this.todoLists = todoLists;
-    }
-
-    public boolean doesHaveThisDay(Day day){
-        for (Day d: getSchoolDays())
-            if (d == day)
-                return true;
-
-        return false;
-    }
-
-    public void organiseTimetables(){
-        boolean organise = true;
-        for (Timetable timetable: timetables)
-            if (timetable.getId() == primaryTimetableId)
-                organise = false;
-
-        if (organise)
-            primaryTimetableId = 0;
-
-    }
-
-    public Timetable getPrimaryTimetable(){
-        Timetable t = null;
-        for (Timetable timetable: timetables)
-            if (timetable.getId() == primaryTimetableId)
-                t = timetable;
-
-        return t;
-    }
-
-    public boolean isPrimaryTimetable(Timetable timetable){
-        if (timetable.getId() == primaryTimetableId)
-            return true;
-        else
-            return false;
-    }
-
-    public Timetable getTimetable(String name){
-        Timetable t = null;
-        for (Timetable timetable: timetables)
-            if (timetable.getName().equals(name))
-                t = timetable;
-
-        return t;
-    }
-
-    public int generateRandomIdForTimetable(){
-        int id = new Random().nextInt(10000);
-        for (Timetable timetable: timetables)
-            if (timetable.getId() == id)
-                generateRandomIdForTimetable();
-
-        return id;
     }
 }

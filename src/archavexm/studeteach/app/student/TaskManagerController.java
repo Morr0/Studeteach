@@ -1,4 +1,4 @@
-package archavexm.studeteach.app.student.windows;
+package archavexm.studeteach.app.student;
 
 import archavexm.studeteach.app.common.PersonWindow;
 import archavexm.studeteach.app.common.Studeteach;

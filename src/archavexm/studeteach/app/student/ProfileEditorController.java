@@ -1,4 +1,4 @@
-package archavexm.studeteach.app.student.windows;
+package archavexm.studeteach.app.student;
 
 import archavexm.studeteach.app.common.PersonWindow;
 import archavexm.studeteach.core.common.Day;
@@ -70,7 +70,8 @@ public class ProfileEditorController implements PersonWindow {
             comboSchoolType.setValue("University");
 
         HashSet<Day> schoolDays = student.getSchoolDays();
-        if (!schoolDays.isEmpty()) for (Day day : schoolDays) {
+        if (!schoolDays.isEmpty())
+            for (Day day : schoolDays) {
             String name = day.toString().toLowerCase();
             switch (name) {
                 case "monday":
@@ -108,12 +109,8 @@ public class ProfileEditorController implements PersonWindow {
         SchoolType schoolType;
         HashSet<Day> schoolDays = new HashSet<>(7);
 
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-
         if (textFirstName.getText().isEmpty()){
-            alert.setContentText("You must provide your first name. Otherwise you cannot proceed.");
-            alert.showAndWait();
-
+            drawAlert("You must provide your first name. Otherwise you cannot proceed.");
             return;
         }
 
@@ -122,53 +119,41 @@ public class ProfileEditorController implements PersonWindow {
         preferredName = textPreferedName.getText();
 
         if (!(Utilities.isDigit(textAge.getText()))){
-            alert.setContentText("You must provide an integer in the age field.");
-            alert.showAndWait();
-
+            drawAlert("You must provide an integer in the age field.");
             return;
         } else {
             age = Integer.parseInt(textAge.getText());
         }
 
         if (age == 0){
-            alert.setContentText("You must provide your age. It must not be less than 5 or more than 75.");
-            alert.showAndWait();
-
+            drawAlert("You must provide your age. It must not be less than 5 or more than 75.");
             return;
         } else if (age < 5){
-            alert.setContentText("Your age must be over 5 years old.");
-            alert.showAndWait();
-
+            drawAlert("Your age must be over 5 years old.");
             return;
         } else if (age > 75){
-            alert.setContentText("Your age must be less than 75 years old.");
-            alert.showAndWait();
-
+            drawAlert("Your age must be less than 75 years old.");
             return;
         }
 
-        if (!(Utilities.isDigit(textYear.getText())))
-            alert.setContentText("You must provide a non-negative number in the year field and it must not exceed 12.");
+        if (!(Utilities.isDigit(textYear.getText()))){
+            drawAlert("You must provide a non-negative number in the year field and it must not exceed 12.");
+            return;
+        }
          else
             year = Integer.parseInt(textYear.getText());
 
 
         if (year == 0){
-            alert.setContentText("You must provide the year you are studying in.");
-            alert.showAndWait();
-
+            drawAlert("You must provide the year you are studying in.");
             return;
         } else if (year > 12 || year < 0){
-            alert.setContentText("You should provide the correct year you are studying in.");
-            alert.showAndWait();
-
+            drawAlert("You should provide the correct year you are studying in.");
             return;
         }
 
         if (textSchoolName.getText() == ""){
-            alert.setContentText("You must provide the name of your school.");
-            alert.showAndWait();
-
+            drawAlert("You must provide the name of your school.");
             return;
         } else
             schoolName = textSchoolName.getText();
@@ -186,9 +171,7 @@ public class ProfileEditorController implements PersonWindow {
                 schoolType = SchoolType.UNIVERSITY;
                 break;
             default:
-                alert.setContentText("You must provide the level of education like primary or secondary or university.");
-                alert.showAndWait();
-
+                drawAlert("You must provide the level of education like primary or secondary or university.");
                 return;
         }
 
@@ -231,7 +214,12 @@ public class ProfileEditorController implements PersonWindow {
 
         Stage currentStage = (Stage) textSchoolName.getScene().getWindow();
         currentStage.close();
+    }
 
+    private void drawAlert(String reason){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setContentText(reason);
+        alert.showAndWait();
     }
 }
 

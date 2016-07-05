@@ -4,7 +4,6 @@ import archavexm.studeteach.app.common.AboutController;
 import archavexm.studeteach.app.common.PersonController;
 import archavexm.studeteach.app.common.Studeteach;
 import archavexm.studeteach.core.common.Person;
-import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.ObjectSerializer;
 import archavexm.studeteach.core.util.Utilities;
@@ -29,6 +28,7 @@ public class ToMainMenuController {
     @FXML private Label labelTitle;
 
     private String filePath;
+    private Person.PersonType personType;
 
     public void newUser(){
         Alert studentOrTeacherDialog = new Alert(Alert.AlertType.CONFIRMATION);
@@ -48,11 +48,11 @@ public class ToMainMenuController {
                 String person = null;
                 Parent root = null;
                 if (selectedPerson.get().getText().equals("Student")){
-                    root = loader.load(getClass().getResource("student/windows/NewStudent.fxml"));
+                    root = loader.load(getClass().getResource("student/NewStudent.fxml"));
                     person = "Student";
                 }
                 else if (selectedPerson.get().getText().equals("Teacher")){
-                    root = loader.load(getClass().getResource("teacher/windows/NewTeacher.fxml"));
+                    root = loader.load(getClass().getResource("teacher/NewTeacher.fxml"));
                     person = "Teacher";
                 }
 
@@ -103,7 +103,7 @@ public class ToMainMenuController {
 
             if (Utilities.isValidStudeteachFile(filePath)){
                 String content = Utilities.readFirstLine(filePath);
-                Person.PersonType personType = null;
+                Person.PersonType personType;
                 if (content.contains("student"))
                     personType = Person.PersonType.STUDENT;
                 else
@@ -124,21 +124,17 @@ public class ToMainMenuController {
         }
     }
 
-    private void organiseStudent() throws Exception{
-        Student student = ObjectDeserializer.deserializeStudent(filePath);
-        student.organiseTimetables();
-        ObjectSerializer.serializeStudent(filePath, student);
+    private void organisePerson() throws Exception{
+        Person person = ObjectDeserializer.deserialize(filePath);
+        person.organiseTimetables();
+        ObjectSerializer.serialize(filePath, person);
     }
 
     private void makeWindow(String filePath, Person.PersonType personType){
         try {
+            organisePerson();
             FXMLLoader loader = new FXMLLoader();
-            Parent root;
-            if (personType.equals(Person.PersonType.STUDENT)){
-                organiseStudent();
-                root = loader.load(getClass().getResource("student/Student.fxml").openStream());
-            } else
-                root = loader.load(getClass().getResource("teacher/Teacher.fxml").openStream());
+            Parent root = loader.load(PersonController.class.getResource("Person.fxml").openStream());
 
             PersonController personController = loader.getController();
             Stage stage = new Stage();
@@ -147,6 +143,7 @@ public class ToMainMenuController {
 
             personController.setFilePath(filePath);
             personController.setCurrentStage(stage);
+            personController.setPersonType(personType);
             personController.init();
             stage.show();
         } catch (Exception ex){
@@ -156,5 +153,4 @@ public class ToMainMenuController {
         Stage currentStage = (Stage)labelTitle.getScene().getWindow();
         currentStage.close();
     }
-
 }

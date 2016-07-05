@@ -32,6 +32,8 @@ public class AboutController {
             if (Desktop.isDesktopSupported()){
                 Desktop.getDesktop().browse(new URI("https://github.com/Morr0/Studeteach"));
             }
-        } catch (Exception ex){}
+        } catch (Exception ex){
+            return;
+        }
     }
 }

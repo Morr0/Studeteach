@@ -1,4 +1,4 @@
-package archavexm.studeteach.app.student.windows;
+package archavexm.studeteach.app.student;
 
 import archavexm.studeteach.core.common.Day;
 import archavexm.studeteach.core.common.subject.Subject;

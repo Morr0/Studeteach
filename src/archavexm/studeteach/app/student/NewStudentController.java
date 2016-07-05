@@ -1,8 +1,9 @@
-package archavexm.studeteach.app.student.windows;
+package archavexm.studeteach.app.student;
 
 import archavexm.studeteach.app.common.NewPersonBackButton;
+import archavexm.studeteach.app.common.PersonController;
 import archavexm.studeteach.app.common.Studeteach;
-import archavexm.studeteach.app.student.StudentController;
+import archavexm.studeteach.core.common.Person;
 import archavexm.studeteach.core.common.SchoolType;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.util.ObjectSerializer;
@@ -135,10 +136,11 @@ public class NewStudentController implements NewPersonBackButton{
     private void toProfile(){
         try {
             FXMLLoader loader = new FXMLLoader();
-            Parent studentWindow = loader.load(StudentController.class.getResource("Student.fxml").openStream());
+            Parent studentWindow = loader.load(PersonController.class.getResource("Person.fxml").openStream());
 
-            StudentController sc = loader.getController();
+            PersonController sc = loader.getController();
             sc.setFilePath(filePath);
+            sc.setPersonType(Person.PersonType.STUDENT);
 
             Stage stage = new Stage();
             stage.getIcons().add(new Image(Studeteach.APP_ICON));

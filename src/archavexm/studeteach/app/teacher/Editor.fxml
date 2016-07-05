@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="279.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.teacher.windows.EditorController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="361.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.teacher.EditorController">
    <children>
       <Label alignment="CENTER" layoutX="50.0" layoutY="14.0" prefHeight="40.0" prefWidth="500.0" text="Teacher Profile Editor">
          <font>
@@ -80,10 +80,50 @@
               </FXCollections>
           </items>
       </ComboBox>
-      <Button layoutX="207.0" layoutY="207.0" mnemonicParsing="false" onAction="#save" prefHeight="64.0" prefWidth="160.0" text="Save">
+      <Button layoutX="205.0" layoutY="286.0" mnemonicParsing="false" onAction="#save" prefHeight="64.0" prefWidth="160.0" text="Save">
          <font>
             <Font size="32.0" />
          </font>
       </Button>
+      <Label layoutX="14.0" layoutY="206.0" prefHeight="32.0" prefWidth="113.0" text="School Days:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <CheckBox fx:id="checkMonday" layoutX="126.0" layoutY="206.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="103.0" text="Monday">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="checkTuesday" layoutX="233.0" layoutY="206.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="103.0" text="Tuesday">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="checkWednesday" layoutX="342.0" layoutY="206.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="126.0" text="Wednesday">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="checkThursday" layoutX="479.0" layoutY="206.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="113.0" text="Thursday">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="checkFriday" layoutX="127.0" layoutY="244.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="103.0" text="Friday">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="checkSaturday" layoutX="233.0" layoutY="244.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="103.0" text="Saturday">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="checkSunday" layoutX="342.0" layoutY="244.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="103.0" text="Sunday">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </CheckBox>
    </children>
 </AnchorPane>
