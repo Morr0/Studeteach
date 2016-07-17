@@ -105,7 +105,7 @@ public class ProfileEditorController implements PersonWindow {
         String lastName;
         String preferredName;
         int age;
-        int year;
+        int year = 0;
         String schoolName;
         SchoolType schoolType;
         HashSet<Day> schoolDays = new HashSet<>(7);
@@ -137,12 +137,14 @@ public class ProfileEditorController implements PersonWindow {
             return;
         }
 
-        if (!(!Utilities.isNumber(textYear.getText().trim()))){
+        if (!Utilities.isNumber(textYear.getText().trim())){
             drawAlert("You must provide a non-negative number in the year field and it must not exceed 12.");
             return;
         }
-         else
-            year = Integer.parseInt(textYear.getText());
+         else {
+            if (!textYear.getText().isEmpty())
+                year = Integer.parseInt(textYear.getText());
+        }
 
 
         if (year == 0){
