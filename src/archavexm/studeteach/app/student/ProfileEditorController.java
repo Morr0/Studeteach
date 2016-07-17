@@ -6,7 +6,6 @@ import archavexm.studeteach.core.common.SchoolType;
 import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.ObjectSerializer;
-import archavexm.studeteach.core.util.Utilities;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
@@ -57,7 +56,7 @@ public class ProfileEditorController implements PersonWindow {
         textPreferedName.setText(student.getPreferredName());
         textAge.setText(Integer.toString(student.getAge()));
 
-        if (!(student.getSchoolYear() == 0)) {
+        if (student.getSchoolYear() != 0) {
             textYear.setText(Integer.toString(student.getSchoolYear()));
         }
         textSchoolName.setText(student.getSchoolName());
@@ -119,11 +118,11 @@ public class ProfileEditorController implements PersonWindow {
         lastName = textLastName.getText();
         preferredName = textPreferedName.getText();
 
-        if (!(!Utilities.isNumber(textAge.getText().trim()))){
+        try {
+            age = Integer.parseInt(textAge.getText().trim());
+        } catch (NumberFormatException ex){
             drawAlert("You must provide an integer in the age field.");
             return;
-        } else {
-            age = Integer.parseInt(textAge.getText());
         }
 
         if (age == 0){
@@ -137,15 +136,12 @@ public class ProfileEditorController implements PersonWindow {
             return;
         }
 
-        if (!Utilities.isNumber(textYear.getText().trim())){
+        try {
+            year = Integer.parseInt(textYear.getText().trim());
+        } catch (NumberFormatException ex){
             drawAlert("You must provide a non-negative number in the year field and it must not exceed 12.");
             return;
         }
-         else {
-            if (!textYear.getText().isEmpty())
-                year = Integer.parseInt(textYear.getText());
-        }
-
 
         if (year == 0){
             drawAlert("You must provide the year you are studying in.");
