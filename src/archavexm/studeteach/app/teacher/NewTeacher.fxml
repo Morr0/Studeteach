@@ -5,86 +5,91 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="319.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.teacher.NewTeacherController">
-   <children>
-      <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="66.0" prefWidth="570.0" text="New Teacher Profile">
-         <font>
-            <Font size="32.0" />
-         </font>
-      </Label>
-      <Label layoutX="14.0" layoutY="92.0" prefHeight="32.0" prefWidth="96.0" text="First Name:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="textFirstName" layoutX="110.0" layoutY="92.0" prefHeight="32.0" prefWidth="177.0" />
-      <Label layoutX="300.0" layoutY="92.0" prefHeight="32.0" prefWidth="96.0" text="Last Name:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="textLastName" layoutX="396.0" layoutY="92.0" prefHeight="32.0" prefWidth="189.0" />
-      <Label layoutX="14.0" layoutY="134.0" prefHeight="32.0" prefWidth="137.0" text="Preferred Name:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="textPreferredName" layoutX="151.0" layoutY="134.0" prefHeight="32.0" prefWidth="137.0" />
-      <Label layoutX="299.0" layoutY="134.0" prefHeight="32.0" prefWidth="159.0" text="Specialized Subject:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <ComboBox fx:id="comboSubject" layoutX="458.0" layoutY="134.0" prefHeight="32.0" prefWidth="127.0" promptText="Subject:">
-          <items>
-              <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="English" />
-                  <String fx:value="Arabic" />
-                  <String fx:value="French" />
-                  <String fx:value="Chinese" />
-                  <String fx:value="Assyrian" />
-                  <String fx:value="Language" />
-                  <String fx:value="Mathematics" />
-                  <String fx:value="Geography" />
-                  <String fx:value="Religion" />
-                  <String fx:value="History" />
-                  <String fx:value="Commerce" />
-                  <String fx:value="Art" />
-                  <String fx:value="Music" />
-                  <String fx:value="Science" />
-                  <String fx:value="Physics" />
-                  <String fx:value="Chemistry" />
-                  <String fx:value="Biology" />
-                  <String fx:value="Sport" />
-                  <String fx:value="Computing" />
-              </FXCollections>
-          </items>
-      </ComboBox>
-      <Label layoutX="14.0" layoutY="174.0" prefHeight="32.0" prefWidth="114.0" text="School Name:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="textSchoolName" layoutX="128.0" layoutY="174.0" prefHeight="32.0" prefWidth="159.0" />
-      <Label layoutX="302.0" layoutY="174.0" prefHeight="32.0" prefWidth="107.0" text="School Type:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <ComboBox fx:id="comboSchoolType" layoutX="409.0" layoutY="174.0" prefHeight="32.0" prefWidth="177.0" promptText="School Type:">
-         <items>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="319.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="archavexm.studeteach.app.teacher.NewTeacherController">
+    <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="66.0" prefWidth="570.0"
+           text="New Teacher Profile">
+        <font>
+          <Font size="32.0"/>
+        </font>
+    </Label>
+    <Label layoutX="14.0" layoutY="92.0" prefHeight="32.0" prefWidth="96.0" text="First Name:">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </Label>
+    <TextField fx:id="textFirstName" layoutX="110.0" layoutY="92.0" prefHeight="32.0" prefWidth="177.0"/>
+    <Label layoutX="300.0" layoutY="92.0" prefHeight="32.0" prefWidth="96.0" text="Last Name:">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </Label>
+    <TextField fx:id="textLastName" layoutX="396.0" layoutY="92.0" prefHeight="32.0" prefWidth="189.0"/>
+    <Label layoutX="14.0" layoutY="134.0" prefHeight="32.0" prefWidth="137.0" text="Preferred Name:">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </Label>
+    <TextField fx:id="textPreferredName" layoutX="151.0" layoutY="134.0" prefHeight="32.0" prefWidth="137.0"/>
+    <Label layoutX="299.0" layoutY="134.0" prefHeight="32.0" prefWidth="159.0" text="Specialized Subject:">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </Label>
+    <ComboBox fx:id="comboSubject" layoutX="458.0" layoutY="134.0" prefHeight="32.0" prefWidth="127.0"
+              promptText="Subject:">
+        <items>
             <FXCollections fx:factory="observableArrayList">
-               <String fx:value="Primary" />
-               <String fx:value="Secondary (High School)" />
-               <String fx:value="University" />
+                <String fx:value="English"/>
+                <String fx:value="Arabic"/>
+                <String fx:value="French"/>
+                <String fx:value="Chinese"/>
+                <String fx:value="Assyrian"/>
+                <String fx:value="Language"/>
+                <String fx:value="Mathematics"/>
+                <String fx:value="Geography"/>
+                <String fx:value="Religion"/>
+                <String fx:value="History"/>
+                <String fx:value="Commerce"/>
+                <String fx:value="Art"/>
+                <String fx:value="Music"/>
+                <String fx:value="Science"/>
+                <String fx:value="Physics"/>
+                <String fx:value="Chemistry"/>
+                <String fx:value="Biology"/>
+                <String fx:value="Sport"/>
+                <String fx:value="Computing"/>
             </FXCollections>
-         </items>
-      </ComboBox>
-      <Button layoutX="237.0" layoutY="230.0" mnemonicParsing="false" onAction="#create" prefHeight="83.0" prefWidth="146.0" text="Create">
-         <font>
-            <Font size="32.0" />
-         </font>
-      </Button>
-      <Button fx:id="buttonBack" layoutX="10.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="52.0" prefWidth="52.0" />
-   </children>
+        </items>
+    </ComboBox>
+    <Label layoutX="14.0" layoutY="174.0" prefHeight="32.0" prefWidth="114.0" text="School Name:">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </Label>
+    <TextField fx:id="textSchoolName" layoutX="128.0" layoutY="174.0" prefHeight="32.0" prefWidth="159.0"/>
+    <Label layoutX="302.0" layoutY="174.0" prefHeight="32.0" prefWidth="107.0" text="School Type:">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </Label>
+    <ComboBox fx:id="comboSchoolType" layoutX="409.0" layoutY="174.0" prefHeight="32.0" prefWidth="177.0"
+              promptText="School Type:">
+        <items>
+          <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Primary"/>
+              <String fx:value="Secondary (High School)"/>
+              <String fx:value="University"/>
+          </FXCollections>
+        </items>
+    </ComboBox>
+    <Button layoutX="237.0" layoutY="230.0" mnemonicParsing="false" onAction="#create" prefHeight="83.0"
+            prefWidth="146.0" text="Create">
+        <font>
+          <Font size="32.0"/>
+        </font>
+    </Button>
+    <Button fx:id="buttonBack" layoutX="10.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="52.0" prefWidth="52.0"/>
 </AnchorPane>

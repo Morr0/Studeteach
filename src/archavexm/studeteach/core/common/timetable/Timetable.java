@@ -126,7 +126,7 @@ public class Timetable {
         results.add(sundayPeriods.isEmpty());
 
         for (boolean bool: results){
-            if (bool == false){
+            if (!bool){
                 return false;
             }
         }
@@ -187,12 +187,7 @@ public class Timetable {
 
     public boolean containsPeriodOnDay(Day day){
         LinkedList<Period> periods = getDayPeriods(day);
-
-        if (periods.isEmpty())
-            return false;
-        else
-            return true;
-
+        return periods.isEmpty();
     }
 
     public boolean containsPeriodOnDay(Subject subject, Day day){

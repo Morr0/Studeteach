@@ -33,7 +33,6 @@ public class AboutController {
                 Desktop.getDesktop().browse(new URI("https://github.com/Morr0/Studeteach"));
             }
         } catch (Exception ex){
-            return;
         }
     }
 }

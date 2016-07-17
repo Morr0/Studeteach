@@ -88,7 +88,6 @@ public class EditorController implements PersonWindow {
 
     public void save(){
         HashSet<Day> schoolDays = new HashSet<>(7);
-        Alert alert = new Alert(Alert.AlertType.ERROR);
 
         if (textFirstName.getText().isEmpty()){
             drawAlert("You must provide in your first name.");

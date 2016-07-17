@@ -5,125 +5,136 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="361.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.teacher.EditorController">
-   <children>
-      <Label alignment="CENTER" layoutX="50.0" layoutY="14.0" prefHeight="40.0" prefWidth="500.0" text="Teacher Profile Editor">
-         <font>
-            <Font size="32.0" />
-         </font>
-      </Label>
-      <Label layoutX="14.0" layoutY="72.0" prefHeight="32.0" prefWidth="93.0" text="First Name:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="textFirstName" layoutX="107.0" layoutY="72.0" prefHeight="32.0" prefWidth="187.0" />
-      <Label layoutX="300.0" layoutY="72.0" prefHeight="32.0" prefWidth="93.0" text="Last Name:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="textLastName" layoutX="392.0" layoutY="72.0" prefHeight="32.0" prefWidth="194.0" />
-      <Label layoutX="14.0" layoutY="113.0" prefHeight="32.0" prefWidth="133.0" text="Preferred Name:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="textPreferredName" layoutX="147.0" layoutY="113.0" prefHeight="32.0" prefWidth="149.0" />
-      <Label layoutX="300.0" layoutY="113.0" prefHeight="32.0" prefWidth="160.0" text="Specialized Subject:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <ComboBox fx:id="comboSpecializedSubject" layoutX="460.0" layoutY="113.0" prefHeight="32.0" prefWidth="126.0" promptText="Subject">
-          <items>
-              <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="English" />
-                  <String fx:value="Arabic" />
-                  <String fx:value="French" />
-                  <String fx:value="Chinese" />
-                  <String fx:value="Assyrian" />
-                  <String fx:value="Language" />
-                  <String fx:value="Mathematics" />
-                  <String fx:value="Geography" />
-                  <String fx:value="Religion" />
-                  <String fx:value="History" />
-                  <String fx:value="Commerce" />
-                  <String fx:value="Art" />
-                  <String fx:value="Music" />
-                  <String fx:value="Science" />
-                  <String fx:value="Physics" />
-                  <String fx:value="Chemistry" />
-                  <String fx:value="Biology" />
-                  <String fx:value="Sport" />
-                  <String fx:value="Computing" />
-              </FXCollections>
-          </items>
-      </ComboBox>
-      <Label layoutX="14.0" layoutY="160.0" prefHeight="32.0" prefWidth="113.0" text="School Name:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="textSchoolName" layoutX="126.0" layoutY="160.0" prefHeight="32.0" prefWidth="171.0" />
-      <Label layoutX="300.0" layoutY="160.0" prefHeight="32.0" prefWidth="113.0" text="School Type:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <ComboBox fx:id="comboSchoolType" layoutX="407.0" layoutY="160.0" prefHeight="32.0" prefWidth="180.0" promptText="School Type">
-          <items>
-              <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="Primary" />
-                  <String fx:value="Secondary (High School)" />
-                  <String fx:value="University" />
-              </FXCollections>
-          </items>
-      </ComboBox>
-      <Button layoutX="205.0" layoutY="286.0" mnemonicParsing="false" onAction="#save" prefHeight="64.0" prefWidth="160.0" text="Save">
-         <font>
-            <Font size="32.0" />
-         </font>
-      </Button>
-      <Label layoutX="14.0" layoutY="206.0" prefHeight="32.0" prefWidth="113.0" text="School Days:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <CheckBox fx:id="checkMonday" layoutX="126.0" layoutY="206.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="103.0" text="Monday">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </CheckBox>
-      <CheckBox fx:id="checkTuesday" layoutX="233.0" layoutY="206.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="103.0" text="Tuesday">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </CheckBox>
-      <CheckBox fx:id="checkWednesday" layoutX="342.0" layoutY="206.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="126.0" text="Wednesday">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </CheckBox>
-      <CheckBox fx:id="checkThursday" layoutX="479.0" layoutY="206.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="113.0" text="Thursday">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </CheckBox>
-      <CheckBox fx:id="checkFriday" layoutX="127.0" layoutY="244.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="103.0" text="Friday">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </CheckBox>
-      <CheckBox fx:id="checkSaturday" layoutX="233.0" layoutY="244.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="103.0" text="Saturday">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </CheckBox>
-      <CheckBox fx:id="checkSunday" layoutX="342.0" layoutY="244.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="103.0" text="Sunday">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </CheckBox>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="361.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="archavexm.studeteach.app.teacher.EditorController">
+    <Label alignment="CENTER" layoutX="50.0" layoutY="14.0" prefHeight="40.0" prefWidth="500.0"
+           text="Teacher Profile Editor">
+        <font>
+          <Font size="32.0"/>
+        </font>
+    </Label>
+    <Label layoutX="14.0" layoutY="72.0" prefHeight="32.0" prefWidth="93.0" text="First Name:">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </Label>
+    <TextField fx:id="textFirstName" layoutX="107.0" layoutY="72.0" prefHeight="32.0" prefWidth="187.0"/>
+    <Label layoutX="300.0" layoutY="72.0" prefHeight="32.0" prefWidth="93.0" text="Last Name:">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </Label>
+    <TextField fx:id="textLastName" layoutX="392.0" layoutY="72.0" prefHeight="32.0" prefWidth="194.0"/>
+    <Label layoutX="14.0" layoutY="113.0" prefHeight="32.0" prefWidth="133.0" text="Preferred Name:">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </Label>
+    <TextField fx:id="textPreferredName" layoutX="147.0" layoutY="113.0" prefHeight="32.0" prefWidth="149.0"/>
+    <Label layoutX="300.0" layoutY="113.0" prefHeight="32.0" prefWidth="160.0" text="Specialized Subject:">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </Label>
+    <ComboBox fx:id="comboSpecializedSubject" layoutX="460.0" layoutY="113.0" prefHeight="32.0" prefWidth="126.0"
+              promptText="Subject">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="English"/>
+                <String fx:value="Arabic"/>
+                <String fx:value="French"/>
+                <String fx:value="Chinese"/>
+                <String fx:value="Assyrian"/>
+                <String fx:value="Language"/>
+                <String fx:value="Mathematics"/>
+                <String fx:value="Geography"/>
+                <String fx:value="Religion"/>
+                <String fx:value="History"/>
+                <String fx:value="Commerce"/>
+                <String fx:value="Art"/>
+                <String fx:value="Music"/>
+                <String fx:value="Science"/>
+                <String fx:value="Physics"/>
+                <String fx:value="Chemistry"/>
+                <String fx:value="Biology"/>
+                <String fx:value="Sport"/>
+                <String fx:value="Computing"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
+    <Label layoutX="14.0" layoutY="160.0" prefHeight="32.0" prefWidth="113.0" text="School Name:">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </Label>
+    <TextField fx:id="textSchoolName" layoutX="126.0" layoutY="160.0" prefHeight="32.0" prefWidth="171.0"/>
+    <Label layoutX="300.0" layoutY="160.0" prefHeight="32.0" prefWidth="113.0" text="School Type:">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </Label>
+    <ComboBox fx:id="comboSchoolType" layoutX="407.0" layoutY="160.0" prefHeight="32.0" prefWidth="180.0"
+              promptText="School Type">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Primary"/>
+                <String fx:value="Secondary (High School)"/>
+                <String fx:value="University"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
+    <Button layoutX="205.0" layoutY="286.0" mnemonicParsing="false" onAction="#save" prefHeight="64.0" prefWidth="160.0"
+            text="Save">
+        <font>
+          <Font size="32.0"/>
+        </font>
+    </Button>
+    <Label layoutX="14.0" layoutY="206.0" prefHeight="32.0" prefWidth="113.0" text="School Days:">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </Label>
+    <CheckBox fx:id="checkMonday" layoutX="126.0" layoutY="206.0" mnemonicParsing="false" prefHeight="32.0"
+              prefWidth="103.0" text="Monday">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </CheckBox>
+    <CheckBox fx:id="checkTuesday" layoutX="233.0" layoutY="206.0" mnemonicParsing="false" prefHeight="32.0"
+              prefWidth="103.0" text="Tuesday">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </CheckBox>
+    <CheckBox fx:id="checkWednesday" layoutX="342.0" layoutY="206.0" mnemonicParsing="false" prefHeight="32.0"
+              prefWidth="126.0" text="Wednesday">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </CheckBox>
+    <CheckBox fx:id="checkThursday" layoutX="479.0" layoutY="206.0" mnemonicParsing="false" prefHeight="32.0"
+              prefWidth="113.0" text="Thursday">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </CheckBox>
+    <CheckBox fx:id="checkFriday" layoutX="127.0" layoutY="244.0" mnemonicParsing="false" prefHeight="32.0"
+              prefWidth="103.0" text="Friday">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </CheckBox>
+    <CheckBox fx:id="checkSaturday" layoutX="233.0" layoutY="244.0" mnemonicParsing="false" prefHeight="32.0"
+              prefWidth="103.0" text="Saturday">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </CheckBox>
+    <CheckBox fx:id="checkSunday" layoutX="342.0" layoutY="244.0" mnemonicParsing="false" prefHeight="32.0"
+              prefWidth="103.0" text="Sunday">
+        <font>
+          <Font size="18.0"/>
+        </font>
+    </CheckBox>
 </AnchorPane>

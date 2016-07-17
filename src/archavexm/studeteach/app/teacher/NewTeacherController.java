@@ -113,7 +113,6 @@ public class NewTeacherController implements NewPersonBackButton{
 
             currentStage.close();
         } catch (NullPointerException ex){
-            return;
         } catch (Exception ex){
             ex.printStackTrace();
         }

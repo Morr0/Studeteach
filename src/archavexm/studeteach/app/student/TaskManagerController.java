@@ -35,7 +35,6 @@ public class TaskManagerController implements PersonWindow {
     private String filePath;
     private LinkedList<Task> tasks;
     private TaskType selectedTaskType;
-    private String selectedItem;
 
     @Override
     public void setFilePath(String filePath){
@@ -123,7 +122,7 @@ public class TaskManagerController implements PersonWindow {
 
     public void remove(){
         if (listTasks.getSelectionModel().getSelectedItem() != null){
-            selectedItem = listTasks.getSelectionModel().getSelectedItem();
+            String selectedItem = listTasks.getSelectionModel().getSelectedItem();
             int taskNumber = Utilities.getIdFromTask(selectedItem);
             LinkedList<Task> newListOfTasks = new LinkedList<>();
 
@@ -139,7 +138,6 @@ public class TaskManagerController implements PersonWindow {
             alert.setContentText("You must select the task in order to remove it from your list of tasks.");
             alert.showAndWait();
 
-            return;
         }
 
     }

@@ -3,35 +3,58 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="483.0" prefWidth="337.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.common.timetable.TimetableEditorController">
-   <children>
-      <ComboBox fx:id="comboSchoolDays" layoutX="67.0" layoutY="80.0" onAction="#updateContext" prefHeight="33.0" prefWidth="201.0" promptText="School Days:" />
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="122.0" prefHeight="33.0" prefWidth="138.0" text="Period 1:" />
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="155.0" prefHeight="33.0" prefWidth="138.0" text="Period 2:" />
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="188.0" prefHeight="33.0" prefWidth="138.0" text="Period 3:" />
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="220.0" prefHeight="33.0" prefWidth="138.0" text="Period 4:" />
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="250.0" prefHeight="33.0" prefWidth="138.0" text="Period 5:" />
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="279.0" prefHeight="33.0" prefWidth="138.0" text="Period 6:" />
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="312.0" prefHeight="33.0" prefWidth="138.0" text="Period 7:" />
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="345.0" prefHeight="33.0" prefWidth="138.0" text="Period 8:" />
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="378.0" prefHeight="33.0" prefWidth="138.0" text="Period 9:" />
-      <TextField fx:id="textPeriod1" layoutX="67.0" layoutY="122.0" prefHeight="25.0" prefWidth="201.0" promptText="Subject" />
-      <TextField fx:id="textPeriod2" layoutX="67.0" layoutY="155.0" prefHeight="25.0" prefWidth="201.0" promptText="Subject" />
-      <TextField fx:id="textPeriod3" layoutX="67.0" layoutY="188.0" prefHeight="25.0" prefWidth="201.0" promptText="Subject" />
-      <TextField fx:id="textPeriod4" layoutX="67.0" layoutY="220.0" prefHeight="25.0" prefWidth="201.0" promptText="Subject" />
-      <TextField fx:id="textPeriod5" layoutX="67.0" layoutY="250.0" prefHeight="25.0" prefWidth="201.0" promptText="Subject" />
-      <TextField fx:id="textPeriod6" layoutX="67.0" layoutY="283.0" prefHeight="25.0" prefWidth="201.0" promptText="Subject" />
-      <TextField fx:id="textPeriod7" layoutX="67.0" layoutY="316.0" prefHeight="25.0" prefWidth="201.0" promptText="Subject" />
-      <TextField fx:id="textPeriod8" layoutX="67.0" layoutY="349.0" prefHeight="25.0" prefWidth="201.0" promptText="Subject" />
-      <TextField fx:id="textPeriod9" layoutX="67.0" layoutY="382.0" prefHeight="25.0" prefWidth="201.0" promptText="Subject" />
-      <Button layoutX="67.0" layoutY="411.0" mnemonicParsing="false" onAction="#save" prefHeight="51.0" prefWidth="201.0" text="Save">
-         <font>
-            <Font size="32.0" />
-         </font></Button>
-      <Label alignment="CENTER" layoutX="67.0" prefHeight="33.0" prefWidth="201.0" text="Timetable Name:" />
-      <TextField fx:id="textTimetableName" layoutX="67.0" layoutY="36.0" prefHeight="25.0" prefWidth="201.0" promptText="Please enter a name:">
-         <font>
-            <Font size="16.0" />
-         </font></TextField>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="483.0"
+            prefWidth="337.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="archavexm.studeteach.app.common.timetable.TimetableEditorController">
+   <ComboBox fx:id="comboSchoolDays" layoutX="67.0" layoutY="80.0" onAction="#updateContext" prefHeight="33.0"
+             prefWidth="201.0" promptText="School Days:"/>
+   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="122.0" prefHeight="33.0" prefWidth="138.0"
+          text="Period 1:"/>
+   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="155.0" prefHeight="33.0" prefWidth="138.0"
+          text="Period 2:"/>
+   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="188.0" prefHeight="33.0" prefWidth="138.0"
+          text="Period 3:"/>
+   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="220.0" prefHeight="33.0" prefWidth="138.0"
+          text="Period 4:"/>
+   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="250.0" prefHeight="33.0" prefWidth="138.0"
+          text="Period 5:"/>
+   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="279.0" prefHeight="33.0" prefWidth="138.0"
+          text="Period 6:"/>
+   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="312.0" prefHeight="33.0" prefWidth="138.0"
+          text="Period 7:"/>
+   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="345.0" prefHeight="33.0" prefWidth="138.0"
+          text="Period 8:"/>
+   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="378.0" prefHeight="33.0" prefWidth="138.0"
+          text="Period 9:"/>
+   <TextField fx:id="textPeriod1" layoutX="67.0" layoutY="122.0" prefHeight="25.0" prefWidth="201.0"
+              promptText="Subject"/>
+   <TextField fx:id="textPeriod2" layoutX="67.0" layoutY="155.0" prefHeight="25.0" prefWidth="201.0"
+              promptText="Subject"/>
+   <TextField fx:id="textPeriod3" layoutX="67.0" layoutY="188.0" prefHeight="25.0" prefWidth="201.0"
+              promptText="Subject"/>
+   <TextField fx:id="textPeriod4" layoutX="67.0" layoutY="220.0" prefHeight="25.0" prefWidth="201.0"
+              promptText="Subject"/>
+   <TextField fx:id="textPeriod5" layoutX="67.0" layoutY="250.0" prefHeight="25.0" prefWidth="201.0"
+              promptText="Subject"/>
+   <TextField fx:id="textPeriod6" layoutX="67.0" layoutY="283.0" prefHeight="25.0" prefWidth="201.0"
+              promptText="Subject"/>
+   <TextField fx:id="textPeriod7" layoutX="67.0" layoutY="316.0" prefHeight="25.0" prefWidth="201.0"
+              promptText="Subject"/>
+   <TextField fx:id="textPeriod8" layoutX="67.0" layoutY="349.0" prefHeight="25.0" prefWidth="201.0"
+              promptText="Subject"/>
+   <TextField fx:id="textPeriod9" layoutX="67.0" layoutY="382.0" prefHeight="25.0" prefWidth="201.0"
+              promptText="Subject"/>
+   <Button layoutX="67.0" layoutY="411.0" mnemonicParsing="false" onAction="#save" prefHeight="51.0" prefWidth="201.0"
+           text="Save">
+      <font>
+         <Font size="32.0"/>
+      </font>
+   </Button>
+   <Label alignment="CENTER" layoutX="67.0" prefHeight="33.0" prefWidth="201.0" text="Timetable Name:"/>
+   <TextField fx:id="textTimetableName" layoutX="67.0" layoutY="36.0" prefHeight="25.0" prefWidth="201.0"
+              promptText="Please enter a name:">
+      <font>
+         <Font size="16.0"/>
+      </font>
+   </TextField>
 </AnchorPane>

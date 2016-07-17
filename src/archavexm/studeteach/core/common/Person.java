@@ -69,10 +69,7 @@ public interface Person{
         return id;
     }
     default boolean isPrimaryTimetable(Timetable timetable){
-        if (timetable.getId() == getPrimaryTimetableId())
-            return true;
-        else
-            return false;
+        return timetable.getId() == getPrimaryTimetableId();
     }
 
     LinkedList<TODOList> getTodoLists();
@@ -89,8 +86,7 @@ public interface Person{
         } else
             name = list;
 
-        TODOList todoList = new TODOList(name, ticked);
-        return todoList;
+        return new TODOList(name, ticked);
     }
 
     enum PersonType {

@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Random;
 
 public class TaskAdderController {
@@ -35,9 +36,7 @@ public class TaskAdderController {
     private Timetable timetable;
 
     private TaskType taskType;
-    private Task task;
     private Day day;
-    private Subject subject;
     private Period duePeriod;
 
     public void setFilePath(String filePath){
@@ -91,7 +90,6 @@ public class TaskAdderController {
             alert.setContentText("The day you chose is not one of your school days.");
             alert.showAndWait();
 
-            return;
         }
     }
 
@@ -103,7 +101,8 @@ public class TaskAdderController {
         try {
             Alert alert = new Alert(Alert.AlertType.ERROR);
 
-            if (comboSubject.getValue() == "Select a Subject:"){
+            Subject subject;
+            if (Objects.equals(comboSubject.getValue(), "Select a Subject:")){
                 alert.setContentText("You must choose the subject you are tested on.");
                 alert.showAndWait();
 
@@ -130,7 +129,7 @@ public class TaskAdderController {
 
             Date dueDate = Date.from(d.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-            if (comboDuePeriod.getValue() == "Select a Due Period:"){
+            if (Objects.equals(comboDuePeriod.getValue(), "Select a Due Period:")){
                 if (timetable.containsPeriodOnDay(subject, day)) {
                     int periodNumber = timetable.getPeriodNumber(day, subject.getSubject());
                     for (Period p : timetable.getDayPeriods(day)) {
@@ -164,7 +163,7 @@ public class TaskAdderController {
                 duePeriod = new Period(new Subject(subj), periodNumber);
             }
 
-            task = new Task(taskType, subject, dueDate, duePeriod, day);
+            Task task = new Task(taskType, subject, dueDate, duePeriod, day);
             LinkedList<Task> tasks = student.getTasks();
 
             int id = new Random().nextInt(9999);

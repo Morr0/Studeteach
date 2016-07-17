@@ -35,7 +35,6 @@ public class TODOAdderController {
             alert.setContentText("You must write a valid list. Only letters are allowed.");
             alert.showAndWait();
 
-            return;
         } else {
             TODOList todoList = new TODOList(textTODO.getText());
             LinkedList<TODOList> todoLists = person.getTodoLists();

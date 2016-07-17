@@ -7,6 +7,7 @@ import archavexm.studeteach.core.student.task.TaskType;
 import com.sun.istack.internal.NotNull;
 
 import java.io.*;
+import java.util.ArrayList;
 
 // a bunch of utility methods
 public final class Utilities {
@@ -23,8 +24,7 @@ public final class Utilities {
             line = reader.readLine();
         }
 
-        String output = content.toString();
-        return output;
+        return content.toString();
     }
 
     @NotNull
@@ -33,7 +33,6 @@ public final class Utilities {
         String line = bufferedReader.readLine();
         bufferedReader.close();
         return line;
-
     }
 
     @NotNull
@@ -72,20 +71,15 @@ public final class Utilities {
     }
 
     @NotNull
-    public static boolean isDigit(String input){
+    public static boolean isNumber(String input){
         char[] array = input.toCharArray();
-        boolean output = false;
+        ArrayList<Boolean> results = new ArrayList<>(array.length);
+        for (Character character: array)
+            results.add(Character.isDigit(character));
 
-        for (Character character: array){
-            if (Character.isDigit(character)){
-                output = true;
-            }
-            else {
-                output = false;
-            }
-        }
-
-        return output;
+        if (results.contains(false))
+            return true;
+        return false;
     }
 
     @NotNull
@@ -114,8 +108,7 @@ public final class Utilities {
     public static String capitalizeFirstLetter(String input){
         String newInput = input.toLowerCase();
         String capital = (newInput.trim()).substring(0, 1).toUpperCase();
-        String output = capital + (newInput.trim()).substring(1);
-        return output;
+        return capital + (newInput.trim()).substring(1);
     }
 
     @NotNull
@@ -187,8 +180,7 @@ public final class Utilities {
         }
         sb.reverse();
 
-        int output = Integer.parseInt(sb.toString());
-        return output;
+        return Integer.parseInt(sb.toString());
     }
 
     @NotNull

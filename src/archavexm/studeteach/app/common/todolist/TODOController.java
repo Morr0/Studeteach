@@ -25,7 +25,6 @@ public class TODOController implements PersonWindow {
     private Person person;
     private String filePath;
     private LinkedList<TODOList> todoLists;
-    private TODOList selectedTODOList;
 
     @Override
     public void setFilePath(String filePath){
@@ -101,6 +100,7 @@ public class TODOController implements PersonWindow {
 
     public void remove(){
         if (listTODOLists.getSelectionModel().getSelectedItem() != null){
+            @SuppressWarnings(value = "unchecked")
             LinkedList<TODOList> lists = (LinkedList<TODOList>) todoLists.clone();
             todoLists.clear();
 
@@ -117,7 +117,7 @@ public class TODOController implements PersonWindow {
 
     public void tick(){
         if (listTODOLists.getSelectionModel().getSelectedItem() != null){
-            selectedTODOList = person.getSelectedTODOList(listTODOLists.getSelectionModel().getSelectedItem());
+            TODOList selectedTODOList = person.getSelectedTODOList(listTODOLists.getSelectionModel().getSelectedItem());
             selectedTODOList.setTicked(true);
             LinkedList<TODOList> lists = new LinkedList<>();
 

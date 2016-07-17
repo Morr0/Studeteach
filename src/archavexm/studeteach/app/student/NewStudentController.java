@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 // Handles the creation of a new user
 public class NewStudentController implements NewPersonBackButton{
@@ -32,7 +33,6 @@ public class NewStudentController implements NewPersonBackButton{
     @FXML private TextField textPreferedName;
 
     private String filePath;
-    private Student student;
 
     @FXML private Button buttonBack;
 
@@ -79,7 +79,7 @@ public class NewStudentController implements NewPersonBackButton{
             return;
         }
 
-        if ((textSchoolName.getText().isEmpty()) || (textSchoolName.getText() == " ")){
+        if ((textSchoolName.getText().isEmpty()) || (Objects.equals(textSchoolName.getText(), " "))){
             alert.setContentText("You must provide the name of the school you are studying at right now.");
             alert.showAndWait();
 
@@ -106,7 +106,7 @@ public class NewStudentController implements NewPersonBackButton{
 
         preferredName = textPreferedName.getText();
         try {
-            student = Student.getStudent();
+            Student student = Student.getStudent();
             student.setFirstName(firstName);
             student.setLastName(lastName);
             student.setAge(age);
@@ -127,7 +127,6 @@ public class NewStudentController implements NewPersonBackButton{
             ObjectSerializer.serializeStudent(filePath, student);
             toProfile();
         } catch (NullPointerException ex){
-            return;
         } catch (Exception ex){
             ex.printStackTrace();
         }

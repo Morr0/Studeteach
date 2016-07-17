@@ -73,8 +73,8 @@ public class PersonController {
     private Stage currentStage;
 
     private HashSet<Day> schoolDays = new HashSet<>();
-    private LinkedList<Timetable> timetables = new LinkedList<>();
-    private ObservableList<Node> anchorTimetableChildren = FXCollections.observableArrayList();
+    private final LinkedList<Timetable> timetables = new LinkedList<>();
+    private final ObservableList<Node> anchorTimetableChildren = FXCollections.observableArrayList();
     private Timetable selectedTimetable;
     private Day selectedDay;
 
@@ -138,7 +138,7 @@ public class PersonController {
 
     public void toProfileEditor(){
         URL url;
-        if (student != null)
+        if (personType.equals(Person.PersonType.STUDENT))
             url = ProfileEditorController.class.getResource("ProfileEditor.fxml");
         else
             url = EditorController.class.getResource("Editor.fxml");
@@ -156,7 +156,6 @@ public class PersonController {
             alert.setContentText("You have not set your primary timetable. In order to access the task manager you have to have a primary timetable.");
             alert.showAndWait();
 
-            return;
         } else {
             URL url = TaskManagerController.class.getResource("TaskManager.fxml");
             toWindow(url, "TaskManager", "Task Manager - " + Studeteach.APP_NAME);
@@ -186,7 +185,6 @@ public class PersonController {
             alert.setContentText("In order to edit your timetable you have to add at least one school day to your profile.");
             alert.showAndWait();
 
-            return;
         }
     }
 
@@ -309,7 +307,6 @@ public class PersonController {
             refreshTimetable();
             // empty catch block because whenever the user exits Profile Editor this will throw an exception for no reason
         } catch (NullPointerException ex) {
-            return;
         }
     }
 
@@ -424,6 +421,7 @@ public class PersonController {
             int oldId = timetable.getId();
             timetable.setId(id);
 
+            @SuppressWarnings(value = "unchecked")
             LinkedList<Timetable> tts = (LinkedList<Timetable>) newTimetables.clone();
             newTimetables.clear();
             for (Timetable t: tts)
@@ -472,8 +470,7 @@ public class PersonController {
             if (button.get().equals(ButtonType.OK)){
                 Utilities.emptyTheFile(filePath);
                 fileCloseProfile();
-            } else
-                return;
+            }
         } catch (IOException ex){
             ex.printStackTrace();
         }

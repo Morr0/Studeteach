@@ -43,7 +43,7 @@ public class TimetableEditorController implements PersonWindow, ITimetable {
 
     private Person person;
     private Timetable timetable;
-    private LinkedList<Timetable> timetables = new LinkedList<>();
+    private final LinkedList<Timetable> timetables = new LinkedList<>();
 
     @Override
     public void setFilePath(String filePath){
@@ -75,6 +75,7 @@ public class TimetableEditorController implements PersonWindow, ITimetable {
     }
 
     public void updateContext(ActionEvent event){
+        @SuppressWarnings(value = "unchecked")
         ComboBox<String> comboCurrent = (ComboBox<String>) event.getSource();
         selectedDay = Utilities.toDayFromString(comboCurrent.getValue());
 

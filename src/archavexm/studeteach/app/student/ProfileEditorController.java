@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.util.HashSet;
+import java.util.Objects;
 
 // The profile editor for the student
 public class ProfileEditorController implements PersonWindow {
@@ -104,7 +105,7 @@ public class ProfileEditorController implements PersonWindow {
         String lastName;
         String preferredName;
         int age;
-        int year = 0;
+        int year;
         String schoolName;
         SchoolType schoolType;
         HashSet<Day> schoolDays = new HashSet<>(7);
@@ -118,7 +119,7 @@ public class ProfileEditorController implements PersonWindow {
         lastName = textLastName.getText();
         preferredName = textPreferedName.getText();
 
-        if (!(Utilities.isDigit(textAge.getText()))){
+        if (!(!Utilities.isNumber(textAge.getText().trim()))){
             drawAlert("You must provide an integer in the age field.");
             return;
         } else {
@@ -136,7 +137,7 @@ public class ProfileEditorController implements PersonWindow {
             return;
         }
 
-        if (!(Utilities.isDigit(textYear.getText()))){
+        if (!(!Utilities.isNumber(textYear.getText().trim()))){
             drawAlert("You must provide a non-negative number in the year field and it must not exceed 12.");
             return;
         }
@@ -152,7 +153,7 @@ public class ProfileEditorController implements PersonWindow {
             return;
         }
 
-        if (textSchoolName.getText() == ""){
+        if (Objects.equals(textSchoolName.getText(), "")){
             drawAlert("You must provide the name of your school.");
             return;
         } else

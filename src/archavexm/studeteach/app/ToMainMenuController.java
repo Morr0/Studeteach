@@ -50,15 +50,14 @@ public class ToMainMenuController {
                 if (selectedPerson.get().getText().equals("Student")){
                     root = loader.load(getClass().getResource("student/NewStudent.fxml"));
                     person = "Student";
-                }
-                else if (selectedPerson.get().getText().equals("Teacher")){
+                } else if (selectedPerson.get().getText().equals("Teacher")){
                     root = loader.load(getClass().getResource("teacher/NewTeacher.fxml"));
                     person = "Teacher";
                 }
 
                 Stage stage = new Stage();
                 stage.getIcons().add(new Image(Studeteach.APP_ICON));
-                stage.setScene(new Scene(root));
+                stage.setScene(new Scene(root != null ? root : null));
                 stage.setTitle("New " + person + " - " + Studeteach.APP_NAME);
                 stage.show();
             } catch (IOException ex){
@@ -115,10 +114,8 @@ public class ToMainMenuController {
                 alert.setContentText("The file you are trying to open is not a valid .studeteach file.");
                 alert.showAndWait();
 
-                return;
             }
         } catch (NullPointerException ex){
-           return;
         } catch (IOException ex){
             ex.printStackTrace();
         }

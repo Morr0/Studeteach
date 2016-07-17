@@ -11,7 +11,7 @@ public class School {
     @Attribute
     private SchoolType schoolType;
 
-    private static School instance = new School();
+    private static final School instance = new School();
 
     private School(){}
 
@@ -31,8 +31,7 @@ public class School {
     }
 
     public String getSchoolType(){
-        String output = Utilities.capitalizeFirstLetter(schoolType.toString());
-        return output;
+        return Utilities.capitalizeFirstLetter(schoolType.toString());
     }
 
     public void setSchoolType(SchoolType schoolType){

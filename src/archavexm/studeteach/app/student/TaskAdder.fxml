@@ -5,54 +5,58 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import java.lang.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="269.0" prefWidth="399.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="archavexm.studeteach.app.student.TaskAdderController">
-   <children>
-      <Label layoutX="9.0" layoutY="11.0" prefHeight="32.0" prefWidth="87.0" text="Subject:">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Label>
-      <ComboBox fx:id="comboSubject" layoutX="97.0" layoutY="16.0" prefHeight="31.0" prefWidth="285.0" promptText="Select a Subject:">
-         <items>
-            <FXCollections fx:factory="observableArrayList">
-               <String fx:value="English" />
-               <String fx:value="Arabic" />
-               <String fx:value="French" />
-               <String fx:value="Chinese" />
-               <String fx:value="Assyrian" />
-               <String fx:value="Language" />
-               <String fx:value="Mathematics" />
-               <String fx:value="Geography" />
-               <String fx:value="Religion" />
-               <String fx:value="History" />
-               <String fx:value="Commerce" />
-               <String fx:value="Art" />
-               <String fx:value="Music" />
-               <String fx:value="Science" />
-               <String fx:value="Physics" />
-               <String fx:value="Chemistry" />
-               <String fx:value="Biology" />
-               <String fx:value="Sport" />
-               <String fx:value="Computing" />
-            </FXCollections>
-         </items>
-      </ComboBox>
-      <Label layoutX="12.0" layoutY="69.0" prefHeight="32.0" prefWidth="84.0" text="Due Date:">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Label>
-      <DatePicker fx:id="pickerDueDate" layoutX="97.0" layoutY="71.0" onAction="#refreshPeriods" prefHeight="31.0" prefWidth="285.0" promptText="Select a Date:" />
-      <Label layoutX="11.0" layoutY="128.0" prefHeight="32.0" prefWidth="84.0" text="Due Period:">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Label>
-      <ComboBox fx:id="comboDuePeriod" layoutX="96.0" layoutY="128.0" prefHeight="31.0" prefWidth="285.0" promptText="Select a Due Period:" />
-      <Button layoutX="131.0" layoutY="175.0" mnemonicParsing="false" onAction="#save" prefHeight="80.0" prefWidth="137.0" text="Add">
-         <font>
-            <Font size="32.0" />
-         </font>
-      </Button>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="269.0"
+            prefWidth="399.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="archavexm.studeteach.app.student.TaskAdderController">
+   <Label layoutX="9.0" layoutY="11.0" prefHeight="32.0" prefWidth="87.0" text="Subject:">
+      <font>
+         <Font size="16.0"/>
+      </font>
+   </Label>
+   <ComboBox fx:id="comboSubject" layoutX="97.0" layoutY="16.0" prefHeight="31.0" prefWidth="285.0"
+             promptText="Select a Subject:">
+      <items>
+         <FXCollections fx:factory="observableArrayList">
+            <String fx:value="English"/>
+            <String fx:value="Arabic"/>
+            <String fx:value="French"/>
+            <String fx:value="Chinese"/>
+            <String fx:value="Assyrian"/>
+            <String fx:value="Language"/>
+            <String fx:value="Mathematics"/>
+            <String fx:value="Geography"/>
+            <String fx:value="Religion"/>
+            <String fx:value="History"/>
+            <String fx:value="Commerce"/>
+            <String fx:value="Art"/>
+            <String fx:value="Music"/>
+            <String fx:value="Science"/>
+            <String fx:value="Physics"/>
+            <String fx:value="Chemistry"/>
+            <String fx:value="Biology"/>
+            <String fx:value="Sport"/>
+            <String fx:value="Computing"/>
+         </FXCollections>
+      </items>
+   </ComboBox>
+   <Label layoutX="12.0" layoutY="69.0" prefHeight="32.0" prefWidth="84.0" text="Due Date:">
+      <font>
+         <Font size="16.0"/>
+      </font>
+   </Label>
+   <DatePicker fx:id="pickerDueDate" layoutX="97.0" layoutY="71.0" onAction="#refreshPeriods" prefHeight="31.0"
+               prefWidth="285.0" promptText="Select a Date:"/>
+   <Label layoutX="11.0" layoutY="128.0" prefHeight="32.0" prefWidth="84.0" text="Due Period:">
+      <font>
+         <Font size="16.0"/>
+      </font>
+   </Label>
+   <ComboBox fx:id="comboDuePeriod" layoutX="96.0" layoutY="128.0" prefHeight="31.0" prefWidth="285.0"
+             promptText="Select a Due Period:"/>
+   <Button layoutX="131.0" layoutY="175.0" mnemonicParsing="false" onAction="#save" prefHeight="80.0" prefWidth="137.0"
+           text="Add">
+      <font>
+         <Font size="32.0"/>
+      </font>
+   </Button>
 </AnchorPane>

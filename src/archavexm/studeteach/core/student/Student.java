@@ -20,7 +20,7 @@ import java.util.LinkedList;
 @Root(name = "student")
 public class Student implements Person {
 
-    private static Student student = new Student();
+    private static final Student student = new Student();
 
     @Attribute(name = "first_name")
     private String firstName;

@@ -20,16 +20,12 @@ public class ObjectDeserializer {
     public static Student deserializeStudent(String filePath) throws Exception{
         Serializer deserializer = new Persister();
         File file = new File(filePath);
-
-        Student student = deserializer.read(Student.class, file);
-        return student;
+        return deserializer.read(Student.class, file);
     }
 
     public static Teacher deserializeTeacher(String filePath) throws Exception{
         Serializer deserializer = new Persister();
         File file = new File(filePath);
-
-        Teacher teacher = deserializer.read(Teacher.class, file);
-        return teacher;
+        return deserializer.read(Teacher.class, file);
     }
 }
