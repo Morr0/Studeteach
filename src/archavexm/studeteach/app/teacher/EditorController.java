@@ -51,7 +51,7 @@ public class EditorController implements PersonWindow {
 
         textFirstName.setText(teacher.getFirstName());
         textLastName.setText(teacher.getLastName());
-        textPreferredName.setText(teacher.getFullName());
+        textPreferredName.setText(teacher.getPreferredName());
         textSchoolName.setText(teacher.getSchoolName());
         comboSchoolType.setValue(teacher.getSchoolType().toString());
         comboSpecializedSubject.setValue(teacher.getSubject().toString());
@@ -95,7 +95,7 @@ public class EditorController implements PersonWindow {
         } else
             teacher.setFirstName(textFirstName.getText());
         teacher.setLastName(textLastName.getText());
-        teacher.setPreferredName(textPreferredName.getText());
+        teacher.setPreferredName(textPreferredName.getText().trim());
 
         if (textSchoolName.getText().isEmpty()){
             drawAlert("You must provide in the name of school you are teaching in.");

@@ -114,7 +114,6 @@ public class TaskManagerController implements PersonWindow {
             stage.showAndWait();
 
             refresh();
-
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -137,15 +136,12 @@ public class TaskManagerController implements PersonWindow {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("You must select the task in order to remove it from your list of tasks.");
             alert.showAndWait();
-
         }
-
     }
 
     public void changeSelection(){
         String taskType = comboTasks.getSelectionModel().getSelectedItem();
         selectedTaskType = Utilities.toTaskTypeFromString(taskType);
-
         refresh();
     }
 

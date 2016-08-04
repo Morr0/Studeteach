@@ -17,10 +17,7 @@ public interface Person{
     String getPreferredName();
 
     default String getTitleName(){
-        if (getPreferredName() == null || getPreferredName().isEmpty())
-            return getFirstName();
-        else
-            return getPreferredName();
+        return getPreferredName() == null || getPreferredName().isEmpty() ? getFirstName() : getPreferredName();
     }
 
     default boolean doesHaveThisDay(Day day){

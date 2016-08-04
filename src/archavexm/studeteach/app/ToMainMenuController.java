@@ -28,7 +28,6 @@ public class ToMainMenuController {
     @FXML private Label labelTitle;
 
     private String filePath;
-    private Person.PersonType personType;
 
     public void newUser(){
         Alert studentOrTeacherDialog = new Alert(Alert.AlertType.CONFIRMATION);
@@ -57,7 +56,7 @@ public class ToMainMenuController {
 
                 Stage stage = new Stage();
                 stage.getIcons().add(new Image(Studeteach.APP_ICON));
-                stage.setScene(new Scene(root != null ? root : null));
+                stage.setScene(new Scene(root == null ? null : root));
                 stage.setTitle("New " + person + " - " + Studeteach.APP_NAME);
                 stage.show();
             } catch (IOException ex){

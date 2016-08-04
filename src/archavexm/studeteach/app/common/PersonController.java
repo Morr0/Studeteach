@@ -11,7 +11,6 @@ import archavexm.studeteach.core.common.Person;
 import archavexm.studeteach.core.common.subject.Subjects;
 import archavexm.studeteach.core.common.timetable.Period;
 import archavexm.studeteach.core.common.timetable.Timetable;
-import archavexm.studeteach.core.student.Student;
 import archavexm.studeteach.core.util.ObjectDeserializer;
 import archavexm.studeteach.core.util.ObjectSerializer;
 import archavexm.studeteach.core.util.Utilities;
@@ -45,14 +44,7 @@ public class PersonController {
     // Menu bar and other labels
     @FXML private MenuBar menuBar;
     @FXML private MenuItem itemToTaskManager;
-    @FXML private Label lName;
     @FXML private Label labelName;
-    @FXML private Label lAge;
-    @FXML private Label labelAge;
-    @FXML private Label lYear;
-    @FXML private Label labelYear;
-    @FXML private Label lTask;
-    @FXML private Label labelNumberOfTasks;
     @FXML private Button buttonTaskManager;
 
     // Timetable things
@@ -63,7 +55,6 @@ public class PersonController {
     @FXML private ListView<String> listTimetable;
 
     private Person person;
-    private Student student;
     private Person.PersonType personType;
     private Timetable primaryTimetable;
     private String filePath;
@@ -71,6 +62,9 @@ public class PersonController {
     private String preferredName;
     private String stageTitle;
     private Stage currentStage;
+
+    // This runnable will be implemented by threads whenever an update to the profile occurs.
+    private Runnable refreshingLabelsRunnable;
 
     private HashSet<Day> schoolDays = new HashSet<>();
     private final LinkedList<Timetable> timetables = new LinkedList<>();
@@ -90,27 +84,25 @@ public class PersonController {
     public void setPersonType(Person.PersonType personType){
         this.personType = personType;
         if (personType.equals(Person.PersonType.TEACHER)){
-            lAge.setVisible(false);
-            labelAge.setVisible(false);
-            lYear.setVisible(false);
-            labelYear.setVisible(false);
-            lTask.setVisible(false);
-            labelNumberOfTasks.setVisible(false);
             buttonTaskManager.setVisible(false);
             itemToTaskManager.setVisible(false);
         }
     }
 
     public void init(){
+        // Implementation of the reloading runnable interface for the threads
         try {
-            unpack();
-            if (personType.equals(Person.PersonType.STUDENT))
-                student = (Student) person;
+            refreshingLabelsRunnable = () -> {
+                Platform.runLater(() -> {
+                    stageTitle = person.getTitleName() + " - " + Studeteach.APP_NAME;
+                    currentStage.setTitle(stageTitle);
+                    preferredName = person.getTitleName();
+                    labelName.setText(preferredName == null ? person.getFirstName() : preferredName);
+            });};
 
-            setPreferredName();
-            setLabels();
-            if (currentStage.getTitle() == null)
-                currentStage.setTitle(stageTitle);
+            unpack();
+            new Thread(refreshingLabelsRunnable).start();
+
             getSchoolDays();
             for (Node node: anchorTimetable.getChildren())
                 anchorTimetableChildren.add(node);
@@ -144,8 +136,8 @@ public class PersonController {
             url = EditorController.class.getResource("Editor.fxml");
 
         toWindow(url, "ProfileEditor", preferredName + " - Profile Editor - " + Studeteach.APP_NAME);
-        unpack();
         refresh();
+        new Thread(refreshingLabelsRunnable).start();
         getSchoolDays();
         getTimetables();
     }
@@ -161,6 +153,7 @@ public class PersonController {
             toWindow(url, "TaskManager", "Task Manager - " + Studeteach.APP_NAME);
             unpack();
             refresh();
+            new Thread(refreshingLabelsRunnable).start();
         }
     }
 
@@ -179,7 +172,8 @@ public class PersonController {
             URL url = TimetableEditorController.class.getResource("TimetableEditor.fxml");
             toWindow(url, "TimetableEditor", "Timetable Editor - " + Studeteach.APP_NAME);
             unpack();
-            refreshTimetable();
+            getTimetables();
+            //changedTimetable();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("In order to edit your timetable you have to add at least one school day to your profile.");
@@ -221,8 +215,6 @@ public class PersonController {
         try {
             unpack();
             schoolDays = person.getSchoolDays();
-            setPreferredName();
-            setLabels();
             if (currentStage.getTitle() == null)
                 currentStage.setTitle(stageTitle);
         } catch (Exception ex){
@@ -235,27 +227,6 @@ public class PersonController {
             person = ObjectDeserializer.deserialize(filePath);
         } catch (Exception ex){
             ex.printStackTrace();
-        }
-    }
-
-    public void setPreferredName(){
-        stageTitle = person.getTitleName() + " - " + Studeteach.APP_NAME;
-        preferredName = person.getTitleName();
-    }
-
-    private void setLabels(){
-        if (preferredName == null)
-            labelName.setText(person.getFirstName());
-        else
-            labelName.setText(preferredName);
-
-        if (student != null){
-            labelAge.setText(Integer.toString(student.getAge()));
-            if (student.getSchoolYear() == 0)
-                labelYear.setText("?");
-            else
-                labelYear.setText(Integer.toString(student.getSchoolYear()));
-            labelNumberOfTasks.setText(Integer.toString(student.getTasks().size()));
         }
     }
 
@@ -284,7 +255,7 @@ public class PersonController {
     public void changedTimetable(){
         if (comboTimetables.getItems().size() > 1){
             selectedTimetable = person.getTimetable(comboTimetables.getSelectionModel().getSelectedItem());
-            listTimetable.getItems().clear();
+            //listTimetable.getItems().clear();
             refreshTimetable();
 
             if (person.isPrimaryTimetable(selectedTimetable)){
@@ -435,7 +406,7 @@ public class PersonController {
         person.setTimetables(newTimetables);
         save();
         unpack();
-        setLabels();
+        //setLabels();
         getTimetables();
     }
 
@@ -449,7 +420,7 @@ public class PersonController {
             FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Studeteach files", "*.studeteach");
             fileChooser.setSelectedExtensionFilter(extensionFilter);
 
-            Stage currentStage = (Stage)labelAge.getScene().getWindow();
+            Stage currentStage = (Stage) labelName.getScene().getWindow();
             File file = fileChooser.showSaveDialog(currentStage);
 
             anotherFilePath = file.getAbsolutePath();
@@ -478,8 +449,8 @@ public class PersonController {
 
     public void fileCloseProfile(){
         try {
-            FXMLLoader loader = new FXMLLoader();
-            Parent mainMenu = loader.load(ToMainMenuController.class.getResource("ToMainMenu.fxml"));
+            FXMLLoader loader = new FXMLLoader(ToMainMenuController.class.getResource("ToMainMenu.fxml"));
+            Parent mainMenu = loader.load();
 
             Stage stage = new Stage();
             stage.getIcons().add(new Image(Studeteach.APP_ICON));

@@ -14,7 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.util.HashSet;
-import java.util.Objects;
 
 // The profile editor for the student
 public class ProfileEditorController implements PersonWindow {
@@ -104,7 +103,7 @@ public class ProfileEditorController implements PersonWindow {
         String lastName;
         String preferredName;
         int age;
-        int year = 0;
+        int year;
         String schoolName;
         SchoolType schoolType;
         HashSet<Day> schoolDays = new HashSet<>(7);
@@ -116,12 +115,13 @@ public class ProfileEditorController implements PersonWindow {
 
         firstName = textFirstName.getText();
         lastName = textLastName.getText();
-        preferredName = textPreferedName.getText();
+        preferredName = textPreferedName.getText().trim();
 
         try {
             age = Integer.parseInt(textAge.getText().trim());
+            year = Integer.parseInt(textYear.getText().trim());
         } catch (NumberFormatException ex){
-            drawAlert("You must provide an integer in the age field.");
+            drawAlert("You must provide a non-negative number in the year field and it must not exceed 12. You must also provide an integer in the age field.");
             return;
         }
 
@@ -136,29 +136,7 @@ public class ProfileEditorController implements PersonWindow {
             return;
         }
 
-        try {
-            year = Integer.parseInt(textYear.getText().trim());
-        } catch (NumberFormatException ex){
-            drawAlert("You must provide a non-negative number in the year field and it must not exceed 12.");
-            return;
-        }
-
-        if (year == 0){
-            drawAlert("You must provide the year you are studying in.");
-            return;
-        } else if (year > 12 || year < 0){
-            drawAlert("You should provide the correct year you are studying in.");
-            return;
-        }
-
-        if (Objects.equals(textSchoolName.getText(), "")){
-            drawAlert("You must provide the name of your school.");
-            return;
-        } else
-            schoolName = textSchoolName.getText();
-
         String st = comboSchoolType.getSelectionModel().getSelectedItem().toLowerCase();
-
         switch (st){
             case "primary":
                 schoolType = SchoolType.PRIMARY;
@@ -173,6 +151,25 @@ public class ProfileEditorController implements PersonWindow {
                 drawAlert("You must provide the level of education like primary or secondary or university.");
                 return;
         }
+
+        if (year <= 0 || year > 12){
+            drawAlert("You must provide the correct year you are studying in.");
+            return;
+        } else {
+            if (schoolType.equals(SchoolType.PRIMARY) && year > 6){
+                drawAlert("You must provide the correct year you are studying in.");
+                return;
+            } else if (year <= 6 && schoolType.equals(SchoolType.SECONDARY)){
+                drawAlert("You must provide the correct year you are studying in.");
+                return;
+            }
+        }
+
+        if (textSchoolName.getText().isEmpty()){
+            drawAlert("You must provide the name of your school.");
+            return;
+        } else
+            schoolName = textSchoolName.getText();
 
         if (checkMonday.isSelected()){
                 schoolDays.add(Day.MONDAY);
@@ -221,18 +218,3 @@ public class ProfileEditorController implements PersonWindow {
         alert.showAndWait();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -63,9 +63,7 @@ public class TaskAdderController {
         Day dayByDate = Utilities.toDayFromString(d.getDayOfWeek().toString());
         if (timetable.getDayPeriods(dayByDate).size() == 0){
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("You do not have any periods on the selected day. Please select the correct day.");
-            alert.showAndWait();
-
+            drawAlert("You do not have any periods on the selected day. Please select the correct day.");
             return;
         }
 
@@ -76,20 +74,15 @@ public class TaskAdderController {
             LinkedList<Period> periods = timetable.getDayPeriods(day);
             ObservableList<String> strings = FXCollections.observableArrayList();
 
-            for (Period period: periods){
-                if (period.getSubject().getSubject() != Subjects.NONE){
+            for (Period period: periods)
+                if (period.getSubject().getSubject() != Subjects.NONE)
                     strings.add((period.getNumber()) + " - " + period.getSubject().toString());
-                }
-            }
 
             comboDuePeriod.setItems(strings);
         } else {
             pickerDueDate.setValue(null);
-
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("The day you chose is not one of your school days.");
-            alert.showAndWait();
-
+            drawAlert("The day you chose is not one of your school days.");
+            return;
         }
     }
 
@@ -99,36 +92,26 @@ public class TaskAdderController {
 
     public void save(){
         try {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-
             Subject subject;
             if (Objects.equals(comboSubject.getValue(), "Select a Subject:")){
-                alert.setContentText("You must choose the subject you are tested on.");
-                alert.showAndWait();
-
+                drawAlert("You must choose the subject you are tested on.");
                 return;
             } else
                 subject = new Subject(Utilities.toSubjectsFromString(comboSubject.getValue()));
 
             if (pickerDueDate.getValue() == null) {
-                alert.setContentText("You must provide the due date.");
-                alert.showAndWait();
-
-            return;
-            }
-
-            LocalDate d = pickerDueDate.getValue();
-
-            LocalDate currentDate = LocalDate.now();
-            if (currentDate.isAfter(d)){
-                alert.setContentText("The date you have chosen is in the past.");
-                alert.showAndWait();
-
+                drawAlert("You must provide the due date.");
                 return;
             }
 
-            Date dueDate = Date.from(d.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            LocalDate date = pickerDueDate.getValue();
+            LocalDate currentDate = LocalDate.now();
+            if (date.isBefore(currentDate)){
+                drawAlert("The date you have chosen is in the past.");
+                return;
+            }
 
+            Date dueDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
             if (Objects.equals(comboDuePeriod.getValue(), "Select a Due Period:")){
                 if (timetable.containsPeriodOnDay(subject, day)) {
                     int periodNumber = timetable.getPeriodNumber(day, subject.getSubject());
@@ -137,9 +120,7 @@ public class TaskAdderController {
                             duePeriod = new Period(subject, periodNumber);
                     }
                 } else {
-                    alert.setContentText("You must select the due period.");
-                    alert.showAndWait();
-
+                    drawAlert("You must select the due period.");
                     return;
                 }
             } else {
@@ -150,6 +131,7 @@ public class TaskAdderController {
                     pn = comboDuePeriod.getSelectionModel().getSelectedItem().substring(0, 1);
                     periodNumber = Integer.parseInt(pn);
                 } catch (NullPointerException ex){
+                    drawAlert("You should select the period you are having an exam on.");
                     return;
                 }
 
@@ -159,7 +141,6 @@ public class TaskAdderController {
                         break;
                     }
                 }
-
                 duePeriod = new Period(new Subject(subj), periodNumber);
             }
 
@@ -181,9 +162,14 @@ public class TaskAdderController {
 
             Stage currentStage = (Stage) comboDuePeriod.getScene().getWindow();
             currentStage.close();
-        }
-        catch (Exception ex){
+        } catch (Exception ex){
             ex.printStackTrace();
         }
+    }
+
+    private void drawAlert(String message){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

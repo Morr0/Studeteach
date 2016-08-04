@@ -6,8 +6,8 @@ import org.simpleframework.xml.Root;
 
 @Root(name = "subject")
 public class Subject {
-    @Element
-    private final Subjects subject;
+    @Element(required = false)
+    private Subjects subject;
 
     public Subject(){
         subject = Subjects.NONE;
